@@ -1,0 +1,13 @@
+#info{
+    position: absolute;
+    top:0;
+    left: 0;
+    z-index: 999;
+    background: url("/public/images/projects/rubik.png");
+}
+
+.hidden {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 1s, opacity 1s linear;
+}

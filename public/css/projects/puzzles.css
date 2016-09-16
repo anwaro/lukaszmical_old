@@ -1,0 +1,139 @@
+
+body{
+	-moz-user-select: none; 
+	-webkit-user-select: none; 
+	-ms-user-select:none; 
+	user-select:none;
+}
+
+#puzzleArea{
+	display:none;
+}
+
+#puzzleAreaLay{
+	position: relative;
+	display:none;
+	margin:  auto;  
+	background: url(img/frame.png) no-repeat; 
+	-webkit-background-size: 100% 100%;
+	-moz-background-size: 100% 100%;
+	-o-background-size: 100% 100%;
+	background-size: 100% 100%;
+
+}
+
+#puzzleArea > div.puzzle{
+    border: 1px solid #444;
+    box-shadow: 5px 5px 6px #888888;
+}
+
+#puzzles{
+	width:100%;
+	position:relative;
+	padding-top: 4em;
+	
+}
+
+.puzzle{
+	position:absolute;
+	opacity:0.8;
+}
+
+.puzzle:hover, .pouzle .drag{
+	opacity:1;
+}
+
+.opt{
+	width:20%;
+	float:left;
+}
+
+#select{
+	padding:2%;
+}
+
+input#image{
+	display:none;
+}
+
+.icon{
+	cursor:pointer;
+}
+
+.URL{
+	display:none;
+	position:absolute;
+	z-index:99;
+	top:40%;
+	width:102%;
+	padding: 2em 0 2em 0;
+}
+
+.MSG{
+	display:none;
+	position:absolute;
+	z-index:999;
+	font-size: 20pt;
+	top:40%;
+	margin-left: 5%;
+	width: 90%;
+	padding: 2em 0 2em 0;
+}
+
+.MSG.ok{
+	color:#045D04;
+}
+
+.MSG.error{
+	color:#EA8A95;
+}
+
+.URL input{
+	width: 70%;
+	font-size: 20pt;
+}
+
+#confirmURL{
+	margin-left:5px;
+	font-size: 20pt;
+}
+
+#confirmURL:hover, #reset:hover{
+	color:blue;
+}
+.rel{
+	position:relative;
+}
+
+#sample{
+	margin-top:100px;
+	display:none;
+}
+
+.sampleImg{
+	width: 20%;
+	clear: none;
+	margin-left: 0;
+}
+
+#hiddenImg{
+	display:none;
+}
+
+#reset{
+    float: left;
+    margin-left:20px;
+    margin-top: -60px;
+    font-size:2em;
+}
+
+img#imageView{
+    height:200px;
+    left: 10px;
+    position: absolute;
+    opacity: 0.5;
+}
+
+img#imageView:hover{
+    opacity: 1;
+}
