@@ -2,23 +2,36 @@
 
 namespace db;
 
+use Lii;
+
 class Database extends \PDO
 {
-    
-    public function __construct($DB_TYPE, $DB_HOST, $DB_NAME, $DB_USER, $DB_PASS)
+    private $_lastSql = '';
+
+
+    public function __construct()
     {
-        // if  use msql
-        //echo $DB_TYPE." ".$DB_HOST." ".$DB_NAME." ".$DB_USER." ".$DB_PASS;
+        $type = Lii::$app->parm("db/type");
+        $host = Lii::$app->parm("db/host");
+        $name = Lii::$app->parm("db/name");
+        $user = Lii::$app->parm("db/user");
+        $pass = Lii::$app->parm("db/pass");
         try{
-            parent::__construct($DB_TYPE.':host='.$DB_HOST.';dbname='.$DB_NAME, $DB_USER, $DB_PASS);
+            parent::__construct(
+                    $type.':host='.$host.';dbname='.$name, 
+                    $user, 
+                    $pass,
+                    array(\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+            
         }  catch (\PDOException $e){
             echo "Page can't connect with database <br>"
             . "Please reload page " . $e->getMessage();
             exit();
         }
-		
-        // if use sqlite
-        //parent::__construct('sqlite:'.DB_NAME_SQLITE);
+    }
+    
+    public function getSql() {
+        return $this->_lastSql;
     }
     
     /**
@@ -33,10 +46,12 @@ class Database extends \PDO
         $sth = $this->prepare($sql);
         foreach ($array as $key => $value) {
             $sth->bindValue("$key", $value);
+            $sql =  str_replace(":$key", $value, $sql);
         }
         
         $sth->execute(); 
         
+        $this->_lastSql = $sql;                
         return $sth->fetchAll($fetchMode);
     }
     /**
@@ -75,7 +90,8 @@ class Database extends \PDO
             $sql = str_replace(":$key", $value, $sql);
         }
         
-        //echo $sql;
+        $this->_lastSql = $sql; 
+        
         $sth->execute();
     }
     
@@ -96,15 +112,17 @@ class Database extends \PDO
         $fieldDetails = rtrim($fieldDetails, ',');
         
         $sth = $this->prepare("UPDATE $table SET $fieldDetails WHERE $where");
-        //$str = "UPDATE $table SET $fieldDetails WHERE $where";
+        $str = "UPDATE $table SET $fieldDetails WHERE $where";
         
         foreach ($data as $key => $value) {
             $sth->bindValue(":$key", "$value");
-            //$str = str_replace(":$key", $value, $str);
+            $str = str_replace(":$key", $value, $str);
         }
         
+        $this->_lastSql = $sql; 
+        
         $sth->execute();
-        //echo $str;
+        
     }
     
     /**
@@ -117,6 +135,8 @@ class Database extends \PDO
      */
     public function delete($table, $where, $limit = 1)
     {
+        
+        $this->_lastSql = "DELETE FROM $table WHERE $where LIMIT $limit"; 
         return $this->exec("DELETE FROM $table WHERE $where LIMIT $limit");
     }
     

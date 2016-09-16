@@ -3,6 +3,7 @@
 namespace models;
 
 use base\Model;
+use db\Db;
 
 /**
  * Description of webstuff_model
@@ -12,7 +13,12 @@ use base\Model;
 class Webstuff extends Model {
     
     public function getAll() {
-        return $this->db()->select("SELECT * FROM webstuff ORDER BY id DESC");
+        return (new Db())->select('*')
+                ->from('webstuff')
+                ->orderBy('id', 'DESC')
+                ->all();
+        
+        //return $this->db()->select("SELECT * FROM webstuff ORDER BY id DESC");
     }
     
     public function getOne($id) {

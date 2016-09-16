@@ -3,7 +3,6 @@
 namespace base;
 
 use db\Database;
-use Lii;
 
 abstract class Model{
     
@@ -12,20 +11,9 @@ abstract class Model{
     
     public function db() {
         if(!$this->_db instanceof Database){
-            $this->connect();
+            $this->_db = new Database();
         }      
         return $this->_db;
-    }
-    
-    public function connect() {
-        $type = Lii::$app->parm("db/type");
-        $host = Lii::$app->parm("db/host");
-        $name = Lii::$app->parm("db/name");
-        $user = Lii::$app->parm("db/user");
-        $pass = Lii::$app->parm("db/pass");
-        $this->_db = new Database($type, $host, $name, $user, $pass);
-        $this->_db->exec("set names utf8");
-        
     }
     
     public function post($name) {

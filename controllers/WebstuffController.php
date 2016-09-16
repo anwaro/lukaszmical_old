@@ -9,12 +9,9 @@ class WebstuffController extends Controller {
     
     function actionIndex() {
         $model = new Webstuff();
-        $webstuffs = $model->getAll();
-        
-        echo "poszlo";
         
         return $this->render('webstuff/index', [
-            'webstuffs' => $webstuffs
+            'webstuffs' => $model->getAll()
         ]);      
     }   
     
