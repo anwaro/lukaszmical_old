@@ -26,4 +26,11 @@ $bootstrap = new Bootstrap();
 Lii::loadCofig($config);
 
 
-echo $bootstrap->init($config);
+
+//try{
+    $bootstrap->init($config); 
+    echo $bootstrap->getRenderedPage();
+//} catch (Exception $ex) {
+ //   echo (new helper\PrintException($ex))->register();
+//}
+

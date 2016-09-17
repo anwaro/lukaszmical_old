@@ -1,49 +1,49 @@
 <?php
 
-class projects_Model extends Model {
+namespace models;
 
-    
-    public function index() {
-            
+use db\ActiveRecord;
+
+class Projects extends ActiveRecord {
+
+    public function getTableName() {
+        return 'projects';
     }
-    
-    public function getInfoAll() {
-        $query = $this->db()->select("SELECT * FROM projects WHERE display = 1 ORDER BY mark DESC");
-        return $query;
-    }
-    
-    public function getInfo($name) {
-        $query = $this->db()->select("SELECT * FROM projects WHERE url = :name", array(":name"=>$name));
-        $info = array(
-            "url"=>"error/index",
-            "name"=>"Nie znaleziono takiego projektu",
-            "descr"=>"",
-            "js"=>["404"],
-            "css"=>[],
-            "mark"=>'',
-            "number"=>'',
-            "photo"=>"",
-            "date"=>'' ,
-            "display"=>'',
-            "template"=>''           
-        );
+
+    public function getAll() {
         
-        if($query){
-            $info["url"]="projects/".$name;
-            $info["name"]=$query[0]["name"];
-            $info["descr"]=$query[0]["descr"];
-            $info["mark"]=$query[0]["mark"];
-            $info["number"]=$query[0]["numerMark"];
-            $info["photo"]=$query[0]["photo"];
-            $info["date"]=$query[0]["date"];
-            $info["js"]=  explode(";", $query[0]["js"]);
-            $info["css"]=  explode(";", $query[0]["css"]);
-            $info["display"]= $query[0]["display"];
-            $info["template"]= $query[0]["template"];
-        }
-        return $info;
+        $result = $this->db()
+                ->select('*')
+                ->from($this->getTableName())
+                ->where('display', '=', 1)
+                ->orderBy('mark', 'DESC')
+                ->all();
+        
+        return $result;
+        
+    }
+    
+    public function getInfo($url) {
+        $result = $this->db()
+            ->select('*')
+            ->from($this->getTableName())
+            ->where('url', '=', $url)
+            ->one();
+        
+        return $result;
     }
 
+    public function getBestProjects() {
+        $result = $this->db()
+            ->select('*')
+            ->from($this->getTableName())
+            ->where('display', '=', 1)
+            ->orderBy('mark', 'DESC')
+            ->limit(6)            
+            ->all();
+        return $result;
+    }
+    
     public function savePhoto() {
         $numer = $this->post("number") * 5;
         $data = json_decode($this->post("data"), true);
@@ -60,7 +60,7 @@ class projects_Model extends Model {
         
         foreach ($photos as  $photo) {
             $photoName = $str[$arr[0]] . $str[$arr[1]] . $str[$arr[2]] . $str[$arr[3]] . $str[$arr[4]] . $str[$arr[5]];
-            $this->save($name, $photoName,  $photo);
+            $this->_save($name, $photoName,  $photo);
             $arr = $this->arr($arr);
         }        
     }
@@ -77,7 +77,7 @@ class projects_Model extends Model {
         return $arr;
     }
 
-    public function save($name,  $str, $photo){
+    public function _save($name,  $str, $photo){
         $path = getcwd()."/public/video/photo/".$name;
         if(!file_exists($path)){
             mkdir($path, 0777, true);
@@ -113,18 +113,21 @@ class projects_Model extends Model {
     
     public function getWord() {
         $list = "alfabet|komputer|zeszyt|pies|kot|haczyk|słownik|długopis|książka";
+        $list .= "heheszki|telefon|piłka|protfel|moneta|soczek|dłośnik|lampka";
         $array = explode( "|",$list);
         shuffle($array);
         return strtoupper ($array[0]);
     }
     
     public function getSong($id, $elem) {
-        $select = "";
+        $this->db()->select('*')
+                ->from('song');
+        
         if($id<0){
             $id=  abs($id+1);
-            $select = " ORDER BY id DESC";
+            $this->db()->orderBy('id', 'DESC');
         }
-        $query = $this->db()->select("SELECT * FROM song ".$select);
+        $query = $this->db()->all();
         
         $arrayId = $id % count($query);
         $record = $query[$arrayId];

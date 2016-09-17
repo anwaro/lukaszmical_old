@@ -14,10 +14,10 @@
         $content1 .= "
             <div class='4u'>
                 <article itemscope itemtype='http://schema.org/SoftwareApplication' class='box style2'>
-                        <a itemprop='url' href='{%url%}/projects/show/".$p["url"]."' class='image featured'>
-                            <img itemprop='image' src='{%url%}/public/images/projects/".$p["photo"]."' alt='".$p["descr"]."' />
+                        <a itemprop='url' href='{%url%}projects/show/".$p["url"]."' class='image featured'>
+                            <img itemprop='image' src='{%url%}public/images/projects/".$p["photo"]."' alt='".$p["descr"]."' />
                         </a>
-                        <h3><a itemprop='url' href='{%url%}/projects/show/".$p["url"]."'>".$p["name"]."</a></h3>
+                        <h3><a itemprop='url' href='{%url%}projects/show/".$p["url"]."'>".$p["name"]."</a></h3>
                         <p>".$p["descr"]." </p>
                 </article>
         </div>";
@@ -30,7 +30,7 @@
     <article class="container" id="top">
         <div class="row">
             <div class="4u">
-                <span class="image fit"><img src="{%url%}/public/images/stat/profil.jpg" alt="" /></span>
+                <span class="image fit"><img src="{%url%}public/images/stat/profil.jpg" alt="" /></span>
             </div>
             <div class="8u">
                 <header>
@@ -59,7 +59,7 @@
             </div>
         </div>
         <footer>
-            <a href="{%url%}/projects" class="button big scrolly">Więcej</a>
+            <a href="{%url%}projects" class="button big scrolly">Więcej</a>
         </footer>
     </article>
 </div>		

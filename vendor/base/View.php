@@ -1,10 +1,9 @@
 <?php
 namespace base;
 
-use app\Config;
+use Lii;
 
-
-class View extends Config{
+class View{
     
     protected $_template = '';
 
@@ -12,7 +11,7 @@ class View extends Config{
         "js" => "",
         "title" => "Witam na mojej stronie",
         "meta" => "",
-        "content" => "content",
+        "content" => "",
         "css" => "",       
         "url" => "",
         "fullurl"=> "",
@@ -35,14 +34,7 @@ class View extends Config{
      */
     public function __get($name) {
         return $this->components[$name];        
-    }            
-    
-    /**
-     * 
-     */
-    function __construct() {
-        $this->components["fullurl"] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; 
-    }
+    }  
     
     /**
      * 
@@ -85,7 +77,7 @@ class View extends Config{
         return $finalRender;
     }
     public function beforeRender() {
-        $this->components["url"] = $this->getParam("url");
+        $this->components["url"] = Lii::parm('url');
     }
  
     protected function _render($viewName, $varible) {
@@ -98,27 +90,52 @@ class View extends Config{
         ob_end_clean();
         return preg_replace_callback('/{%([^%]+)%}/', 'self::getComponents', $buffer);
     }
+
+    /**
+     * 
+     * @param array|string $names
+     */
+    public function addJs($names) {
+        if(is_array($names)){
+            foreach ($names as $name) {
+                $this->_addJs($name);
+            }
+        }else{
+            $this->_addJs($names);           
+        }
+    }
     /**
      * 
      * @param type $name
      */
-    public function addJs($name) {
-        $this->components["js"].= 
-                "<script src='".$this->getParam("url").
-                "/public/js/".str_replace(" ", "",$name).
-                ".js'></script> \n\t\t";
+    private function _addJs($name) {
+        $this->components["js"] .= sprintf(
+                "<script src='%s/public/js/%s.js'></script> \n\t\t", 
+                Lii::parm("url"),
+                str_replace(" ", "",$name)
+                );
     }
 
     /**
      * 
-     * @param type $name
+     * @param array|string  $names 
      */
-    public function addCss($name) {        
-        $this->components["css"].= 
-                '<link rel="stylesheet"  href="'.
-                $this->getParam("url").'/public/css/'.
-                str_replace(" ", "",$name).'.css" >' 
-                ."\n\t\t";
+    public function addCss($names) {
+        if(is_array($names)){
+            foreach ($names as $name) {
+                $this->_addCss($name);
+            }
+        }else{
+            $this->_addCss($names);           
+        }
+    }
+    
+    private function _addCss($name){
+        $this->components["css"].= sprintf(
+                "<link rel='stylesheet' href='%s/public/css/%s.css' >\n\t\t", 
+                Lii::parm("url"),
+                str_replace(" ", "",$name)
+                );
     }
 
     /**
@@ -143,7 +160,7 @@ class View extends Config{
      * @param type $info
      */
     public function setOgTags($info) {
-        $this->components["image"] = $this->getParam("path/proj_image") . "/" . $info["photo"];
+        $this->components["image"] = Lii::parm("path/proj_image") . "/" . $info["photo"];
         $this->components["descr"] = $info["descr"];        
     }
 

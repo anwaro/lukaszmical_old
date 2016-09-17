@@ -3,9 +3,6 @@ namespace base;
 
 
 class Controller extends View {
-
-    
-    
     /**
      * 
      * @param string $name Name of the model

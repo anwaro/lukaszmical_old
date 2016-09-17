@@ -4,6 +4,7 @@ namespace base;
 
 use db\Database;
 
+
 abstract class Model{
     
     protected $_db;

@@ -1,9 +1,11 @@
 <?php
+namespace models;
 
-class Error_Model extends Model {
+use Lii;
+
+class Error {
     
     private $mime = array(
-
             'txt' => 'text/plain',
             'htm' => 'text/html',
             'html' => 'text/html',
@@ -63,26 +65,17 @@ class Error_Model extends Model {
             
     
     public function index() {
-        $last = $this->_getUrl();
-        $roz = explode(".", $last);
-        if(count($roz)==1){
-            return 0;
-        }
-        var_dump($roz);
-        foreach ($this->mime as $type => $description) {
-            if($roz[1] == $type){
-                header('Content-type: ' . $description);
-                header("HTTP/1.0 404 Not Found");
-                exit();
-            }
+       
+        header("HTTP/1.0 404 Not Found");
+        $fileExt = $this->_fileExt();
+        if(array_key_exists($fileExt, $this->mime)){
+            header('Content-type: ' . $this->mime[$fileExt] . ";charset=UTF-8");
+            exit();            
         }
     }
     
-     private function _getUrl()    {
-        $url1 = isset($_GET['url']) ? $_GET['url'] : null;
-        $url2 = rtrim($url1, '/');
-        $url3 = filter_var($url2, FILTER_SANITIZE_URL);
-        $url4 = explode('/', $url3);
-        return $url4[count($url4)-1];
+     private function _fileExt(){
+        $url = Lii::$app->request->getUrl();
+        return pathinfo($url, PATHINFO_EXTENSION);
     }
 }

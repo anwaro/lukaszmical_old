@@ -2,7 +2,7 @@
 
 namespace models;
 
-use base\Model;
+use db\ActiveRecord;
 use db\Db;
 
 /**
@@ -10,22 +10,21 @@ use db\Db;
  *
  * @author lukasz
  */
-class Webstuff extends Model {
+class Webstuff extends ActiveRecord {
     
-    public function getAll() {
-        return (new Db())->select('*')
-                ->from('webstuff')
-                ->orderBy('id', 'DESC')
-                ->all();
-        
-        //return $this->db()->select("SELECT * FROM webstuff ORDER BY id DESC");
+    public function getTableName(){
+        return 'webstuff';
     }
     
-    public function getOne($id) {
-        return $this->db()->selectOne("SELECT * FROM webstuff WHERE id = :id", [":id"=>intval($id)]);
-        
+    public function getTableColumns() {
+        return[
+            'id',
+            'text',
+            'links',
+            'date',
+        ];
     }
-    
+
     public function remove($id) {
         return $this->db()->delete("webstuff", "id=". intval($id));
     }

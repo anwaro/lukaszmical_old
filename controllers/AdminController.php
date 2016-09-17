@@ -1,5 +1,11 @@
 <?php
 
+namespace app\controllers;
+
+use base\Controller;
+use models\Admin;
+use Session;
+
 class AdminController extends Controller {
     
     function actionIndex() {
@@ -16,13 +22,13 @@ class AdminController extends Controller {
         
         if(Session::get("login")){
             //$this->model->printGlobalArray();
-            return $this->view->render('admin/index',[
+            return $this->render('admin/index',[
                 "size" => $this->model->size(),
                 "info" => "",
             ]);
         }
         else{            
-            return $this->view->render('admin/login', [
+            return $this->render('admin/login', [
                 "info" => $info
             ]);
         }
@@ -32,7 +38,7 @@ class AdminController extends Controller {
      function actionLogout() {
         Session::destroy();
         
-        return $this->view->render('admin/login', [
+        return $this->render('admin/login', [
            "info" => "Wylogowano z panelu administracyjnego"
         ]);        
     }
@@ -40,7 +46,7 @@ class AdminController extends Controller {
     public function actionAll() {
         Auth::handleLogin();        
         
-        return $this->view->render('admin/all',[
+        return $this->render('admin/all',[
             "list" => $this->model->getList()
         ]);
     }
@@ -48,7 +54,7 @@ class AdminController extends Controller {
     public function actionEdit($name) {
         Auth::handleLogin();        
         
-        return $this->view->render('admin/edit', [
+        return $this->render('admin/edit', [
             "info" => $this->model->getInfo($name),
         ]);
     }
@@ -65,7 +71,7 @@ class AdminController extends Controller {
         
         $this->model->actionUpdate($name);
         
-        return $this->view->render('admin/edit', [
+        return $this->render('admin/edit', [
             "info" => $this->model->getInfo($name)
         ]);
         
@@ -79,7 +85,7 @@ class AdminController extends Controller {
             return $this->edit($this->model->prUrl());
         }
         else{
-            return $this->view->render('admin/add', [
+            return $this->render('admin/add', [
                 "prUrl" => $this->model->prUrl()
             ]);
 

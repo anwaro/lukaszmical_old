@@ -5,75 +5,37 @@ class Bootstrap {
 
     private $_url = null;
     private $_controller = null;
-    
+    private $_errorController = null;    
     private $_controllerPath = 'controllers/'; // Always include trailing slash
-    private $_modelPath = 'models/'; // Always include trailing slash
-    private $_errorFile = 'errorController.php';
-    private $_defaultFile = 'indexController.php';
-    private $_defaultModel = 'index';
     
-    private $_config;
-
-
+    private $_renderedPage = '';
+    
     /**
      * Starts the Bootstrap
      * 
      * @return boolean
      */
-    public function init($config)
-    {
-        $this->_config = $config;
-        
+    public function init()
+    {        
         // Sets the protected $_url
         $this->_getUrl();
         
-        // Load the default controller if no URL is set
-        // eg: Visit http://localhost it loads Default Controller
-        if (empty($this->_url[0])) {
-            
-            return $this->_loadDefaultController();
+        $controller = empty($this->_url[0]) ? 'index' : $this->_url[0];
+        
+        $this->_controller = $this->_loadExistingController($controller);
+        $this->_errorController = $this->_loadExistingController('error');
+        if($this->_controller != NULL){
+            $this->_renderedPage =  $this->_callControllerMethod();            
         }
+        else{
+            $this->_renderedPage =  $this->_callErrorMethod(); 
+        }
+    }
+    
+    public function getRenderedPage(){
+        return $this->_renderedPage;
+    }
 
-        $this->_loadExistingController();
-        return $this->_callControllerMethod();
-    }
-    
-    /**
-     * (Optional) Set a custom path to controllers
-     * @param string $path
-     */
-    public function setControllerPath($path)
-    {
-        $this->_controllerPath = trim($path, '/') . '/';
-    }
-    
-    /**
-     * (Optional) Set a custom path to models
-     * @param string $path
-     */
-    public function setModelPath($path)
-    {
-        $this->_modelPath = trim($path, '/') . '/';
-    }
-    
-    /**
-     * (Optional) Set a custom path to the error file
-     * @param string $path Use the file name of your controller, eg: error.php
-     */
-    public function setErrorFile($path)
-    {
-        $this->_errorFile = trim($path, '/');
-    }
-    
-    /**
-     * (Optional) Set a custom path to the error file
-     * @param string $path Use the file name of your controller, eg: index.php
-     */
-    public function setDefaultFile($path)
-    {
-        $this->_defaultFile = trim($path, '/');
-    }
-    
     /**
      * Fetches the $_GET from 'url'
      */
@@ -85,36 +47,21 @@ class Bootstrap {
         $this->_url = explode('/', $url);
     }
     
-    /**
-     * This loads if there is no GET parameter passed
-     */
-    private function _loadDefaultController()
-    {
-        require $this->_controllerPath . $this->_defaultFile;
-        $this->_controller = new IndexController();
-        $this->_controller->loadConfig($this->_config);
-        $this->_controller->loadModel($this->_defaultModel, $this->_modelPath);
-        return $this->_controller->actionIndex();
-    }
     
     /**
      * Load an existing controller if there IS a GET parameter passed
      * 
      * @return boolean|string
      */
-    private function _loadExistingController()
+    private function _loadExistingController($controler)
     {
-        $file = $this->_controllerFileName($this->_url[0]);
-        
+        $file = $this->_controllerFileName($controler);        
         if (file_exists($file)) {
             require $file;
-            $className = $this->_controllerName($this->_url[0]);
-            $this->_controller = new $className;
-            
-            $this->_controller->loadModel($this->_url[0], $this->_modelPath);
+            $className = $this->_controllerName($controler);
+            return new $className;
         } else {
-            $this->_error();
-            return false;
+            return NULL;
         }
     }
     
@@ -130,34 +77,17 @@ class Bootstrap {
      */
     private function _callControllerMethod()
     {
-        $length = count($this->_url);
-        
-        // Make sure the method we are calling exists
-        if ($length > 1) {
-            if (!method_exists($this->_controller, $this->_actionName($this->_url[1]))) {
-                return $this->_error();
-            }
+        $action = $this->_actionName();
+        if (!method_exists($this->_controller, $action)) {
+            return $this->_callErrorMethod();
+        }else{
+            return call_user_func_array(
+                    [$this->_controller, $action], 
+                    $this->_getActionParms()
+                    );
         }
-        switch ($length) {
-            case 5:
-                return $this->_controller
-                    ->{$this->_actionName($this->_url[1])}
-                    ($this->_url[2], $this->_url[3], $this->_url[4]);                          
-            case 4:
-                return $this->_controller
-                    ->{$this->_actionName($this->_url[1])}
-                    ($this->_url[2], $this->_url[3]);  
-            case 3:
-                return $this->_controller
-                    ->{$this->_actionName($this->_url[1])}
-                    ($this->_url[2]);  
-            case 2:
-                return $this->_controller
-                    ->{$this->_actionName($this->_url[1])}();  
-            default:
-                return $this->_controller
-                    ->{$this->_actionName("index")}();
-        }
+//        $foo = new foo;
+//        call_user_func_array(array($foo, "bar"), array("three", "four"));
     }
     
     /**
@@ -165,18 +95,14 @@ class Bootstrap {
      * 
      * @return boolean
      */
-    private function _error() {
-        require $this->_controllerPath . $this->_errorFile;
-        $this->_controller = new ErrorController();
-        $this->_controller->loadModel("error", $this->_modelPath);
-        $this->_controller->loadConfig($this->_config);
-        $this->_controller->actionIndex();
-        exit;
+    private function _callErrorMethod() {        
+        return $this->_errorController->actionIndex();        
     }
 
-    private function _actionName($string){
-        $part = explode("-", $string);
-        array_walk($part, function(&$vaulue, $key){
+    private function _actionName(){
+        $action = isset($this->_url[1]) ? $this->_url[1] : "index";
+        $part = explode("-", $action);
+        array_walk($part, function(&$vaulue){
             $vaulue = ucfirst($vaulue);
         });
         return "action" . implode($part);
@@ -188,5 +114,13 @@ class Bootstrap {
     
     private function _controllerFileName($string){
         return $this->_controllerPath . ucfirst($string) . 'Controller.php';
+    }
+    
+    private function _getActionParms(){
+        $parms = [];
+        if(count($this->_url)>2){
+            $parms = array_merge($parms, array_slice($this->_url, 2));
+        }
+        return $parms;
     }
 }

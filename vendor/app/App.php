@@ -3,6 +3,10 @@
 namespace app;
 
 use app\Config;
+use app\Session;
+use app\Request;
+use app\Response;
+use app\Security;
 use web\User;
 
 /**
@@ -13,13 +17,34 @@ use web\User;
 class App {
     private $_config;
     
+    /**
+     * @var User $user  
+     */
     public $user;
-    public $params;
+    
+    /**
+     * @var Request $request
+     */
     public $request;
+    /**
+     * @var Log $log
+     */
     public $log;
+    /**
+     * @var type 
+     */
     public $mailer;
+    /**
+     * @var Response $response
+     */
     public $response;
+    /**
+     * @var  Security $security
+     */
     public $security;
+    /**
+     * @var Session $session
+     */
     public $session;
 
 
@@ -28,6 +53,10 @@ class App {
         $this->_config->loadConfig($config);
         
         $this->user = new User();
+        $this->request = new Request();
+        $this->session = new Session();
+        $this->response = new Response();
+        $this->security = new Security();
         
     }
     

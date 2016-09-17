@@ -1,10 +1,6 @@
 <?php
 
-class Curl_Model extends Model {
-    
-    function index() {
-    
-    }
+class Curl extends Model {
     
     function downloadMp3(){
         if($this->is_post('url')){
