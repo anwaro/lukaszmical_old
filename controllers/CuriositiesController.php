@@ -10,8 +10,8 @@ class CuriositiesController extends Controller {
         
     public function rules() {
         return [
-            'actionIndex' => '*',
-            '*' => '@',
+            '*'=>['actionIndex'],
+            '@'=>['*'],
         ];
     }
     

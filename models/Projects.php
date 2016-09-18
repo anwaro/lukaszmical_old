@@ -9,6 +9,24 @@ class Projects extends ActiveRecord {
     public function getTableName() {
         return 'projects';
     }    
+    
+    public function getTableColumns() {
+        return [
+            "id",
+            "url",
+            "name",
+            "descr",
+            "photo",
+            "css",
+            "js",
+            "mark",
+            "numer_mark",
+            "date",
+            "last_update",
+            "display",
+            "template",
+        ];
+    }
 
     public function getAll() {        
         return $this->db()
@@ -69,7 +87,7 @@ class Projects extends ActiveRecord {
             }
         }
         
-            $arr[5]++;
+        $arr[5]++;
         return $arr;
     }
 

@@ -9,7 +9,7 @@ $this->title = "Dodaj nowy";
     }
 </style>
 <div class="row-box">
-    <form action="{%url%}admin/add" method="POST">
+    <form action="{%url%}projects/add" method="POST">
         <b>Nazwa</b> <small>(nazwa projektu)</small>:
             <input type="text" name="name" ><br>
         <b>Url</b> <small>(koncówka url)</small>:

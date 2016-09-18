@@ -25,8 +25,8 @@ $this->title = "Wszystkie projekty";
         <tr>
             <td><img src="{%url%}web/images/projects/<?= $proj["photo"] ?>" height="50"></td>
             <td><a href = "{%url%}projects/show/<?= $proj["url"] ?>"><?= $proj["name"] ?></a> <?= $show ?></td>
-            <td><a href = "{%url%}admin/edit/<?= $proj["id"] ?>">Edytuj dane</a> </td>
-            <td><a href = "{%url%}admin/delete/<?= $proj["id"] ?>">Usuń (wyłączone)</a></td>
+            <td><a href = "{%url%}projects/edit/<?= $proj["id"] ?>">Edytuj dane</a> </td>
+            <td><a href = "{%url%}projects/delete/<?= $proj["id"] ?>">Usuń (wyłączone)</a></td>
         </tr>            
     <?php endforeach;?>
     </table>

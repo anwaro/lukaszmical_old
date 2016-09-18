@@ -14,19 +14,19 @@
             
         ],
         'unknownews' => [
-            'user' => '@klocus',
-            'userUrl' => 'http://www.wykop.pl/ludzie/klocus/',
+            'user' => '@imlmpe',
+            'userUrl' => 'http://www.wykop.pl/ludzie/imlmpe/',
             'tag' => '#unknownews',
-            'tagUrl' => 'http://www.wykop.pl/tag/webstuff/',
-            'about' => ' webdewem',
+            'tagUrl' => 'http://www.wykop.pl/tag/unknownews/',
+            'about' => 'it',
             
         ],
         'hackingnews' => [
-            'user' => '@klocus',
-            'userUrl' => 'http://www.wykop.pl/ludzie/klocus/',
+            'user' => '@airdong',
+            'userUrl' => 'http://www.wykop.pl/ludzie/airdong/',
             'tag' => '#hackingnews',
-            'tagUrl' => 'http://www.wykop.pl/tag/webstuff/',
-            'about' => ' webdewem',
+            'tagUrl' => 'http://www.wykop.pl/tag/hackingnews/',
+            'about' => 'programowaniem, security i szeroko pojętym hackingiem',
             
         ],
     ];
