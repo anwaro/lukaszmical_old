@@ -6,15 +6,14 @@ mp3player = new function(){
             width = 169,
             height= 262,
             displayRatio,
-            topcolor = "#32312F",
+            topColor = "#32312F",
             defaultColor = "#191919",
             play = true,
-            bufforEmpty = true,
+            bufferEmpty = true,
             time,
-            url="http://lukaszmical.pl/projects/ajaxSong/",
+            url="http://lukaszmical.pl/song/get/",
             songUrl = "http://lukaszmical.pl/web/sounds/mp3player/",
             type = ".mp3",
-            songNumber = Math.floor(Math.random()*250),
             prevSong = new Song(),
             currentSong = new Song(),
             nextSong = new Song(),
@@ -32,15 +31,15 @@ mp3player = new function(){
             mouseDown=false,
             mouseDownTime;
     
-    this.init = function(suppMp3){
+    this.init = function(suppMp3, initId){
         
-    console.log("poszlo", suppMp3);
+        console.log("Support Mp3 ", suppMp3);
         canvas = document.getElementById("mp3screen");
         canvas.height=height;
         canvas.width=width;
         displayRatio = height/width;
         supportMp3 = suppMp3;
-        initSong();
+        initSong(initId);
         setEqualizer();
         initButton();
         if(canvas && canvas.getContext){
@@ -52,7 +51,7 @@ mp3player = new function(){
             gradient.addColorStop(1,"rgba(0, 0, 255, 0.7)");
             setInterval(display, 1000/60);
         }
-        
+
         
     };
     
@@ -76,7 +75,7 @@ mp3player = new function(){
         volDown.onclick = function(){changeVolume(-0.1);};
     }
     
-    function initSong(){   
+    function initSong(initId){
         if(supportMp3){
             console.log("wow your browser is awesome, it support mp3 format");
             type = ".mp3";
@@ -87,15 +86,16 @@ mp3player = new function(){
         }
         
         currentSong.elem = document.getElementById("currentSong");
-        currentSong.elem.volume =0.5; 
-        getSong(songNumber, "curr");
+        currentSong.elem.volume =0.5;
+
+        getSong(initId, "CURRENT");
         
         
         nextSong.elem = document.getElementById("nextSong");
-        getSong(songNumber+1, "next");
+        getSong(initId, "NEXT");
         
         prevSong.elem = document.getElementById("prevSong");
-        getSong(songNumber-1, "prev");
+        getSong(initId, "PREVIOUS");
         
     }
     
@@ -124,15 +124,15 @@ mp3player = new function(){
         currentSong.elem.pause();
     }
     
-    function bufforStartSong(){
-        bufforEmpty = false;
+    function bufferStartSong(){
+        bufferEmpty = false;
         play = true;
         currentSong.elem.play();  
         
     }
     
-    function bufforStopSong(){
-        bufforEmpty = true;
+    function bufferStopSong(){
+        bufferEmpty = true;
         play = false;
         currentSong.elem.pause();
     }
@@ -140,7 +140,7 @@ mp3player = new function(){
     function setEqualizer(){
         try{
             var audioContext = new AudioContext() ||   new webkitAudioContext();
-            source = audioContext.createMediaElementSource(currentSong.elem),
+            source = audioContext.createMediaElementSource(currentSong.elem);
             analyser = audioContext.createAnalyser();
             source.connect(analyser);
             analyser.connect(audioContext.destination);
@@ -158,7 +158,7 @@ mp3player = new function(){
         
         displayPhoto();
         displayTop();
-        displayProgres();
+        displayProgress();
         audioContextSupport && displayEqualizer();
         
         
@@ -177,12 +177,12 @@ mp3player = new function(){
         catch(IndexSizeError){}
         
         if(play && bufor-currentTime<2 &&len - currentTime >3){
-            bufforStopSong();
+            bufferStopSong();
         }
         
         
-        if(bufforEmpty && bufor-currentTime>8){
-            bufforStartSong();
+        if(bufferEmpty && bufor-currentTime>8){
+            bufferStartSong();
         }
         
     }
@@ -192,12 +192,9 @@ mp3player = new function(){
         if(currentSong.image.complete && currentSong.image.src){
             var ratio = currentSong.image.height/currentSong.image.width;
             var marginLeft = (currentSong.image.width-width)/2;
-            var marginTop = 0;
-            var cutImageWidth = width;
-            var cutImageHeight = height;
             
             try{
-                ctx.drawImage(currentSong.image, marginLeft,  marginTop, cutImageWidth, cutImageHeight, 0, 14, width, height-14);
+                ctx.drawImage(currentSong.image, marginLeft,  0, width, height, 0, 14, width, height-14);
             }catch(InvalidStateError){
                 load = true;
             }
@@ -206,7 +203,7 @@ mp3player = new function(){
             load = true;
         }
         
-        if(bufforEmpty || load){
+        if(bufferEmpty || load){
             var a = ((new Date()).getTime()/250)%(2*Math.PI);
             
             ctx.save();
@@ -221,7 +218,7 @@ mp3player = new function(){
         }
     }
     
-    function displayProgres(){
+    function displayProgress(){
         ctx.beginPath();
         ctx.fillStyle = "rgba(48, 48, 41, 0.8)";
         ctx.rect(0, height-50, width, 50);
@@ -299,7 +296,7 @@ mp3player = new function(){
     
     function displayTop(){
         ctx.beginPath();
-        ctx.fillStyle = topcolor;
+        ctx.fillStyle = topColor;
         ctx.rect(0,0, width, 14);
         ctx.fill();
         
@@ -373,12 +370,11 @@ mp3player = new function(){
     function playNextSong(add){
         if(add === 1 && nextSong.photo){
             stopPlay();
-            songNumber++;
             prevSong.copy(currentSong);
             currentSong.copy(nextSong);
             nextSong.clear();
             playStopSong();
-            getSong(songNumber+1, "next");            
+            getSong(currentSong.id, "NEXT");
         }
         else if(add === -1 && prevSong.photo){
             if(currentSong.elem.currentTime > 30){
@@ -388,12 +384,12 @@ mp3player = new function(){
             }
             else{
                 stopPlay();
-                songNumber--;
+                currentSong.id;
                 nextSong.copy(currentSong);
                 currentSong.copy(prevSong);
                 prevSong.clear();
                 playStopSong();
-                getSong(songNumber-1, "prev");   
+                getSong(currentSong.id, "PREVIOUS");
             }
         }
     }
@@ -449,8 +445,7 @@ mp3player = new function(){
         hours = hours % 12;
         hours = hours ? hours : 12; // the hour '0' should be '12'
         minutes = minutes < 10 ? '0'+minutes : minutes;
-        var strTime = hours + ':' + minutes + ' ' + ampm;
-        return strTime;
+        return hours + ':' + minutes + ' ' + ampm;
     }
     
     function getSong(songNum, elem){
@@ -466,19 +461,20 @@ mp3player = new function(){
     }
     
     function setNextSong(data){
-        var info = obj = JSON.parse(data);
-        if(info["audio"] === "prev"){
+        var info = JSON.parse(data);
+        if(info["which"] === "PREVIOUS"){
             setData(prevSong, info);
         }
-        if(info["audio"] === "next"){    
+        if(info["which"] === "NEXT"){
             setData(nextSong, info);        
         }
-        if(info["audio"] === "curr"){       
+        if(info["which"] === "CURRENT"){
             setData(currentSong, info); 
         }
     }
     
     function setData(el, info){
+        el.id = parseInt(info['id']);
         el.elem.src = songUrl+info["src"] + type;
         el.src = songUrl+info["src"] + type;
         el.photo= songUrl+info["cover"];
@@ -489,6 +485,7 @@ mp3player = new function(){
     }
     
     function Song(){
+        this.id = 0;
         this.src="";
         this.photo="";
         this.title="";
@@ -496,6 +493,7 @@ mp3player = new function(){
         this.elem="";
         this.image = new Image();
         this.copy = function(el){
+            this.id = el.id;
             this.src = el.src;
             this.photo = el.photo;
             this.title = el.title;
@@ -504,6 +502,7 @@ mp3player = new function(){
             this.image.src = el.image.src;
         };
         this.clear = function(){
+            this.id = 0;
             this.src="";
             this.photo="";
             this.title="";
@@ -513,12 +512,34 @@ mp3player = new function(){
     }
 };
 
+var initRandomId = null;
+var supportMp3 = null;
+
+function initPlayer(type, val) {
+    if(type == 'ID'){
+        initRandomId = val;
+    }else{
+        supportMp3 = val;
+    }
+    if(initRandomId !== null && supportMp3 !== null){
+        mp3player.init(supportMp3, initRandomId);
+    }
+}
 
 $$.load(
 function(){
     var test = new Audio();
-    test.onerror = function(){mp3player.init(false);};
-    test.onloadeddata = function(){mp3player.init(true);};
+    test.onerror = function(){initPlayer('MP3', false);};
+    test.onloadeddata = function(){initPlayer('MP3', true);};
     test.src = "http://lukaszmical.pl/web/sounds/test/test.mp3";
-    console.log(test);
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (xhttp.readyState === 4 && xhttp.status === 200) {
+            initPlayer('ID', xhttp.responseText);
+        }
+    };
+    xhttp.open("POST", "http://lukaszmical.pl/song/rand/");
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhttp.send();
 });

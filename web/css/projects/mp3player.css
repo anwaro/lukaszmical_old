@@ -13,7 +13,7 @@
 
 #mp3{
     float: left;
-    margin-left: 20px;
+    margin:auto 10px;
     height: 500px;
     width: 209px;
     background-image: linear-gradient(to right, transparent 0, #464648 0px, #b5b5b7 8px, #ebebeb 154px, #f0f0f0 155px, #e3e3e3 157px, #c1c1c1 158px, #969695 200px, #5d5d5f 209px, transparent 210px);
@@ -65,7 +65,6 @@
     border-radius: 76px 76px 0px 0px / 27px 27px 0px 0px;
     background-image: url(/web/images/projects/mp3player/menu.png);
     cursor: pointer;
-    
 }
 
 #prev{
@@ -76,7 +75,6 @@
     border-radius: 27px 0px 0px 27px/ 76px 0px 0px 76px  ;
     background-image: url(/web/images/projects/mp3player/prev.png);
     cursor: pointer;
-    
 }
 
 #next{
@@ -87,7 +85,6 @@
     border-radius:  0px 27px 27px 0px /0px 76px 76px 0px;
     background-image: url(/web/images/projects/mp3player/next.png);
     cursor: pointer;
-    
 }
 
 #play{
@@ -98,7 +95,6 @@
     border-radius: 0px 0px 76px 76px /0px 0px 27px 27px ;
     background-image: url(/web/images/projects/mp3player/play.png);
     cursor: pointer;
-    
 }
 
 #volUp{
