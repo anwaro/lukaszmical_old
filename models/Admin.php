@@ -1,7 +1,31 @@
 <?php
+namespace models;
 
-class Admin_Model extends Model {
+use db\ActiveRecord;
 
+class Admin extends ActiveRecord {
+
+    public function getTableName() {
+        return 'projects';
+    }
+    
+    public function getTableColumns() {
+        return [
+            "id",
+            "url",
+            "name",
+            "descr",
+            "photo",
+            "css",
+            "js",
+            "mark",
+            "numer_mark",
+            "date",
+            "last_update",
+            "display",
+            "template",
+        ];
+    }
     
     public function printGlobalArray() {
         echo '$_COOKIE ';
@@ -17,65 +41,11 @@ class Admin_Model extends Model {
         echo '$_SESSION ';
         var_dump($_SESSION);
     }
-    
-    public function getList() {
-        $query = $this->db()->select("SELECT name, url, photo, display FROM projects" );
-        return $query;
-    }
-    
-    public function getInfo($name) {
-        $query = $this->db()->select("SELECT * FROM projects WHERE url = :name", array(":name"=>$name));
-        return $query[0];
-    }
-    
     public function deleteProject($name) {
         //$this->db()->delete("projects", "url = ".$name);
         return "Projekt o nazwie $name został usunięty";
     }
-    
-    public function update($name) {
-        if($this->is_post("edit")){
-            $this->db()->update("projects",array(
-                "url"=>  $this->post("url"),
-                "name"=>  $this->post("name"),
-                "descr"=>  $this->post("descr"),
-                "photo"=>  $this->post("photo"),
-                "css"=>  $this->post("css"),
-                "js"=>  $this->post("js"),
-                "date"=>  $this->post("date"),
-                "display"=>  $this->post("display"),
-                "template"=>  $this->post("template")
-            ),"`url`='".$name."'");
-        }
-    }  
-    
-    public function add() {
-        if($this->is_post("add_new")){
-            $this->db()->insert("projects",array(
-                "name"=>  $this->post("name"),
-                "url"=>  $this->post("url"),
-                "descr"=>  $this->post("descr"),
-                "photo"=>  $this->post("photo"),
-                "css"=>  $this->post("css"),
-                "js"=>  $this->post("js"),
-                "date"=>  $this->post("date"),
-                "date"=>  Date::getDate(),
-                "template"=>  $this->post("template"),
-                "display"=>  0
-            ));
-            return true;
-        }
-        return false;
-    }
-    
-    public function prUrl() {
-        
-        if($this->is_post("url")){
-            return $this->post("url");
-        }
-        return '';
-    }
-    
+
     
     
     function size(){

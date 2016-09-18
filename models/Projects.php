@@ -8,19 +8,15 @@ class Projects extends ActiveRecord {
 
     public function getTableName() {
         return 'projects';
-    }
+    }    
 
-    public function getAll() {
-        
-        $result = $this->db()
+    public function getAll() {        
+        return $this->db()
                 ->select('*')
                 ->from($this->getTableName())
                 ->where('display', '=', 1)
                 ->orderBy('mark', 'DESC')
-                ->all();
-        
-        return $result;
-        
+                ->all();        
     }
     
     public function getInfo($url) {
@@ -78,7 +74,7 @@ class Projects extends ActiveRecord {
     }
 
     public function _save($name,  $str, $photo){
-        $path = getcwd()."/public/video/photo/".$name;
+        $path = getcwd()."/web/video/photo/".$name;
         if(!file_exists($path)){
             mkdir($path, 0777, true);
         }
@@ -92,7 +88,7 @@ class Projects extends ActiveRecord {
     
     public function getVideo() {
         $name = $this->post("name");
-        $path = getcwd()."/public/video/photo/".$name;
+        $path = getcwd()."/web/video/photo/".$name;
         $photos = scandir ($path);
         /*foreach($photos as $key => $photo){
             if(strlen($photo)>4){

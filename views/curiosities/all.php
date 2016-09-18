@@ -19,16 +19,20 @@ $this->title = "Wszystkie wpisy";
     }
 </style>
 
-<?php
-echo "<table id='pr-list'>";
-foreach ($webstuffs as $web){
-    echo 
-    '<tr>'
-        . '<td><p>'.$web["text"].'</p></td>'
-        . '<td>'.$web["links"].'</td>'
-        . '<td>'.$web["date"].'</td>'
-        . '<td><a href = "{%url%}webstuff/edit/'.$web["id"].'">Edytuj dane</a> </td>'
-        . '<td><a href = "{%url%}webstuff/remove/'.$web["id"].'">Usuń</a><br></td>'
-    . '</tr>';
-}
-echo "</table>";
+<div class="row-box">
+    <a class="button" href="{%url%}curiosities/index/webstuff/all">#webstuff</a>
+    <a class="button" href="{%url%}curiosities/index/unknownews/all">#unknownews</a>
+    <a class="button" href="{%url%}curiosities/index/hackingnews/all">#hackingnews</a>
+</div>
+<br><br>
+<table id='pr-list'>
+<?php foreach ($curiosities as $web): ?>
+    <tr>
+        <td><p><?=$web["text"]?></p></td>
+        <td><?=$web["links"]?></td>
+        <td><?=$web["date"]?></td>
+        <td><a href = "{%url%}curiosities/edit/<?= $type ?>/<?= $web["id"]?>">Edytuj dane</a> </td>
+        <td><a href = "{%url%}curiosities/remove/<?= $type ?>/<?= $web["id"]?>">Usuń</a><br></td>
+    </tr>
+<?php endforeach;?>
+</table>

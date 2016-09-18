@@ -599,7 +599,7 @@
         #content-block{
             /*padding-top: 3.7em;*/
         }
-        .news-search, .news{
+        .news-search, .news, .row-box{
             display: block;
             max-width: 940px;
             margin: auto;
@@ -609,7 +609,7 @@
             margin-top: 10px;
             overflow: hidden;
         }
-        
+       
         .news .info{
             max-width: 600px;
             float: left;

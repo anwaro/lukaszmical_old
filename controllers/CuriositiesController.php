@@ -3,69 +3,61 @@
 namespace app\controllers;
 
 use base\Controller;
-use models\Webstuff;
+use models\Curiosities;
 use Lii;
 use Auth;
 
-class WebstuffController extends Controller {
+class CuriositiesController extends Controller {
     
-    function actionIndex() {
-        $model = new Webstuff();
+    function actionIndex($type = "webstuff") {
+        $model = new Curiosities($type);
         
-        return $this->render('webstuff/index', [
-            'webstuffs' => $model->all()
+        return $this->render('curiosities/index', [
+            'curiosities' => $model->all(),
+            'type' => $type,
         ]);      
     }   
     
-    function actionAdd(){        
+    function actionAdd($type = "webstuff"){        
         Auth::handleLogin();
-        $model = new Webstuff();
-        
-        var_dump(Lii::$app->request->isPost());
+        $model = new Curiosities($type);
         
         if(Lii::$app->request->isPost()){
-            $model->text = Lii::$app->request->post('webstuff-text');
-            $model->links = Lii::$app->request->post('webstuff-links');
+            $model->load(Lii::$app->request->post());
             $model->date = date("Y-m-d");
-            $model->dsate = date("Y-m-d");
             $model->save();
         }
-        
-        /*
-        
-        if($this->model->is_post("add_webstuff")){
-            $id = $this->model->add();
-            return $this->actionEdit($id);
-        }
-         * */
-        return $this->render('webstuff/add');
+        return $this->render('curiosities/add', [
+            'type' => $type,
+        ]);
     }
     
     
-    function actionAll(){        
+    function actionAll($type = "webstuff"){        
         Auth::handleLogin();
-        $model = new Webstuff();
+        $model = new Curiosities($type);
         
-        return $this->render('webstuff/all', [
-            'webstuffs' => $model->all()
+        return $this->render('curiosities/all', [
+            'curiosities' => $model->all(),
+            'type' => $type,
         ]);
         
     }
     
-    function actionEdit($id){        
+    function actionEdit($type, $id){        
         Auth::handleLogin();
-        $model = new Webstuff();
+        $model = (new Curiosities($type))->find($id);
+        $webstuffOld = $model->getRow();      
         
-        $webstuffOld = $model->one($id);
-        $webstuffNew = $webstuffOld;
-        
-        if($this->model->is_post("edit_webstuff")){
-            $this->model->edit($id);
-            $webstuffNew = $model->one($id);
+        if(Lii::$app->request->isPost()){
+            $model->load(Lii::$app->request->post());
+            $model->save();
         }
-        return $this->render('webstuff/edit', [
+        
+        return $this->render('curiosities/edit', [
             '_web' => $webstuffOld,
-            'web' => $webstuffNew
+            'web' => $model->getRow(),
+            'type' => $type,
         ]);
     }
     
@@ -73,14 +65,15 @@ class WebstuffController extends Controller {
     function actionRemove($id){        
         Auth::handleLogin();
         $removed = False;
-        $webstuff = $this->o($id);
+        $webstuff = $this->one($id);
         if($this->model->is_post("remove_webstuff")){
             $this->model->remove($id);
             $removed = True;
         }
-        return $this->render('webstuff/remove', [
+        return $this->render('curiosities/remove', [
             'web' => $webstuff,
             'removed' => $removed,
+            'type' => $type,
         ]);
     }   
 }

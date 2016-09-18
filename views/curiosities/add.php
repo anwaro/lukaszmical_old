@@ -8,11 +8,13 @@ $this->title = "Dodaj nowy wpis";
         font-size: 70%;
     }
 </style>
-<form action="{%url%}webstuff/add" method="POST">
-    <b>Text:</b>
-    <textarea  name="webstuff-text" ></textarea><br>
-    
-    <b>Urls</b> <small>(odzielone ;) </small>:
-    <input type="text" name="webstuff-links" ><br>
-        <input type="submit" name="add_webstuff">
-</form>
+<div class="row-box">
+    <form action="{%url%}curiosities/add/<?= $type ?>" method="POST">
+        <b>Text:</b>
+        <textarea  name="text" ></textarea><br>
+
+        <b>Urls</b> <small>(odzielone ;) </small>:
+        <input type="text" name="links" ><br>
+            <input type="submit" name="add_webstuff">
+    </form>
+</div>

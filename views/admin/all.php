@@ -18,14 +18,16 @@ $this->title = "Wszystkie projekty";
         padding:  5px;
     }
 </style>
-
-<?php
-echo "<table id='pr-list'>";
-foreach ($list as $pr){
-    $show = $pr["display"] ? "":"(ukryty)";
-    echo '<tr><td><img src="'.URL.'/public/images/projects/'.$pr["photo"].'" height="50"></td>';
-    echo '<td><a href = "'.URL.'/projects/show/'.$pr["url"].'">'.$pr["name"].'</a> '.$show.'</td>';
-    echo '<td><a href = "'.URL.'/admin/edit/'.$pr["url"].'">Edytuj dane</a> </td>';
-    echo '<td><a href = "'.URL.'/admin/delete/'.$pr["url"].'">Usuń (wyłączone)</a><br></td></tr>';
-}
-echo "</table>";
+<div class="row-box">
+    <table id='pr-list'>
+    <?php foreach ($list as $proj):?>
+    <?php $show = $proj["display"] ? "":"(ukryty)"; ?>
+        <tr>
+            <td><img src="{%url%}web/images/projects/<?= $proj["photo"] ?>" height="50"></td>
+            <td><a href = "{%url%}projects/show/<?= $proj["url"] ?>"><?= $proj["name"] ?></a> <?= $show ?></td>
+            <td><a href = "{%url%}admin/edit/<?= $proj["id"] ?>">Edytuj dane</a> </td>
+            <td><a href = "{%url%}admin/delete/<?= $proj["id"] ?>">Usuń (wyłączone)</a></td>
+        </tr>            
+    <?php endforeach;?>
+    </table>
+</div>

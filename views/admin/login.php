@@ -3,11 +3,12 @@
 $this->title = "Logowanie do panelu";
 
 ?>
-<div class="info">
+<div class="info row-box">
    <?= $info ?>
 </div>
-
-<form action ="/admin" method="POST">
-    <input name="password" type="password">
-    <input name="login" type="submit">
-</form>
+<div class="row-box">
+    <form action ="/admin" method="POST">
+        <input name="password" type="password">
+        <input name="login" type="submit">
+    </form>    
+</div>

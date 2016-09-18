@@ -1,18 +1,58 @@
 <?php
     /* @var $this View */
-    $this->title = 'Webstuff';
+    /* @var $type string */
+
+    $this->title = ucfirst($type);
+    
+    $infos = [
+        'webstuff' => [
+            'user' => '@klocus',
+            'userUrl' => 'http://www.wykop.pl/ludzie/klocus/',
+            'tag' => '#webstuff',
+            'tagUrl' => 'http://www.wykop.pl/tag/webstuff/',
+            'about' => ' webdewem',
+            
+        ],
+        'unknownews' => [
+            'user' => '@klocus',
+            'userUrl' => 'http://www.wykop.pl/ludzie/klocus/',
+            'tag' => '#unknownews',
+            'tagUrl' => 'http://www.wykop.pl/tag/webstuff/',
+            'about' => ' webdewem',
+            
+        ],
+        'hackingnews' => [
+            'user' => '@klocus',
+            'userUrl' => 'http://www.wykop.pl/ludzie/klocus/',
+            'tag' => '#hackingnews',
+            'tagUrl' => 'http://www.wykop.pl/tag/webstuff/',
+            'about' => ' webdewem',
+            
+        ],
+    ];
+    
+    $info = $infos[$type];
 
 ?>
 
+<div class="row-box">
+    <a class="button" href="{%url%}curiosities/index/webstuff">#webstuff</a>
+    <a class="button" href="{%url%}curiosities/index/unknownews">#unknownews</a>
+    <a class="button" href="{%url%}curiosities/index/hackingnews">#hackingnews</a>
+</div>
+
 <div class="news-search">
-    Zbiór linków użytkownika <a href="http://www.wykop.pl/ludzie/klocus/">@klocus</a> na temat webdev. 
-    Wszystkie wpisy dostępne są pod linkiem <a href="http://www.wykop.pl/tag/webstuff/">#webstuff</a>
+    Zbiór linków użytkownika 
+    <a href="<?= $info['userUrl']?>"><?= $info['user']?></a> 
+    na temat związane z <?= $info['about']?>. 
+    Wszystkie wpisy dostępne są pod linkiem 
+    <a href="<?= $info['tagUrl']?>"><?= $info['tag']?></a>
     <br>
     <br>
     <input name="search" type="search" id="news-search"autocomplete="off">
 </div>
 
-<?php foreach ($webstuffs as $web):?>
+<?php foreach ($curiosities as $web):?>
     <?php $links = explode(";", $web["links"]);
       $anchor = array_map(
             function($val) {  return '<a class="link button" target="_blank" href="'.$val .'">LINK</a>'; },

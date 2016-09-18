@@ -18,8 +18,8 @@ class Db{
     private $_offSet;
     
     private $_conditionVal =[];
-    private $_updateVal = [];
-    private $_insertVal = [];
+    private $_updateData = [];
+    private $_insertData = [];
 
 
     private $_action = '';
@@ -53,6 +53,27 @@ class Db{
         $this->_sql = $sql;
     }
     
+    private function _prepareUpdate(){
+        $sql = 'UPDATE ';
+        $sql .= $this->_table;
+        $sql .= ' SET ' . $this->_prepareFieldDetails();
+        $sql .= $this->_prepareConditions('conditions_');
+        $this->_sql = $sql;     
+        
+        foreach ($this->_conditions as $condition) {
+            $this->_conditionVal[$condition[0]] = $condition[2];
+        }
+    }
+
+    private function _prepareFieldDetails(){
+        
+        $fieldDetails = '';
+        foreach($this->_updateData as $key=> $value) {
+            $fieldDetails .= "`$key`=:$key,";
+        }
+        return rtrim($fieldDetails, ',');    
+    }
+
     /**
      * 
      * @return string
@@ -96,14 +117,14 @@ class Db{
      * 
      * @return type
      */
-    private function _prepareConditions(){
+    private function _prepareConditions($prefix=''){
         $formatCon = '';
         foreach ($this->_conditions as $condition){
             $this->_conditionVal[$condition[0]] = $condition[2];
             $formatCon .= 
                       ' ' . $condition[0] 
                     . ' ' . $condition[1] 
-                    . ' ' . ":{$condition[0]}"; 
+                    . ' ' . ":$prefix{$condition[0]}"; 
             $formatCon .= ' AND';
         }
         if(strlen($formatCon) > 1){
@@ -139,30 +160,30 @@ class Db{
      * @return type
      */
     public function exec() {
-        $db = $this->db();
         switch ($this->_action) {
             case 'SELECT':
-                $result = $db->select($this->_sql, $this->_conditionVal);
-                $this->_lastId = $db->lastId();
+                $result = $this->db()->select($this->_sql, $this->_conditionVal);
+                $this->_lastId = $this->db()->lastId();
                 break;
             case 'UPDATE':
-                $result = $db->update($this->_sql, $this->_updateVal);
-                $this->_lastId = $db->lastId();
+                $this->_prepareUpdate();
+                $result = $this->db()->updateNew(
+                        $this->_sql, 
+                        $this->_updateData, 
+                        $this->_conditionVal
+                        );
+                $this->_lastId = $this->db()->lastId();
                 break;
             case 'INSERT':
-                $result = $db->insert($this->_sql, $this->_insertVal);
-                $this->_lastId = $db->lastId();
+                $result = $this->db()->insert($this->_table, $this->_insertData);
+                $this->_lastId = $this->db()->lastId();
                 break;
             case 'DELETE':
-                $result = $db->select($this->_sql);
-                $this->_lastId = $db->lastId();
+                $result = $this->db()->select($this->_sql);
+                $this->_lastId = $this->db()->lastId();
                 break;
-
-            default:
-                break;
-        }
-        
-        $this->_lastSql = $db->getSql();
+        }        
+        $this->_lastSql = $this->db()->getSql();
         return $result;
     }
 
@@ -199,7 +220,7 @@ class Db{
      */
     public function insert($params) {
         $this->_action = 'INSERT';
-        $this->_insertVal = $params;
+        $this->_insertData = $params;
         $this->exec();
 
     }
@@ -210,7 +231,7 @@ class Db{
      * @return \db\Db
      */
     public function set($params) {
-        $this->_updateVal = $params;
+        $this->_updateData = $params;
         return $this;
     }
 
@@ -220,6 +241,16 @@ class Db{
      * @return \db\Db
      */
     public function from($name) {
+        $this->_table = $name;
+        return $this;
+    }
+
+    /**
+     * 
+     * @param type $name
+     * @return \db\Db
+     */
+    public function to($name) {
         $this->_table = $name;
         return $this;
     }

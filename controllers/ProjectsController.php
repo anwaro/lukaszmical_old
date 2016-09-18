@@ -10,7 +10,7 @@ class ProjectsController extends Controller {
     function actionIndex() {        
         $model = new Projects();
         return $this->render('projects/index',[
-            "allProjects" => $model->getAll(),
+            "projects" => $model->getAll(),
         ]);
         
     }

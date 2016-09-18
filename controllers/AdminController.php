@@ -5,25 +5,25 @@ namespace app\controllers;
 use base\Controller;
 use models\Admin;
 use Session;
+use Lii;
 
 class AdminController extends Controller {
     
     function actionIndex() {
+        $model = new Admin();
         $info = '';
-        if($this->model->is_post("login")){
-            if(md5($this->model->post("password"))
-                    =="5d9828eb0fb4064df20bff5aa9388760"){
+        if(Lii::$app->request->post("login")){
+            if(md5($this->model->post("password")) =="5d9828eb0fb4064df20bff5aa9388760"){
                 Session::set("login", TRUE);
             }
             else {
                 $info = "Nieprawidłowe hasło";
             }
-        }
-        
+        }        
         if(Session::get("login")){
             //$this->model->printGlobalArray();
             return $this->render('admin/index',[
-                "size" => $this->model->size(),
+                "size" => $model->size(),
                 "info" => "",
             ]);
         }
@@ -31,62 +31,62 @@ class AdminController extends Controller {
             return $this->render('admin/login', [
                 "info" => $info
             ]);
-        }
-        
-        
+        } 
     }
-     function actionLogout() {
-        Session::destroy();
-        
+    
+    function actionLogout() {
+        Session::destroy();        
         return $this->render('admin/login', [
            "info" => "Wylogowano z panelu administracyjnego"
         ]);        
     }
     
     public function actionAll() {
-        Auth::handleLogin();        
+        Lii::$app->user->handleLogin();
+        $model = new Admin();        
         
         return $this->render('admin/all',[
-            "list" => $this->model->getList()
+            "list" => $model->all()
         ]);
     }
     
-    public function actionEdit($name) {
-        Auth::handleLogin();        
+    public function actionEdit($id) {
+        Lii::$app->user->handleLogin();
+        $model = (new Admin())->find($id);    
+        
+        if(Lii::$app->request->post()){
+            $model->load(Lii::$app->request->post());
+            $model->save();
+        }
         
         return $this->render('admin/edit', [
-            "info" => $this->model->getInfo($name),
+            "info" => $model->getRow(),
         ]);
     }
     
     public function actionDelete($name) {
-        Auth::handleLogin();
+        Lii::$app->user->handleLogin();
         
         $this->model->deleteProject($name);
         return $this->actionAll();
     }
     
-    public function actionUpdate($name) {
-        Auth::handleLogin();        
-        
-        $this->model->actionUpdate($name);
-        
-        return $this->render('admin/edit', [
-            "info" => $this->model->getInfo($name)
-        ]);
-        
-    }
-    
     public function actionAdd() {
-        Auth::handleLogin();
+        Lii::$app->user->handleLogin();
+        $projUrl = Lii::$app->request->post('url', '');
+        $model = new Admin();  
         
-        
-        if($this->model->add()){
-            return $this->edit($this->model->prUrl());
+        if(Lii::$app->request->post('add')){
+            $model->load(Lii::$app->request->post());
+            $model->date = date("Y-m-d");
+            $model->save();            
+            return $this->render('admin/edit', [
+                "info" => $model->getRow(),
+            ]);
         }
         else{
             return $this->render('admin/add', [
-                "prUrl" => $this->model->prUrl()
+                "projUrl" => $projUrl
             ]);
 
         }
