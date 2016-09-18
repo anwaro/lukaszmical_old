@@ -11,16 +11,12 @@ class Database extends \PDO
 
     public function __construct()
     {
-        $type = Lii::$app->parm("db/type");
-        $host = Lii::$app->parm("db/host");
-        $name = Lii::$app->parm("db/name");
-        $user = Lii::$app->parm("db/user");
-        $pass = Lii::$app->parm("db/pass");
+        $db = Lii::parm("db");
         try{
             parent::__construct(
-                    $type.':host='.$host.';dbname='.$name, 
-                    $user, 
-                    $pass,
+                    $db["type"].':host='.$db["host"].';dbname='.$db["name"], 
+                    $db["user"], 
+                    $db["pass"],
                     array(\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
             
         }  catch (\PDOException $e){
@@ -34,6 +30,20 @@ class Database extends \PDO
         return $this->_lastSql;
     }
     
+    private function _bind($sth, $data, $prfix=''){        
+        foreach ($data as $key => $value) {
+            $sth->bindValue(":$prfix"."$key", "$value");
+        }
+        return $sth;
+    }
+    
+    private function _bindSql($sql, $data, $prfix=''){        
+        foreach ($data as $key => $value) {
+            $sql = str_replace(":$prfix"."$key", $value, $sql);
+        }
+        return $sql;
+    }
+
     /**
      * select
      * @param string $sql An SQL string
@@ -53,21 +63,27 @@ class Database extends \PDO
         
         $this->_lastSql = $sql;                
         return $sth->fetchAll($fetchMode);
-    }
-    /**
-     * select
-     * @param string $sql An SQL string
-     * @param array $array Paramters to bind
-     * @param constant $fetchMode A \PDO Fetch mode
-     * @return mixed
-     */
-    public function selectOne($sql, $array = [], $fetchMode = \PDO::FETCH_ASSOC)
-    {
-        $all = $this->select($sql, $array, $fetchMode);
-        
-        return $all?$all[0]:[];
-    }
+    } 
     
+    /**
+     * update
+     * @param string $sql A name of table to insert into
+     * @param string $data An associative array
+     * @param string $where the WHERE query part
+     */
+    public function updateNew($sql, $data, $where)
+    {              
+        $sth = $this->prepare($sql);
+        
+        $sthData = $this->_bind($sth, $data);
+        $sqlData = $this->_bindSql($sql, $data);
+        
+        $sthDataWhere = $this->_bind($sthData, $where, 'conditions_');
+        $sqlDataWhere = $this->_bindSql($sqlData, $where, 'conditions_');  
+        
+        $this->_lastSql = $sqlDataWhere;         
+        $sthDataWhere->execute();        
+    }  
     
     
     /**
@@ -109,20 +125,17 @@ class Database extends \PDO
         foreach($data as $key=> $value) {
             $fieldDetails .= "`$key`=:$key,";
         }
-        $fieldDetails = rtrim($fieldDetails, ',');
+        $fieldDetails = rtrim($fieldDetails, ',');        
         
         $sth = $this->prepare("UPDATE $table SET $fieldDetails WHERE $where");
-        $str = "UPDATE $table SET $fieldDetails WHERE $where";
+        $sql = "UPDATE $table SET $fieldDetails WHERE $condition";
         
         foreach ($data as $key => $value) {
             $sth->bindValue(":$key", "$value");
-            $str = str_replace(":$key", $value, $str);
+            $sql = str_replace(":$key", $value, $sql);
         }
-        
-        $this->_lastSql = $sql; 
-        
-        $sth->execute();
-        
+        $this->_lastSql = $sql;         
+        $sth->execute();        
     }
     
     /**

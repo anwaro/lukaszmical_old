@@ -37,14 +37,20 @@ class ActiveRecord extends ActiveRecordAbstract {
     }
     
     private function _insert(){
-        $this->_db->insert($this->_columns);
+        $this->_db
+                ->to($this->getTableName())
+                ->insert($this->_columns);
         $id = $this->_db->lastId();
-        $this->_db->reset();
         $this->load($this->one($id));
-        return ;
+        return $this;
     }
     
     private function _update(){
+        $this->_db
+                ->update($this->getTableName())
+                ->set($this->_columns)
+                ->exec();
+        return $this;
         
     }
 
@@ -71,14 +77,16 @@ class ActiveRecord extends ActiveRecordAbstract {
     
     public function find($col, $sign=NULL, $val=NULL) {
         $this->load($this->one($col, $sign, $val));
-        $this->_action = 'UPADATE';
+        $this->_action = 'UPDATE';
         return $this;
     }
     
     public function load($vals){
-        $this->_action = 'INSERT';
+        $colsName = $this->getTableColumns();
         foreach ($vals as $key => $val){
-            $this->{$key} = $val;
+            if(in_array($key, $colsName)){
+                $this->_columns[$key] = $val;
+            }
         }
         return $this;
     }
@@ -87,17 +95,17 @@ class ActiveRecord extends ActiveRecordAbstract {
     public function save(){
         switch ($this->_action){
             case 'INSERT':
-                $this->_insert();
-                break;
+                return $this->_insert();
             case 'UPDATE':
-                $this->_update();
-                break;
-            default :
-                break;                
+                return $this->_update();          
         }
     }
     
     public function db() {
         return $this->_db;
+    }
+    
+    public function getRow() {
+        return $this->_columns;
     }
 }
