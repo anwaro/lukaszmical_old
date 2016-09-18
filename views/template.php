@@ -73,10 +73,10 @@
                 <li><a href="{%url%}">Home</a></li>
                 <li><a href="{%url%}projects">Projekty</a></li>
                 <li><a href="{%url%}curiosities">Linki</a></li>
-                <li><a href="#contact" class="scrolly">Kontakt</a></li>        
+                <li><a href="{%url%}#contact" class="scrolly">Kontakt</a></li>        
             <?php if(Lii::$app->user->isLogin()): ?>
                 <li><a href="{%url%}admin">Admin </a></li>
-                <li><a href="{%url%}admin/all">Wszystkie </a></li> 
+                <li><a href="{%url%}projects/all">Wszystkie </a></li> 
                 <li><a href="{%url%}admin/logout">Wyloguj </a></li>                
             <?php endif; ?>
             </ul>

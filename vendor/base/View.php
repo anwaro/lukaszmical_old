@@ -110,7 +110,7 @@ class View{
      */
     private function _addJs($name) {
         $this->components["js"] .= sprintf(
-                "<script src='%s/public/js/%s.js'></script> \n\t\t", 
+                "<script src='%sweb/js/%s.js'></script> \n\t\t", 
                 Lii::parm("url"),
                 str_replace(" ", "",$name)
                 );
@@ -132,7 +132,7 @@ class View{
     
     private function _addCss($name){
         $this->components["css"].= sprintf(
-                "<link rel='stylesheet' href='%s/public/css/%s.css' >\n\t\t", 
+                "<link rel='stylesheet' href='%sweb/css/%s.css' >\n\t\t", 
                 Lii::parm("url"),
                 str_replace(" ", "",$name)
                 );

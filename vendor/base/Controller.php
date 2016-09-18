@@ -7,15 +7,15 @@ class Controller extends View {
     
     public function rules() {
         return [
-            '*' => '*'
+            '*' => ['*']
         ];
     }
     
     public function before($currentAction) {
         $rules = $this->rules();
-        foreach ($rules as $action => $rule) {
-            if($action == $currentAction 
-                    || $action == '*'){
+        foreach ($rules as $rule => $actions) {
+            if(in_array($currentAction, $actions) ||
+                in_array('*', $actions)){
                 return $this->verifyAccess($rule);
             }
         }
