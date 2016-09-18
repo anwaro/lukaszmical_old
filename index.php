@@ -5,25 +5,22 @@ function __autoload($class) {
     $vendor = "vendor/" . $classFile;
     
     if(file_exists($classFile)){
-        require $classFile;
+        include_once $classFile;
         return true;
     }
     elseif(file_exists($vendor)){
-        require $vendor;
+        include_once $vendor;
         return true;
     }
 }
 
-//require 'config/config.php';
-
-
-Session::init();
-
 $config = require(__DIR__ . '/config/web.php');
 
-$bootstrap = new Bootstrap();
 
 Lii::loadCofig($config);
+
+use base\Bootstrap;
+$bootstrap = new Bootstrap();
 
 
 
