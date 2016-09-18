@@ -5,19 +5,22 @@ use app\App;
 
 /**
  * Description of App
- * @property app\App $app 
  * 
  * @author lukasz
  */
 class Lii {
-    public static $app = NULL;
+    /**
+     * @var app\App
+     */
+    public static $app;
     
-    public static function loadCofig($config) {
+    public static function loadConfig($config) {
         self::$app = new App($config);
+
     }
     
-    public static function parm($path){
-        return self::$app->parm($path);
+    public static function params($path){
+        return self::$app->params($path);
     }
     
 }
