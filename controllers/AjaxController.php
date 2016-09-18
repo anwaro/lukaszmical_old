@@ -1,13 +1,12 @@
 <?php
+namespace app\controllers;
 
+use base\Controller;
+
+/**
+ * Class AjaxController
+ * @package app\controllers
+ */
 class AjaxController extends Controller {
 
-    function __construct() {
-        parent::__construct();
-    }
-    
-    
-    function actionStudent(){
-        return  $this->model->getStudent();
-    }
 }

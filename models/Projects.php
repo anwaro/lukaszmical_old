@@ -3,6 +3,7 @@
 namespace models;
 
 use db\ActiveRecord;
+use Lii;
 
 class Projects extends ActiveRecord {
 
@@ -59,12 +60,12 @@ class Projects extends ActiveRecord {
     }
     
     public function savePhoto() {
-        $numer = $this->post("number") * 5;
-        $data = json_decode($this->post("data"), true);
+        $number = Lii::$app->request->post("number") * 5;
+        $data = json_decode(Lii::$app->request->post("data"), true);
         
         $arr = [0,0,0,0,0,0];
-        while($numer>0){
-           $numer--;
+        while($number>0){
+           $number--;
            $arr = $this->arr($arr);
            
         }
@@ -105,7 +106,7 @@ class Projects extends ActiveRecord {
     }
     
     public function getVideo() {
-        $name = $this->post("name");
+        $name = Lii::$app->request->post("name");
         $path = getcwd()."/web/video/photo/".$name;
         $photos = scandir ($path);
         /*foreach($photos as $key => $photo){

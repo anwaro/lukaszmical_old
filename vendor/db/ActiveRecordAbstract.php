@@ -9,16 +9,22 @@
 namespace db;
 
 /**
- * Description of ActiveRecordAbstract
- *
+ * Class ActiveRecordAbstract
+ * @package db
  * @author lukasz
  */
 class ActiveRecordAbstract {
-    
+
+    /**
+     * @return string
+     */
     public function getTableName() {
         return '';
     }
-    
+
+    /**
+     * @return array
+     */
     public function getTableColumns(){
         return [];
     }

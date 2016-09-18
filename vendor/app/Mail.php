@@ -16,7 +16,7 @@ class Mail {
         $headers .= 'From: <admin@hajs.esy.es>' . "\r\n";
         $headers .= 'Reply-To: admin@hajs.esy.es/' . "\r\n" ;
         $headers .= 'X-Mailer: PHP/' . phpversion();
-        
+
         mail($to, $title, $message, $headers);
     }
 

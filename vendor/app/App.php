@@ -2,20 +2,15 @@
 
 namespace app;
 
-use app\Config;
-use app\Session;
-use app\Request;
-use app\Response;
-use app\Security;
-use app\Url;
-use web\User;
-
 /**
- * Description of App
- *
+ * Class App
+ * @package app
  * @author lukasz
  */
 class App {
+    /**
+     * @var Config $_config
+     */
     private $_config;
     
     /**
@@ -27,14 +22,15 @@ class App {
      * @var Request $request
      */
     public $request;
-    /**
-     * @var Log $log
-     */
-    public $log;
-    /**
-     * @var type 
-     */
-    public $mailer;
+
+//    /**
+//     * @var Log $log
+//     */
+//    public $log;
+//    /**
+//     * @var type
+//     */
+//    public $mailer;
     /**
      * @var Response $response
      */
@@ -52,14 +48,20 @@ class App {
      */
     public $url;
 
-
+    /**
+     * App constructor.
+     * @param array $config
+     */
     public function __construct($config) {
         $this->setVar();
         
         $this->session->init();        
         $this->_config->loadConfig($config);
     }
-    
+
+    /**
+     *
+     */
     private function setVar(){
         $this->_config = new Config();        
         $this->user = new User();
@@ -71,9 +73,12 @@ class App {
         
     }
 
-    
 
-    public function parm($path){
-        return $this->_config->getParam($path);
+    /**
+     * @param $path
+     * @return mixed
+     */
+    public function params($path){
+        return $this->_config->getParams($path);
     }
 }

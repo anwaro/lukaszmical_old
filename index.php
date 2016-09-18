@@ -5,11 +5,11 @@ function __autoload($class) {
     $vendor = "vendor/" . $classFile;
     
     if(file_exists($classFile)){
-        include_once $classFile;
+        include $classFile;
         return true;
     }
     elseif(file_exists($vendor)){
-        include_once $vendor;
+        include $vendor;
         return true;
     }
 }
@@ -17,7 +17,7 @@ function __autoload($class) {
 $config = require(__DIR__ . '/config/web.php');
 
 
-Lii::loadCofig($config);
+Lii::loadConfig($config);
 
 use base\Bootstrap;
 $bootstrap = new Bootstrap();
@@ -25,7 +25,7 @@ $bootstrap = new Bootstrap();
 
 
 //try{
-    $bootstrap->init($config); 
+    $bootstrap->init();
     echo $bootstrap->getRenderedPage();
 //} catch (Exception $ex) {
  //   echo (new helper\PrintException($ex))->register();

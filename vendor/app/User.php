@@ -1,9 +1,7 @@
 <?php
 
-namespace web;
+namespace app;
 
-
-use web\Auth;
 use Lii;
 
 /**
@@ -11,12 +9,20 @@ use Lii;
  *
  * @author lukasz
  */
-class User extends Auth{    
-    
+class User extends Auth{
+
+    /**
+     * @param string $password
+     * @param string $hash
+     * @return bool
+     */
     public function validPass($password, $hash) {
         return md5($password) == $hash;
     }
-    
+
+    /**
+     * @param mixed $user
+     */
     public function login($user) {
         Lii::$app->session->set('user', $user);
         $return = Lii::$app->request->get('back');
@@ -27,18 +33,26 @@ class User extends Auth{
                     );   
             Lii::$app->response->redirect($url);
         }
-        
     }
-    
+
+    /**
+     * @return bool
+     */
     public function isLogin() {
         return Lii::$app->session->isSetVar('user');
         
     }
-    
+
+    /**
+     *
+     */
     public function logout() {
         Lii::$app->session->unSetVar('user');
     }
-    
+
+    /**
+     * @return bool
+     */
     public function access() {
         if(!$this->isLogin()){
             $url = Lii::$app->url->create(
@@ -52,5 +66,4 @@ class User extends Auth{
         }
         return TRUE;
     }
-    
 }

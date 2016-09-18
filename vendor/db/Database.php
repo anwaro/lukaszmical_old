@@ -11,7 +11,7 @@ class Database extends \PDO
 
     public function __construct()
     {
-        $db = Lii::parm("db");
+        $db = Lii::params("db");
         try{
             parent::__construct(
                     $db["type"].':host='.$db["host"].';dbname='.$db["name"], 

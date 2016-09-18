@@ -5,22 +5,44 @@ namespace base;
 use Lii;
 
 class Bootstrap {
+    /**
+     * @var Controller
+     */
+    private $_controller;
+    /**
+     * @var Controller
+     */
+    private $_errorController;
 
-    private $_controller = null;
-    private $_errorController = null;    
+    /**
+     * @var string
+     */
     private $_controllerPath = 'controllers/'; // Always include trailing slash
-    
+
+    /**
+     * @var string
+     */
     private $_renderedPage = '';
-    
+
+    /**
+     * @var string
+     */
     private $controllerName = 'index';
+
+    /**
+     * @var string
+     */
     private $actionName = 'index';
-    private $actionParms = [];
+
+    /**
+     * @var array
+     */
+    private $actionParams = [];
 
 
     /**
      * Starts the Bootstrap
-     * 
-     * @return boolean
+     *
      */
     public function init()
     {        
@@ -30,20 +52,25 @@ class Bootstrap {
         $this->_errorController = $this->_loadExistingController('error');
         
         if($this->_controller != NULL){
-            
             $this->_controller->before($this->_actionName());
             $this->_renderedPage =  $this->_callControllerMethod();            
         }
         else{
-            $this->_controller->before($this->_actionName());
+            $this->_errorController->before($this->_actionName());
             $this->_renderedPage =  $this->_callErrorMethod(); 
         }
     }
-    
+
+    /**
+     * @return string
+     */
     public function getRenderedPage(){
         return $this->_renderedPage;
     }
 
+    /**
+     *
+     */
     private function _parseUrl(){        
         $path = Lii::$app->url->getPathArray();
         
@@ -54,20 +81,21 @@ class Bootstrap {
             $this->actionName = $path[1];
         }
         if(count($path) > 2){
-            $this->actionParms = array_slice($path, 2);
+            $this->actionParams = array_slice($path, 2);
         }       
         
     }
-    
-    
+
+
     /**
      * Load an existing controller if there IS a GET parameter passed
-     * 
-     * @return boolean|string
+     *
+     * @param $controllerName
+     * @return null|Controller
      */
     private function _loadExistingController($controllerName)
     {
-        $file = $this->_controllerFileName($controllerName); 
+        $file = $this->_controllerFileName($controllerName);
         if (file_exists($file)) {
             require $file;
             $className = $this->_controllerName($controllerName);
@@ -76,10 +104,11 @@ class Bootstrap {
             return NULL;
         }
     }
-    
+
     /**
-     * 
+     *
      *  http://localhost/controller/method/(param)/(param)/(param)
+     * @return bool|mixed
      */
     private function _callControllerMethod()
     {
@@ -89,7 +118,7 @@ class Bootstrap {
         }else{
             return call_user_func_array(
                     [$this->_controller, $action], 
-                    $this->actionParms
+                    $this->actionParams
                     );
         }
     }
@@ -103,18 +132,29 @@ class Bootstrap {
         return $this->_errorController->actionIndex();        
     }
 
+    /**
+     * @return string
+     */
     private function _actionName(){        
         $part = explode("-", $this->actionName);
-        array_walk($part, function(&$vaulue){
-            $vaulue = ucfirst($vaulue);
+        array_walk($part, function(&$value){
+            $value = ucfirst($value);
         });
         return "action" . implode($part);
     }
-    
+
+    /**
+     * @param string $string
+     * @return string
+     */
     private function _controllerName($string){
         return 'app\controllers\\' . ucfirst($string) . 'Controller';
     }
-    
+
+    /**
+     * @param string $string
+     * @return string
+     */
     private function _controllerFileName($string){
         return $this->_controllerPath . ucfirst($string) . 'Controller.php';
     }

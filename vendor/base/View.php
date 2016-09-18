@@ -15,7 +15,7 @@ class View{
         "css" => "",       
         "url" => "",
         "fullurl"=> "",
-        "image" => "public/images/stat/logo256.jpg",
+        "image" => "web/images/stat/logo256.jpg",
         "descr" => "Małe projekty wykonane w js, html5, css"
     );
     /**
@@ -77,7 +77,7 @@ class View{
         return $finalRender;
     }
     public function beforeRender() {
-        $this->components["url"] = Lii::parm('url');
+        $this->components["url"] = Lii::params('url');
     }
  
     protected function _render($viewName, $varible) {
@@ -111,7 +111,7 @@ class View{
     private function _addJs($name) {
         $this->components["js"] .= sprintf(
                 "<script src='%sweb/js/%s.js'></script> \n\t\t", 
-                Lii::parm("url"),
+                Lii::params("url"),
                 str_replace(" ", "",$name)
                 );
     }
@@ -133,7 +133,7 @@ class View{
     private function _addCss($name){
         $this->components["css"].= sprintf(
                 "<link rel='stylesheet' href='%sweb/css/%s.css' >\n\t\t", 
-                Lii::parm("url"),
+                Lii::params("url"),
                 str_replace(" ", "",$name)
                 );
     }
@@ -160,7 +160,7 @@ class View{
      * @param type $info
      */
     public function setOgTags($info) {
-        $this->components["image"] = Lii::parm("path/proj_image") . "/" . $info["photo"];
+        $this->components["image"] = Lii::params("path/proj_image") . "/" . $info["photo"];
         $this->components["descr"] = $info["descr"];        
     }
 

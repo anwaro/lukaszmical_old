@@ -2,48 +2,52 @@
 
 namespace db;
 
-use db\Database;
 
 /**
- * Description of Db
- *
+ * Class Db
+ * @package db
  * @author lukasz
  */
-class Db{
+class Db
+{
     private $_table;
     private $_columns = [];
     private $_conditions = [];
     private $_limit = [];
     private $_orderBy = [];
     private $_offSet;
-    
-    private $_conditionVal =[];
+
+    private $_conditionVal = [];
     private $_updateData = [];
     private $_insertData = [];
 
 
     private $_action = '';
-    private $_db = '';
+    private $_db;
     private $_sql = '';
     private $_lastSql = '';
     private $_lastId;
 
-    public function __construct() {
+
+    public function __construct()
+    {
         $this->_db = new Database();
     }
-    
+
     /**
-     * 
-     * @return db\Database
+     *
+     * @return Database
      */
-    private function db(){
+    protected function db()
+    {
         return $this->_db;
     }
-    
+
     /**
      * Prepare select sql query
      */
-    private function _prepareSelect(){
+    private function _prepareSelect()
+    {
         $sql = 'SELECT';
         $sql .= $this->_prepareColumn();
         $sql .= ' FROM ' . $this->_table;
@@ -52,45 +56,50 @@ class Db{
         $sql .= $this->_prepareLimit();
         $this->_sql = $sql;
     }
-    
-    private function _prepareUpdate(){
+
+    private function _prepareUpdate()
+    {
         $sql = 'UPDATE ';
         $sql .= $this->_table;
         $sql .= ' SET ' . $this->_prepareFieldDetails();
         $sql .= $this->_prepareConditions('conditions_');
-        $this->_sql = $sql;     
-        
+        $this->_sql = $sql;
+
         foreach ($this->_conditions as $condition) {
             $this->_conditionVal[$condition[0]] = $condition[2];
         }
     }
 
-    private function _prepareFieldDetails(){
-        
+    private function _prepareFieldDetails()
+    {
+
         $fieldDetails = '';
-        foreach($this->_updateData as $key=> $value) {
+        foreach ($this->_updateData as $key => $value) {
             $fieldDetails .= "`$key`=:$key,";
         }
-        return rtrim($fieldDetails, ',');    
+        return rtrim($fieldDetails, ',');
     }
 
+
     /**
-     * 
+     *
      * @return string
      */
-    private function _prepareLimit(){
+    private function _prepareLimit()
+    {
         $limit = '';
-        if(count($this->_limit)){
+        if (count($this->_limit)) {
             $limit .= ' LIMIT ' . $this->_limit[0];
             $limit .= ', ' . $this->_limit[1];
         }
         return $limit;
     }
-    
+
     /**
      * Reset all settings
      */
-    public function reset(){
+    public function reset()
+    {
         $this->_table = '';
         $this->_columns = [];
         $this->_conditions = [];
@@ -99,14 +108,15 @@ class Db{
         $this->_offSet = '';
         $this->_action = '';
     }
-    
+
     /**
-     * 
+     *
      * @return string
      */
-    private function _prepareOrderBy(){
+    private function _prepareOrderBy()
+    {
         $order = '';
-        if(count($this->_orderBy)){
+        if (count($this->_orderBy)) {
             $order .= ' ORDER BY ' . $this->_orderBy[0];
             $order .= ' ' . $this->_orderBy[1];
         }
@@ -114,52 +124,60 @@ class Db{
     }
 
     /**
-     * 
-     * @return type
+     * @param string $prefix
+     * @return string
      */
-    private function _prepareConditions($prefix=''){
+    private function _prepareConditions($prefix = '')
+    {
         $formatCon = '';
-        foreach ($this->_conditions as $condition){
+        foreach ($this->_conditions as $condition) {
             $this->_conditionVal[$condition[0]] = $condition[2];
-            $formatCon .= 
-                      ' ' . $condition[0] 
-                    . ' ' . $condition[1] 
-                    . ' ' . ":$prefix{$condition[0]}"; 
+            $formatCon .=
+                ' ' . $condition[0]
+                . ' ' . $condition[1]
+                . ' ' . ":$prefix{$condition[0]}";
             $formatCon .= ' AND';
         }
-        if(strlen($formatCon) > 1){
+        if (strlen($formatCon) > 1) {
             $formatCon = ' WHERE ' . substr($formatCon, 0, -3);
         }
         return $formatCon;
     }
-    
+
     /**
-     * 
-     * @return type
+     *
+     * @return string
      */
-    private function _prepareColumn(){
+    private function _prepareColumn()
+    {
         $colsFormat = '';
         foreach ($this->_columns as $column) {
-            if($column == "*"){
-                $colsFormat .= ' *,'; 
-            }else{
+            if ($column == "*") {
+                $colsFormat .= ' *,';
+            } elseif (stripos($column, '(') !== false
+                || stripos($column, ' ') !== false
+            ) {
+                $colsFormat .= " $column,";
+            } else {
                 $col = array_map(
-                        function($val){return"`$val`";}, 
-                        explode('.', $column)
-                    );              
-                $colsFormat .= ' ' . implode('.', $col) . ','; 
-                
-            }               
+                    function ($val) {
+                        return "`$val`";
+                    },
+                    explode('.', $column)
+                );
+                $colsFormat .= ' ' . implode('.', $col) . ',';
+            }
         }
-        
+
         return rtrim($colsFormat, ',');
     }
 
     /**
      * Execute sql query
-     * @return type
+     * @return array
      */
-    public function exec() {
+    public function exec()
+    {
         switch ($this->_action) {
             case 'SELECT':
                 $result = $this->db()->select($this->_sql, $this->_conditionVal);
@@ -168,10 +186,10 @@ class Db{
             case 'UPDATE':
                 $this->_prepareUpdate();
                 $result = $this->db()->updateNew(
-                        $this->_sql, 
-                        $this->_updateData, 
-                        $this->_conditionVal
-                        );
+                    $this->_sql,
+                    $this->_updateData,
+                    $this->_conditionVal
+                );
                 $this->_lastId = $this->db()->lastId();
                 break;
             case 'INSERT':
@@ -182,175 +200,190 @@ class Db{
                 $result = $this->db()->select($this->_sql);
                 $this->_lastId = $this->db()->lastId();
                 break;
-        }        
+            default:
+                $result = NULL;
+        }
         $this->_lastSql = $this->db()->getSql();
         return $result;
     }
 
     /**
-     * 
-     * @param mixed $col 
+     *
+     * @param mixed $col
      * @return \db\Db
      */
-    public function select($col) {
+    public function select($col)
+    {
         $this->_action = 'SELECT';
-        if(is_array($col)){
+        if (is_array($col)) {
             $this->_columns = $col;
-        }
-        else{
+        } else {
             $this->_columns = [$col];
         }
         return $this;
     }
-    
+
     /**
-     * 
-     * @param type $name
+     *
+     * @param string $name
      * @return \db\Db
      */
-    public function update($name){
+    public function update($name)
+    {
         $this->_action = 'UPDATE';
         $this->_table = $name;
-        return $this;        
+        return $this;
     }
-    
+
     /**
-     * 
-     * @param type $params
+     *
+     * @param array $params
      */
-    public function insert($params) {
+    public function insert($params)
+    {
         $this->_action = 'INSERT';
         $this->_insertData = $params;
         $this->exec();
 
     }
-    
+
     /**
-     * 
-     * @param type $params
+     *
+     * @param array $params
      * @return \db\Db
      */
-    public function set($params) {
+    public function set($params)
+    {
         $this->_updateData = $params;
         return $this;
     }
 
     /**
-     * 
-     * @param type $name
+     *
+     * @param string $name
      * @return \db\Db
      */
-    public function from($name) {
+    public function from($name)
+    {
         $this->_table = $name;
         return $this;
     }
 
     /**
-     * 
-     * @param type $name
+     *
+     * @param string $name
      * @return \db\Db
      */
-    public function to($name) {
+    public function to($name)
+    {
         $this->_table = $name;
         return $this;
     }
-   
+
     /**
-     * 
-     * @param type $col
-     * @param type $sign
-     * @param type $val
+     *
+     * @param string $col
+     * @param string $sign
+     * @param string|int $val
      * @return \db\Db
      */
-    public function where($col, $sign, $val) {
+    public function where($col, $sign, $val)
+    {
         $this->_conditions = [[$col, $sign, $val]];
         return $this;
     }
-    
+
     /**
-     * 
-     * @param type $col
-     * @param type $sign
-     * @param type $val
+     *
+     * @param string $col
+     * @param string $sign
+     * @param string|int $val
      * @return \db\Db
      */
-    public function whereAnd($col, $sign, $val) {
+    public function whereAnd($col, $sign, $val)
+    {
         array_push($this->_conditions, [$col, $sign, $val]);
         return $this;
     }
-    
+
     /**
-     * 
-     * @param type $limit1
-     * @param type $limit2
+     *
+     * @param int $limit1
+     * @param int $limit2
      * @return \db\Db
      */
-    public function limit($limit1, $limit2 = NULL) {
-        if($limit2 ==NULL){
+    public function limit($limit1, $limit2 = NULL)
+    {
+        if ($limit2 == NULL) {
             $this->_limit = [0, $limit1];
-        }  else {
+        } else {
             $this->_limit = [$limit1, $limit2];
         }
         return $this;
     }
-    
+
     /**
-     * 
-     * @param type $col
-     * @param type $sort
-     * @return \db\Db
+     * @param $col
+     * @param string $sort
+     * @return $this
      */
-    public function orderBy($col, $sort = 'ASC') {
+    public function orderBy($col, $sort = 'ASC')
+    {
         $this->_orderBy = [$col, $sort];
         return $this;
     }
-    
+
     /**
-     * 
-     * @param type $val
-     * @return \db\Db
+     * @param $val
+     * @return $this
      */
-    public function offSet($val) {
+    public function offSet($val)
+    {
         $this->_offSet = $val;
         return $this;
     }
-    
+
     /**
-     * 
-     * @return type
+     * @return array
      */
-    public function all() {
+    public function all()
+    {
         $this->_prepareSelect();
         return $this->exec();
-        
+
     }
-    
+
     /**
-     * 
-     * @return type
+     * @return mixed
      */
-    public function one() {
+    public function one()
+    {
         $this->_limit = [0, 1];
         $this->_prepareSelect();
         $result = $this->exec();
         return $result[0];
     }
-    
+
     /**
-     * Return last sql query
-     * @return type
+     * @return string
      */
-    public function lastSql() {
+    public function lastSql()
+    {
         return $this->_lastSql;
     }
-    
-    
+
+
     /**
-     * 
-     * @return type
+     * @return mixed
      */
-    public function lastId(){
+    public function lastId()
+    {
         return $this->_lastId;
     }
-    
+
+
+    public function next($id)
+    {
+
+    }
 }

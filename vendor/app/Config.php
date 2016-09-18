@@ -3,31 +3,40 @@
 namespace app;
 
 /**
- * Description of Config
- *
+ * Class Config
+ * @package app
  * @author lukasz
  */
 class Config {
-    
+
+    /**
+     * @var array
+     */
     protected $_config;
 
-
+    /**
+     * @param array $config
+     */
     public function loadConfig($config) {
         $this->_config = $config;
     }
-    
-    public function getParam($path){
-        $indexs = explode("/", $path);
-        $configParm = $this->_config;
+
+    /**
+     * @param string $path
+     * @return array|mixed
+     * @throws \Exception
+     */
+    public function getParams($path){
+        $indexes = explode("/", $path);
+        $configParams = $this->_config;
         try{
-            foreach ($indexs as $index){
-                $configParm = $configParm[$index];
+            foreach ($indexes as $index){
+                $configParams = $configParams[$index];
             }
-        } catch (Exception $ex) {
-            throw new Exception("Undefined index in config: config[" 
-                    . implode("][", $indexs) . "] in " ,$ex->getFile());
+        } catch (\Exception $ex) {
+            throw new \Exception("Undefined index in config: config[" 
+                    . implode("][", $indexes) . "] in " ,$ex->getFile());
         }        
-        return $configParm;
+        return $configParams;
     }
-    
 }
