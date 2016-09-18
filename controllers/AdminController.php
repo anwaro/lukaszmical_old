@@ -4,45 +4,53 @@ namespace app\controllers;
 
 use base\Controller;
 use models\Admin;
-use Session;
 use Lii;
 
 class AdminController extends Controller {
     
-    function actionIndex() {
-        $model = new Admin();
+    public function rules() {
+        return [
+            'actionLogin' => '*',
+            '*' => '@',
+        ];
+    }
+    
+    function actionLogin(){   
         $info = '';
-        if(Lii::$app->request->post("login")){
-            if(md5($this->model->post("password")) =="5d9828eb0fb4064df20bff5aa9388760"){
-                Session::set("login", TRUE);
+        if(Lii::$app->request->post()){
+            $pass = Lii::$app->request->post("password");
+            $hash = "5d9828eb0fb4064df20bff5aa9388760";
+            
+            if(Lii::$app->user->validPass($pass, $hash)){
+                Lii::$app->user->login(true);
+                return $this->actionIndex();
             }
             else {
                 $info = "Nieprawidłowe hasło";
             }
         }        
-        if(Session::get("login")){
-            //$this->model->printGlobalArray();
-            return $this->render('admin/index',[
-                "size" => $model->size(),
-                "info" => "",
-            ]);
-        }
-        else{            
-            return $this->render('admin/login', [
-                "info" => $info
-            ]);
-        } 
+        return $this->render('admin/login', [
+            "info" => $info
+        ]);        
     }
-    
+            
+    function actionIndex() {  
+        $model = new Admin();    
+        //$this->model->printGlobalArray();
+        return $this->render('admin/index',[
+            "size" => $model->size(),
+            "info" => "",
+        ]);
+    }
+            
     function actionLogout() {
-        Session::destroy();        
+        Lii::$app->user->logout();     
         return $this->render('admin/login', [
            "info" => "Wylogowano z panelu administracyjnego"
         ]);        
     }
     
     public function actionAll() {
-        Lii::$app->user->handleLogin();
         $model = new Admin();        
         
         return $this->render('admin/all',[
@@ -51,7 +59,6 @@ class AdminController extends Controller {
     }
     
     public function actionEdit($id) {
-        Lii::$app->user->handleLogin();
         $model = (new Admin())->find($id);    
         
         if(Lii::$app->request->post()){
@@ -65,14 +72,11 @@ class AdminController extends Controller {
     }
     
     public function actionDelete($name) {
-        Lii::$app->user->handleLogin();
-        
         $this->model->deleteProject($name);
         return $this->actionAll();
     }
     
     public function actionAdd() {
-        Lii::$app->user->handleLogin();
         $projUrl = Lii::$app->request->post('url', '');
         $model = new Admin();  
         
@@ -88,9 +92,6 @@ class AdminController extends Controller {
             return $this->render('admin/add', [
                 "projUrl" => $projUrl
             ]);
-
-        }
-        
-    }
-    
+        }        
+    }    
 }

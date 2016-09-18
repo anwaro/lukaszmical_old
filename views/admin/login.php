@@ -7,7 +7,7 @@ $this->title = "Logowanie do panelu";
    <?= $info ?>
 </div>
 <div class="row-box">
-    <form action ="/admin" method="POST">
+    <form method="POST">
         <input name="password" type="password">
         <input name="login" type="submit">
     </form>    
