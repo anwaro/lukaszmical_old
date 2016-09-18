@@ -20,9 +20,9 @@ class User extends Auth{
     public function login($user) {
         Lii::$app->session->set('user', $user);
         $return = Lii::$app->request->get('back');
-        if(Lii::parm('auth/back') && $return && strlen($return)){
+        if(Lii::params('auth/back') && $return && strlen($return)){
              $url = Lii::$app->url->create(
-                    Lii::parm('url'),
+                    Lii::params('url'),
                     Lii::$app->url->decode($return)
                     );   
             Lii::$app->response->redirect($url);
@@ -42,8 +42,8 @@ class User extends Auth{
     public function access() {
         if(!$this->isLogin()){
             $url = Lii::$app->url->create(
-                    Lii::parm('url'),
-                    Lii::parm('auth/url'),
+                    Lii::params('url'),
+                    Lii::params('auth/url'),
                     ['back' => Lii::$app->url->getPath()]
                     );
  
