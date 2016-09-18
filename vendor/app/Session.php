@@ -14,5 +14,32 @@ namespace app;
  * @author lukasz
  */
 class Session {
-    //put your code here
+    public function init(){
+        session_start();
+    }
+    
+    public function set($name, $value){
+        $_SESSION[$name] = $value;
+    }
+    
+    public function get($name){
+        if (isset($_SESSION[$name])){
+            return $_SESSION[$name];
+        }
+        return NULL;
+    }
+    
+    public function unSetVar($name){
+        if (isset($_SESSION[$name])){
+            unset($_SESSION[$name]);
+        }
+    }
+
+    public function destroy(){
+        session_destroy();
+    }
+    
+    public function isSetVar($name) {
+        return isset($_SESSION[$name]);
+    }
 }

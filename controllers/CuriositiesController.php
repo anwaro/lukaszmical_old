@@ -5,9 +5,15 @@ namespace app\controllers;
 use base\Controller;
 use models\Curiosities;
 use Lii;
-use Auth;
 
 class CuriositiesController extends Controller {
+        
+    public function rules() {
+        return [
+            'actionIndex' => '*',
+            '*' => '@',
+        ];
+    }
     
     function actionIndex($type = "webstuff") {
         $model = new Curiosities($type);
@@ -18,8 +24,7 @@ class CuriositiesController extends Controller {
         ]);      
     }   
     
-    function actionAdd($type = "webstuff"){        
-        Auth::handleLogin();
+    function actionAdd($type = "webstuff"){      
         $model = new Curiosities($type);
         
         if(Lii::$app->request->isPost()){
@@ -33,8 +38,7 @@ class CuriositiesController extends Controller {
     }
     
     
-    function actionAll($type = "webstuff"){        
-        Auth::handleLogin();
+    function actionAll($type = "webstuff"){
         $model = new Curiosities($type);
         
         return $this->render('curiosities/all', [
@@ -44,8 +48,7 @@ class CuriositiesController extends Controller {
         
     }
     
-    function actionEdit($type, $id){        
-        Auth::handleLogin();
+    function actionEdit($type, $id){   
         $model = (new Curiosities($type))->find($id);
         $webstuffOld = $model->getRow();      
         
@@ -62,8 +65,7 @@ class CuriositiesController extends Controller {
     }
     
     
-    function actionRemove($id){        
-        Auth::handleLogin();
+    function actionRemove($id){
         $removed = False;
         $webstuff = $this->one($id);
         if($this->model->is_post("remove_webstuff")){

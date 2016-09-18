@@ -65,11 +65,11 @@ class Error {
             
     
     public function index() {
-       
-        header("HTTP/1.0 404 Not Found");
+        
+        Lii::$app->response->notFound();
         $fileExt = $this->_fileExt();
         if(array_key_exists($fileExt, $this->mime)){
-            header('Content-type: ' . $this->mime[$fileExt] . ";charset=UTF-8");
+            Lii::$app->response->contentType($this->mime[$fileExt] . ";charset=UTF-8");
             exit();            
         }
     }

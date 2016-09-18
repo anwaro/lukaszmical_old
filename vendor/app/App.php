@@ -7,6 +7,7 @@ use app\Session;
 use app\Request;
 use app\Response;
 use app\Security;
+use app\Url;
 use web\User;
 
 /**
@@ -46,21 +47,32 @@ class App {
      * @var Session $session
      */
     public $session;
+    /**
+     * @var Url $url
+     */
+    public $url;
 
 
     public function __construct($config) {
-        $this->_config = new Config();
-        $this->_config->loadConfig($config);
+        $this->setVar();
         
+        $this->session->init();        
+        $this->_config->loadConfig($config);
+    }
+    
+    private function setVar(){
+        $this->_config = new Config();        
         $this->user = new User();
         $this->request = new Request();
         $this->session = new Session();
         $this->response = new Response();
         $this->security = new Security();
+        $this->url = new Url($this->request->getUrl());
         
     }
+
     
-    
+
     public function parm($path){
         return $this->_config->getParam($path);
     }

@@ -16,8 +16,11 @@ namespace app;
 class Request {
     
     private $_url;
-    
-    
+    private $_queryParams;
+
+
+
+
     /**
      * 
      * @return boolean
@@ -39,6 +42,28 @@ class Request {
         } else {
             return $this->getBodyParam($name, $defaultValue);
         }
+    }
+    
+    public function get($name = null, $defaultValue = null){
+        if ($name === null) {
+            return $this->getQueryParams();
+        } else {
+            return $this->getQueryParam($name, $defaultValue);
+        }
+    }
+
+    public function getQueryParam($name, $defaultValue = null){
+        $params = $this->getQueryParams();
+
+        return isset($params[$name]) ? $params[$name] : $defaultValue;
+    }
+    
+    public function getQueryParams(){
+        if ($this->_queryParams === null) {
+            return $_GET;
+        }
+
+        return $this->_queryParams;
     }
     
     /**
