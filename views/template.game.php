@@ -48,7 +48,7 @@
             ga('require', 'displayfeatures');
             ga('send', 'pageview');
         </script>
-        <script src="{%url%}public/js/myQuery.js"></script>
+        <script src="{%url%}web/js/myQuery.js"></script>
         <style>  
             body{
                 background-image: url('images/bg.png');

@@ -63,7 +63,7 @@
     width: 76px;
     height: 38px;
     border-radius: 76px 76px 0px 0px / 27px 27px 0px 0px;
-    background-image: url(/public/images/projects/mp3player/menu.png);
+    background-image: url(/web/images/projects/mp3player/menu.png);
     cursor: pointer;
     
 }
@@ -74,7 +74,7 @@
     height: 76px;
     left: -38px;
     border-radius: 27px 0px 0px 27px/ 76px 0px 0px 76px  ;
-    background-image: url(/public/images/projects/mp3player/prev.png);
+    background-image: url(/web/images/projects/mp3player/prev.png);
     cursor: pointer;
     
 }
@@ -85,7 +85,7 @@
     height: 76px;
     left: 76px;
     border-radius:  0px 27px 27px 0px /0px 76px 76px 0px;
-    background-image: url(/public/images/projects/mp3player/next.png);
+    background-image: url(/web/images/projects/mp3player/next.png);
     cursor: pointer;
     
 }
@@ -96,7 +96,7 @@
     height: 38px;
     top: 76px;
     border-radius: 0px 0px 76px 76px /0px 0px 27px 27px ;
-    background-image: url(/public/images/projects/mp3player/play.png);
+    background-image: url(/web/images/projects/mp3player/play.png);
     cursor: pointer;
     
 }

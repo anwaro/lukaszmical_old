@@ -12,7 +12,7 @@ $$.load(function(){
   codeMirrorJsOwn = CodeMirror($$('#js-graph-own'), {'lineNumbers': true, 'readOnly': true });
   codeMirrorHtmlOwn = CodeMirror($$('#html-graph-own'), {'lineNumbers': true, 'readOnly': true, mode: "text/html" });
   val = '<html>\n\t<head>\n\t\t.\n\t\t.\n\t\t';
-  val+='<script src="http://lukaszmical.pl/public/js/projects/graph.js"></script> \n\t\t.\n\t\t.\n\t';
+  val+='<script src="http://lukaszmical.pl/web/js/projects/graph.js"></script> \n\t\t.\n\t\t.\n\t';
   val+='</head>\n\t<body>\n\t\t.\n\t\t.\n\t\t';
   val+='<canvas id="graph-own" height="300" width="500"></canvas>\n\t\t.\n\t\t.\n\t</body>\n</html>';
   codeMirrorHtmlOwn.setValue(val);

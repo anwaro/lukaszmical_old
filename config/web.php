@@ -9,9 +9,9 @@ $db = require(__DIR__ . '/db.php');
 return [
     "url" => "http://lukaszmical.pl/",
     "path" =>[
-        "image" => "public/images",
-        "proj_image" => "public/images/projects",
-        "file" => "public/files",
+        "image" => "web/images",
+        "proj_image" => "web/images/projects",
+        "file" => "web/files",
         
     ],
 

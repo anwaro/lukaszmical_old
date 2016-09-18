@@ -12,7 +12,7 @@ mp3player = new function(){
             bufforEmpty = true,
             time,
             url="http://lukaszmical.pl/projects/ajaxSong/",
-            songUrl = "http://lukaszmical.pl/public/sounds/mp3player/",
+            songUrl = "http://lukaszmical.pl/web/sounds/mp3player/",
             type = ".mp3",
             songNumber = Math.floor(Math.random()*250),
             prevSong = new Song(),
@@ -519,6 +519,6 @@ function(){
     var test = new Audio();
     test.onerror = function(){mp3player.init(false);};
     test.onloadeddata = function(){mp3player.init(true);};
-    test.src = "http://lukaszmical.pl/public/sounds/test/test.mp3";
+    test.src = "http://lukaszmical.pl/web/sounds/test/test.mp3";
     console.log(test);
 });

@@ -14,7 +14,7 @@ hangman = new function(){
         
         newGame.onclick = reset;
         
-        url =   "http://lukaszmical.pl/public/images/projects/hangman/";
+        url =   "http://lukaszmical.pl/web/images/projects/hangman/";
         //load.hide();
         newGame.css("background", "url("+url+"new.jpg)");
         photo.show();

@@ -70,11 +70,11 @@ $$StayAlive = new function(){
 	}
 	
 	function loadSound(){		
-		music.ready = new buzz.sound("http://lukaszmical.pl/public/sounds/ready",{formats:["mp3","ogg"]});
-		music.play = new buzz.sound("http://lukaszmical.pl/public/sounds/play",{formats:["mp3","ogg"]});
-		music.bonus =new buzz.sound("http://lukaszmical.pl/public/sounds/bonus",{formats:["mp3","ogg"],volume:10});
-		music.bang = new buzz.sound("http://lukaszmical.pl/public/sounds/bang",{formats:["mp3","ogg"]});
-		music.crash= new buzz.sound("http://lukaszmical.pl/public/sounds/crash",{formats:["mp3","ogg"]});
+		music.ready = new buzz.sound("http://lukaszmical.pl/web/sounds/ready",{formats:["mp3","ogg"]});
+		music.play = new buzz.sound("http://lukaszmical.pl/web/sounds/play",{formats:["mp3","ogg"]});
+		music.bonus =new buzz.sound("http://lukaszmical.pl/web/sounds/bonus",{formats:["mp3","ogg"],volume:10});
+		music.bang = new buzz.sound("http://lukaszmical.pl/web/sounds/bang",{formats:["mp3","ogg"]});
+		music.crash= new buzz.sound("http://lukaszmical.pl/web/sounds/crash",{formats:["mp3","ogg"]});
 		
 		music.ready.load().loop().bind("loadeddata", function(e) { loaded();});
 		music.play.load().loop().bind("loadeddata", function(e) { loaded();});

@@ -3,7 +3,7 @@
     top:0;
     left: 0;
     z-index: 999;
-    background: url("/public/images/projects/rubik.png");
+    background: url("/web/images/projects/rubik.png");
 }
 
 .hidden {

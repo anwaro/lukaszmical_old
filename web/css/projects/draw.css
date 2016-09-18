@@ -82,25 +82,25 @@ body{
 #sizeUp{
     width:20px;
     height:15px;
-    background:url(http://lukaszmical.pl/public/images/projects/draw/up.png);
+    background:url(http://lukaszmical.pl/web/images/projects/draw/up.png);
 
 }
 
 #sizeUp:hover{
-    background: #A19F9F url(http://lukaszmical.pl/public/images/projects/draw/up.png);
+    background: #A19F9F url(http://lukaszmical.pl/web/images/projects/draw/up.png);
 }
 #sizeDown{
     width:20px;
     height:15px;
-    background:url(http://lukaszmical.pl/public/images/projects/draw/down.png);
+    background:url(http://lukaszmical.pl/web/images/projects/draw/down.png);
 
 }
 #sizeDown:hover{
-    background: #A19F9F url(http://lukaszmical.pl/public/images/projects/draw/down.png);
+    background: #A19F9F url(http://lukaszmical.pl/web/images/projects/draw/down.png);
 }
 
 #type{
-    background-image:url(http://lukaszmical.pl/public/images/projects/draw/q1.png);
+    background-image:url(http://lukaszmical.pl/web/images/projects/draw/q1.png);
 }
 
 
@@ -120,12 +120,12 @@ body{
     display:block;
 }
 
-.q1{background-image:url(http://lukaszmical.pl/public/images/projects/draw/q1.png);}
-.q2{background-image:url(http://lukaszmical.pl/public/images/projects/draw/q2.png);}
-.q3{background-image:url(http://lukaszmical.pl/public/images/projects/draw/q3.png);}
-.q4{background-image:url(http://lukaszmical.pl/public/images/projects/draw/q4.png);}
-.q5{background-image:url(http://lukaszmical.pl/public/images/projects/draw/q5.png);}
-.q6{background-image:url(http://lukaszmical.pl/public/images/projects/draw/q6.png);}
+.q1{background-image:url(http://lukaszmical.pl/web/images/projects/draw/q1.png);}
+.q2{background-image:url(http://lukaszmical.pl/web/images/projects/draw/q2.png);}
+.q3{background-image:url(http://lukaszmical.pl/web/images/projects/draw/q3.png);}
+.q4{background-image:url(http://lukaszmical.pl/web/images/projects/draw/q4.png);}
+.q5{background-image:url(http://lukaszmical.pl/web/images/projects/draw/q5.png);}
+.q6{background-image:url(http://lukaszmical.pl/web/images/projects/draw/q6.png);}
 
 input, textarea, keygen, select, button {
     margin: 0em;
@@ -157,7 +157,7 @@ input[type="color" ] {
 }
 
 #drawCanvasCover{
-    cursor:url(http://lukaszmical.pl/public/images/projects/draw/pen.png), crosshair;
+    cursor:url(http://lukaszmical.pl/web/images/projects/draw/pen.png), crosshair;
     position: absolute;
     top:0;
     left: 0;
@@ -165,19 +165,19 @@ input[type="color" ] {
 }
 
 #undo{
-    background-image:url(http://lukaszmical.pl/public/images/projects/draw/undo_off.png);
+    background-image:url(http://lukaszmical.pl/web/images/projects/draw/undo_off.png);
 }
 
 #redo{
-    background-image:url(http://lukaszmical.pl/public/images/projects/draw/redo_off.png);
+    background-image:url(http://lukaszmical.pl/web/images/projects/draw/redo_off.png);
 }
 
 #redo.on{
-    background-image:url(http://lukaszmical.pl/public/images/projects/draw/redo.png);
+    background-image:url(http://lukaszmical.pl/web/images/projects/draw/redo.png);
 }
 
 #undo.on{
-    background-image:url(http://lukaszmical.pl/public/images/projects/draw/undo.png);
+    background-image:url(http://lukaszmical.pl/web/images/projects/draw/undo.png);
 }
 
 #fontColor{

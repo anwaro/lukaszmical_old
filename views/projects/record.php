@@ -17,7 +17,7 @@
 <h2>Wygenerowany film</h2>
 
 <video controls  height="500" width="700">
-    <source src="{%url%}/public/video/out2.mp4">
+    <source src="{%url%}/web/video/out2.mp4">
 </video>
 
 <br>

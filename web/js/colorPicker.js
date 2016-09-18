@@ -31,7 +31,7 @@ var colorPicker=
 		
 		colorPicker.img.onerror=function(){
 		
-			this.src = "http://lukaszmical.pl/public/images/stat/color.png";
+			this.src = "http://lukaszmical.pl/web/images/stat/color.png";
 			
 		}
 		

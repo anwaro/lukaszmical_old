@@ -1,26 +1,9 @@
 <?php
 /* @var $this View */
+/* @var $projects array */ 
 
 $this->setTitle('Projekty');
-    $row = 0;
-    $content = '';
-    foreach ($allProjects as $p) {
-        if ($row && $row % 4 == 0) {
-            $content .= '</div>'
-                    . '<div class="row">';
-        }
-        $content .= "
-                <div class='3u'>
-                    <article class='box style2'>
-                            <a href='{%url%}/projects/show/" . $p["url"] . "' class='image featured'>
-                                <img src='{%url%}/public/images/projects/" . $p["photo"] . "' alt='" . $p["descr"] . "' />
-                            </a>
-                            <h3><a href='{%url%}/projects/show/" . $p["url"] . "'>" . $p["name"] . "</a></h3>
-                            <p>" . $p["descr"] . " </p>
-                    </article>
-            </div>";
-        $row++;
-    }
+
 ?>
 
 <div class="wrapper style3">
@@ -31,7 +14,23 @@ $this->setTitle('Projekty');
         </header>                                        
         <div class="container">  
             <div class="row">
-                <?= $content;?>
+              <?php $row = 0;?>
+                <?php foreach ($projects as $project):?>
+                <?php if($row && !($row%4)):?>
+            </div>
+            <div class="row">
+                <?php endif;?>
+                    <div class='3u'>
+                       <article itemscope itemtype="http://schema.org/SoftwareApplication" class="box style2">
+                            <a itemprop="url" href='{%url%}projects/show/<?= $project["url"];?>' class='image featured'>
+                                <img itemprop='image' src='{%url%}web/images/projects/<?= $project["photo"];?>' alt='<?= $project["descr"];?>' />
+                            </a>
+                            <h3><a itemprop='url' href='{%url%}projects/show/<?= $project["url"];?>'><?= $project["name"];?></a></h3>
+                            <p><?= $project["descr"];?> </p>
+                       </article>
+                    </div>   
+                <?php $row++;?>
+                <?php endforeach;?>
             </div>
         </div>
     </article>

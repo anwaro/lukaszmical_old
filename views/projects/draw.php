@@ -3,7 +3,7 @@
 
 
     function setAtribute(e) {
-        e.parentNode.parentNode.style.backgroundImage = "url(http://lukaszmical.pl/public/images/projects/draw/" + e.dataset.type + ".png)";
+        e.parentNode.parentNode.style.backgroundImage = "url(http://lukaszmical.pl/web/images/projects/draw/" + e.dataset.type + ".png)";
         e.parentNode.parentNode.dataset.type = e.dataset.type;
     }
     function size(i) {

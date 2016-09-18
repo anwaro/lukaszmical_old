@@ -2,7 +2,7 @@
 
 #load{
 	margin-top:100px;
-	background:url(http://lukaszmical.pl/public/images/projects/stay/loader.gif);
+	background:url(http://lukaszmical.pl/web/images/projects/stay/loader.gif);
 	height:256px;
 	width:256px;
 }
@@ -73,12 +73,12 @@
 	height:20px;
 	float:right;
 	cursor:pointer;
-	background:url(http://lukaszmical.pl/public/images/projects/stay/on.png);
+	background:url(http://lukaszmical.pl/web/images/projects/stay/on.png);
 	margin-right:5px;
 }
 
 #gameSound.off{
-	background:url(http://lukaszmical.pl/public/images/projects/stay/off.png);
+	background:url(http://lukaszmical.pl/web/images/projects/stay/off.png);
 }
 .next-block{
 	background:rgba(114, 114, 114, 0.42);

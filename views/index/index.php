@@ -3,34 +3,14 @@
     /* @var $projects array */
 
     $this->title = 'Home';
-    
-    $row = 0;
-    $content1 = '';
-    foreach ($projects as $p){
-        if($row && $row%3==0){
-            $content1 .= '</div>'
-                    .'<div class="row">';
-        }
-        $content1 .= "
-            <div class='4u'>
-                <article itemscope itemtype='http://schema.org/SoftwareApplication' class='box style2'>
-                        <a itemprop='url' href='{%url%}projects/show/".$p["url"]."' class='image featured'>
-                            <img itemprop='image' src='{%url%}public/images/projects/".$p["photo"]."' alt='".$p["descr"]."' />
-                        </a>
-                        <h3><a itemprop='url' href='{%url%}projects/show/".$p["url"]."'>".$p["name"]."</a></h3>
-                        <p>".$p["descr"]." </p>
-                </article>
-        </div>";
-        $row++;
-        
-    }
+
 ?>
 
 <div class="wrapper style1 first">
     <article class="container" id="top">
         <div class="row">
             <div class="4u">
-                <span class="image fit"><img src="{%url%}public/images/stat/profil.jpg" alt="" /></span>
+                <span class="image fit"><img src="{%url%}web/images/stat/profil.jpg" alt="" /></span>
             </div>
             <div class="8u">
                 <header>
@@ -55,7 +35,23 @@
         </header>
         <div class="container">  
             <div class="row">
-                <?= $content1; ?>
+                <?php $row = 0;?>
+                <?php foreach ($projects as $project):?>
+                <?php if($row && !($row%3)):?>
+            </div>
+            <div class="row">
+                <?php endif;?>
+                    <div class='4u'>
+                       <article itemscope itemtype="http://schema.org/SoftwareApplication" class="box style2">
+                            <a itemprop="url" href='{%url%}projects/show/<?= $project["url"];?>' class='image featured'>
+                                <img itemprop='image' src='{%url%}web/images/projects/<?= $project["photo"];?>' alt='<?= $project["descr"];?>' />
+                            </a>
+                            <h3><a itemprop='url' href='{%url%}projects/show/<?= $project["url"];?>'><?= $project["name"];?></a></h3>
+                            <p><?= $project["descr"];?> </p>
+                       </article>
+                    </div>   
+                <?php $row++;?>
+                <?php endforeach;?>
             </div>
         </div>
         <footer>

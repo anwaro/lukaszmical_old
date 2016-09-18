@@ -19,7 +19,7 @@ billiards = new function(){
 		x=500,y=200,
 		stick={			
 			img : new Image(),
-			src : "http://lukaszmical.pl/public/images/projects/billiards/stick.png",
+			src : "http://lukaszmical.pl/web/images/projects/billiards/stick.png",
 			//src: "images/projects/billiards/stick.png",
 			load:function(){
 				this.img.src = this.src;
@@ -27,7 +27,7 @@ billiards = new function(){
 		},
 		table={			
 			img : new Image(),
-			src : "http://lukaszmical.pl/public/images/projects/billiards/table-tmp.png",
+			src : "http://lukaszmical.pl/web/images/projects/billiards/table-tmp.png",
 			//src: "images/projects/billiards/stick.png",
 			load:function(){
 				this.img.src = this.src;

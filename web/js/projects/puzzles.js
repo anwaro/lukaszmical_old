@@ -10,7 +10,7 @@ $puzzles = new function(){
 	returnElement,
 	isMove =false,
 	size=5,
-	frame = "http://lukaszmical.pl/public/images/projects/puzzle/frame"+size+".png",
+	frame = "http://lukaszmical.pl/web/images/projects/puzzle/frame"+size+".png",
 	leyPuzzles = 0
 	;
 	
@@ -45,7 +45,7 @@ $puzzles = new function(){
 		else{
 			$$('#sample').fadeOut(300,function(){$$("#puzzleArea").fadeIn(300);});
 			
-			src = "http://lukaszmical.pl/public/images/projects/puzzle/img"+(nr||1)+".jpg";
+			src = "http://lukaszmical.pl/web/images/projects/puzzle/img"+(nr||1)+".jpg";
 			//src = "img/img"+(nr||1)+".jpg";
 			imageInfo();
 		}	

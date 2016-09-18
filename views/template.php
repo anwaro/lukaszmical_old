@@ -51,20 +51,20 @@
         <script>
             var url ="{%url%}";
         </script>
-        <!--[if lte IE 8]><script src="{%url%}/public/css/ie/html5shiv.js"></script><![endif]-->
-        <script src="{%url%}public/js/jquery/jquery.min.js"></script>
-        <script src="{%url%}public/js/jquery/jquery.scrolly.min.js"></script>
-        <script src="{%url%}public/js/jquery/skel.min.js"></script>
-        <script src="{%url%}public/js/jquery/init.js"></script>
-        <script src="{%url%}public/js/myQuery.js"></script>
+        <!--[if lte IE 8]><script src="{%url%}/web/css/ie/html5shiv.js"></script><![endif]-->
+        <script src="{%url%}web/js/jquery/jquery.min.js"></script>
+        <script src="{%url%}web/js/jquery/jquery.scrolly.min.js"></script>
+        <script src="{%url%}web/js/jquery/skel.min.js"></script>
+        <script src="{%url%}web/js/jquery/init.js"></script>
+        <script src="{%url%}web/js/myQuery.js"></script>
         {%js%}
-        <link rel="stylesheet" href="{%url%}public/css/style.css" >
+        <link rel="stylesheet" href="{%url%}web/css/style.css" >
         <noscript>
-        <link rel="stylesheet" href="{%url%}public/css/skel.css" >
-        <link rel="stylesheet" href="{%url%}public/css/style-desktop.css" >
+        <link rel="stylesheet" href="{%url%}web/css/skel.css" >
+        <link rel="stylesheet" href="{%url%}web/css/style-desktop.css" >
         </noscript>
-        <!--[if lte IE 8]><link rel="stylesheet" href="{%url%}/public/css/ie/v8.css" /><![endif]-->
-        <!--[if lte IE 9]><link rel="stylesheet" href="{%url%}/public/css/ie/v9.css" /><![endif]-->
+        <!--[if lte IE 8]><link rel="stylesheet" href="{%url%}/web/css/ie/v8.css" /><![endif]-->
+        <!--[if lte IE 9]><link rel="stylesheet" href="{%url%}/web/css/ie/v9.css" /><![endif]-->
         {%css%}
     </head>
     <body>
@@ -72,7 +72,7 @@
             <ul class="container">
                 <li><a href="{%url%}">Home</a></li>
                 <li><a href="{%url%}projects">Projekty</a></li>
-                <li><a href="{%url%}webstuff">Webstuff</a></li>
+                <li><a href="{%url%}curiosities">Linki</a></li>
                 <li><a href="#contact" class="scrolly">Kontakt</a></li>        
             <?php if(Session::get("login")): ?>
                 <li><a href="{%url%}admin">Admin </a></li>

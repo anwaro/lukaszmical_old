@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function(){
     var canvas = document.getElementById("jump");
     var ctx;
     var play = false;
-    var img_path = "http://lukaszmical.pl/public/images/projects/jump/";
+    var img_path = "http://lukaszmical.pl/web/images/projects/jump/";
     
     var images = {
         grand : new Image(),
