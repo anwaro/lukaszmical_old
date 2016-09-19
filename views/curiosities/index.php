@@ -1,6 +1,7 @@
 <?php
-    /* @var $this View */
-    /* @var $type string */
+    /* @var base\View $this  */
+    /* @var string $type  */
+    /* @var array $curiosities*/
 
     $this->title = ucfirst($type);
     
@@ -49,7 +50,7 @@
     <a href="<?= $info['tagUrl']?>"><?= $info['tag']?></a>
     <br>
     <br>
-    <input name="search" type="search" id="news-search"autocomplete="off">
+    <input name="search" type="search" id="news-search" autocomplete="off">
 </div>
 
 <?php foreach ($curiosities as $web):?>
@@ -68,33 +69,53 @@
 
 <?php endforeach;?>
 
+<div id="page-switcher" class="row-box">
 
+</div>
+<br><br>
+
+<style>
+    .switcher{
+        padding: 10px;
+        margin: 2px;
+    }
+    .switcher-active{
+        background-color: #8336ff;
+    }
+</style>
 <script>
     var news = document.getElementsByClassName("news");
     var search = document.getElementById("news-search");
+    var pageSwitcher = document.getElementById("page-switcher");
     search.addEventListener('keyup', filter);
     
-    
-    newsdata = [];
+    var newsData = [];
     var element;
+    var pageNUmber = 1;
+    var newsInPage=10;
+    var elementsToShow = [];
+
     for(var i =0; i< news.length; i++){
         element = {
             element : news[i],
             info : news[i].children[0],
             info_text : news[i].children[0].innerHTML
         };
-        newsdata.push(element);
+        newsData.push(element);
     }
-    
+
+
+    filter({target:{value:''}});
     function filter(event){
-        cleear();
+        clear();
         var search_text = event.target.value.toLowerCase();
         if(search_text.length === 1)search_text = '';
-        for(var i =0; i<newsdata.length; i++){
-            if(newsdata[i].info_text.toLowerCase().indexOf(search_text) !== -1){
-                newsdata[i].element.style.display = 'block';
+        for(var i =0; i<newsData.length; i++){
+            if(newsData[i].info_text.toLowerCase().indexOf(search_text) !== -1){
+                elementsToShow.push(newsData[i].element);
+//                newsData[i].element.style.display = 'block';
                 if(search_text.length){
-                    newsdata[i].info.innerHTML = newsdata[i]
+                    newsData[i].info.innerHTML = newsData[i]
                             .info_text
                             .replace(
                                 (new RegExp(search_text , "gi")),
@@ -104,17 +125,50 @@
                             );
                 }
             }
-            else{
-                newsdata[i].element.style.display = 'none';
+        }
+        switchPage(pageNUmber);
+    }
+
+    function switchPage(pageNr) {
+        hideAll();
+        pageNUmber = pageNr;
+        var start = (pageNUmber - 1) * newsInPage;
+        var stop = Math.min(pageNUmber * newsInPage, elementsToShow.length);
+        for(var i =start; i<stop; i++){
+            elementsToShow[i].style.display = 'block';
+        }
+        addSwitcher();
+    }
+
+    function hideAll() {
+        for(var i =0; i<newsData.length; i++) {
+            newsData[i].element.style.display = 'none';
+        }
+
+    }
+
+    function clear(){
+        elementsToShow = [];
+        pageNUmber = 1;
+        for(var i =0; i<newsData.length; i++){
+            if(newsData[i].info.innerHTML.indexOf("class=") !== -1){                
+                newsData[i].info.innerHTML = newsData[i].info_text;
             }
         }
     }
-    
-    function cleear(){
-        for(var i =0; i<newsdata.length; i++){
-            if(newsdata[i].info.innerHTML.indexOf("class=") !== -1){                
-                newsdata[i].info.innerHTML = newsdata[i].info_text;
+
+    function addSwitcher() {
+        var count = Math.ceil(elementsToShow.length/newsInPage);
+        var html = '';
+        var active = '';
+        for(var i = 1; i<=count;i++){
+            if(i==pageNUmber){
+                html += '<div class="button switcher switcher-active"  onclick="switchPage('+ i +')">'+ i +'</div>';
+
+            }else{
+                html += '<div class="button switcher"  onclick="switchPage('+ i +')">'+ i +'</div>';
             }
         }
+        pageSwitcher.innerHTML = html;
     }
 </script>

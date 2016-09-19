@@ -1,149 +1,194 @@
 
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-<url>
-<loc>http://lukaszmical.pl/projects/show/squash</loc>
-<lastmod>2016-08-30</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1</priority>
-</url>
-<url>
-<loc>http://lukaszmical.pl/projects/show/tetris</loc>
-<lastmod>2016-08-30</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1</priority>
-</url>
-<url>
-<loc>http://lukaszmical.pl/projects/show/billiards</loc>
-<lastmod>2016-08-30</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1</priority>
-</url>
-<url>
-<loc>http://lukaszmical.pl/projects/show/temp</loc>
-<lastmod>2016-08-30</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1</priority>
-</url>
-<url>
-<loc>http://lukaszmical.pl/projects/show/photo</loc>
-<lastmod>2016-08-30</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1</priority>
-</url>
-<url>
-<loc>http://lukaszmical.pl/projects/show/jigsaw</loc>
-<lastmod>2016-08-30</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1</priority>
-</url>
-<url>
-<loc>http://lukaszmical.pl/projects/show/record</loc>
-<lastmod>2016-08-30</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1</priority>
-</url>
-<url>
-<loc>http://lukaszmical.pl/projects/show/gauss</loc>
-<lastmod>2016-08-30</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1</priority>
-</url>
-<url>
-<loc>http://lukaszmical.pl/projects/show/hangman</loc>
-<lastmod>2016-08-30</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1</priority>
-</url>
-<url>
-<loc>http://lukaszmical.pl/projects/show/clock</loc>
-<lastmod>2016-08-30</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1</priority>
-</url>
-<url>
-<loc>http://lukaszmical.pl/projects/show/photofilter</loc>
-<lastmod>2016-08-30</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1</priority>
-</url>
-<url>
-<loc>http://lukaszmical.pl/projects/show/animate</loc>
-<lastmod>2016-08-30</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1</priority>
-</url>
-<url>
-<loc>http://lukaszmical.pl/projects/show/mp3player</loc>
-<lastmod>2016-08-30</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1</priority>
-</url>
-<url>
-<loc>http://lukaszmical.pl/projects/show/stayalive</loc>
-<lastmod>2016-08-30</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1</priority>
-</url>
-<url>
-<loc>http://lukaszmical.pl/projects/show/rubikscube</loc>
-<lastmod>2016-08-30</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1</priority>
-</url>
-<url>
-<loc>http://lukaszmical.pl/projects/show/puzzles</loc>
-<lastmod>2016-08-30</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1</priority>
-</url>
-<url>
-<loc>http://lukaszmical.pl/projects/show/draw</loc>
-<lastmod>2016-08-30</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1</priority>
-</url>
-<url>
-<loc>http://lukaszmical.pl/projects/show/plot</loc>
-<lastmod>2016-08-30</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1</priority>
-</url>
-<url>
-<loc>http://lukaszmical.pl/projects/show/graph</loc>
-<lastmod>2016-08-30</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1</priority>
-</url>
-<url>
-<loc>http://lukaszmical.pl/projects/show/flappy</loc>
-<lastmod>2016-08-30</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1</priority>
-</url>
-<url>
-<loc>http://lukaszmical.pl/projects/show/math</loc>
-<lastmod>2016-08-30</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1</priority>
-</url>
-<url>
-<loc>http://lukaszmical.pl/webstuff</loc>
-<lastmod>2016-08-30</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1</priority>
-</url>
-<url>
-<loc>http://lukaszmical.pl/projects</loc>
-<lastmod>2016-08-30</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1</priority>
-</url>
-<url>
-<loc>http://lukaszmical.pl/</loc>
-<lastmod>2016-08-30</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1</priority>
-</url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>http://lukaszmical.pl/projects/show/squash</loc>
+        <lastmod>2016-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>http://lukaszmical.pl/projects/show/tetris</loc>
+        <lastmod>2016-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>http://lukaszmical.pl/projects/show/billiards</loc>
+        <lastmod>2016-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>http://lukaszmical.pl/projects/show/temp</loc>
+        <lastmod>2016-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>http://lukaszmical.pl/projects/show/photo</loc>
+        <lastmod>2016-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>http://lukaszmical.pl/projects/show/jigsaw</loc>
+        <lastmod>2016-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>http://lukaszmical.pl/projects/show/record</loc>
+        <lastmod>2016-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>http://lukaszmical.pl/projects/show/gauss</loc>
+        <lastmod>2016-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>http://lukaszmical.pl/projects/show/hangman</loc>
+        <lastmod>2016-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>http://lukaszmical.pl/projects/show/clock</loc>
+        <lastmod>2016-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>http://lukaszmical.pl/projects/show/animate</loc>
+        <lastmod>2016-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>http://lukaszmical.pl/projects/show/photofilter</loc>
+        <lastmod>2016-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>http://lukaszmical.pl/projects/show/puzzles</loc>
+        <lastmod>2016-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>http://lukaszmical.pl/projects/show/stayalive</loc>
+        <lastmod>2016-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>http://lukaszmical.pl/projects/show/rubikscube</loc>
+        <lastmod>2016-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>http://lukaszmical.pl/projects/show/draw</loc>
+        <lastmod>2016-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>http://lukaszmical.pl/projects/show/mp3player</loc>
+        <lastmod>2016-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>http://lukaszmical.pl/projects/show/math</loc>
+        <lastmod>2016-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>http://lukaszmical.pl/projects/show/flappy</loc>
+        <lastmod>2016-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>http://lukaszmical.pl/projects/show/plot</loc>
+        <lastmod>2016-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>http://lukaszmical.pl/projects/show/graph</loc>
+        <lastmod>2016-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>http://lukaszmical.pl/curiosities/index/hackingnews</loc>
+        <lastmod>2016-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>http://lukaszmical.pl/curiosities/index/unknownews</loc>
+        <lastmod>2016-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>http://lukaszmical.pl/curiosities/index/webstuff</loc>
+        <lastmod>2016-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>http://lukaszmical.pl/curiosities</loc>
+        <lastmod>2016-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>http://lukaszmical.pl/projects</loc>
+        <lastmod>2016-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>http://lukaszmical.pl/</loc>
+        <lastmod>2016-09-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+
 </urlset>
+
