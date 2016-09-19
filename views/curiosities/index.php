@@ -50,7 +50,7 @@
     <a href="<?= $info['tagUrl']?>"><?= $info['tag']?></a>
     <br>
     <br>
-    <input name="search" type="search" id="news-search" autocomplete="off">
+    <input title="search" name="search" type="search" id="news-search" autocomplete="off">
 </div>
 
 <?php foreach ($curiosities as $web):?>

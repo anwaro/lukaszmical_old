@@ -6,11 +6,10 @@ $this->title = "Panel administaracyjny";
     .progress{
         display: block;
         width: 100%;
-        margin: auto;
         border: 1px solid #282828;
         border-radius: 10px;
         height: 20px;
-        margin-top: 10px;
+        margin: 10px auto auto;
         background: #b3b3b3;
     }
     .progress-inside{
@@ -48,9 +47,9 @@ $this->title = "Panel administaracyjny";
 
 <div class="row-box">
     <h3 style="margin-top: 60px;">Dodaj projekt</h3>
-    <form action="{%url%}/admin/add" method="POST">
+    <form action="{%url%}projects/add" method="POST">
         <p>Nazwa projektu</p>
-        <input type="text" name="url" >
+        <input type="text" name="url" title="url" autocomplete="off">
         <input type="submit" value="Dodaj">
     </form>
 </div>

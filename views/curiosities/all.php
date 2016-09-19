@@ -1,4 +1,8 @@
 <?php
+/* @var base\View $this  */
+/* @var string $type  */
+/* @var array $curiosities */
+
 
 $this->title = "Wszystkie wpisy";
 ?>
@@ -24,7 +28,9 @@ $this->title = "Wszystkie wpisy";
     <a class="button" href="{%url%}curiosities/index/unknownews/all">#unknownews</a>
     <a class="button" href="{%url%}curiosities/index/hackingnews/all">#hackingnews</a>
 </div>
+
 <br><br>
+
 <table id='pr-list'>
 <?php foreach ($curiosities as $web): ?>
     <tr>
@@ -32,7 +38,7 @@ $this->title = "Wszystkie wpisy";
         <td><?=$web["links"]?></td>
         <td><?=$web["date"]?></td>
         <td><a href = "{%url%}curiosities/edit/<?= $type ?>/<?= $web["id"]?>">Edytuj dane</a> </td>
-        <td><a href = "{%url%}curiosities/remove/<?= $type ?>/<?= $web["id"]?>">Usuń</a><br></td>
+        <td><a href = "{%url%}curiosities/delete/<?= $type ?>/<?= $web["id"]?>">Usuń</a><br></td>
     </tr>
 <?php endforeach;?>
 </table>

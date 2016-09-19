@@ -1,5 +1,5 @@
 <?php
-/* @var $this View */
+/* @var $this base\View */
 /* @var $projects array */ 
 
 $this->setTitle('Projekty');
@@ -26,7 +26,7 @@ $this->setTitle('Projekty');
                                 <img itemprop='image' src='{%url%}web/images/projects/<?= $project["photo"];?>' alt='<?= $project["descr"];?>' />
                             </a>
                             <h3><a itemprop='url' href='{%url%}projects/show/<?= $project["url"];?>'><?= $project["name"];?></a></h3>
-                            <p><?= $project["descr"];?> </p>
+                            <p><?= $project["description"];?> </p>
                        </article>
                     </div>   
                 <?php $row++;?>

@@ -1,4 +1,7 @@
-<?php 
+<?php
+/* @var base\View $this  */
+/* @var string $type  */
+
 
 $this->title = "Dodaj nowy wpis";
 ?>
@@ -11,10 +14,10 @@ $this->title = "Dodaj nowy wpis";
 <div class="row-box">
     <form action="{%url%}curiosities/add/<?= $type ?>" method="POST">
         <b>Text:</b>
-        <textarea  name="text" ></textarea><br>
+        <textarea title="text" name="text" ></textarea><br>
 
         <b>Urls</b> <small>(odzielone ;) </small>:
-        <input type="text" name="links" ><br>
+        <input title="links" type="text" name="links" ><br>
             <input type="submit" name="add_webstuff">
     </form>
 </div>

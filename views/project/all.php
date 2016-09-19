@@ -1,4 +1,6 @@
 <?php
+/* @var $this base\View */
+/* @var $projects array */
 
 $this->title = "Wszystkie projekty";
 ?>
@@ -20,13 +22,13 @@ $this->title = "Wszystkie projekty";
 </style>
 <div class="row-box">
     <table id='pr-list'>
-    <?php foreach ($list as $proj):?>
-    <?php $show = $proj["display"] ? "":"(ukryty)"; ?>
+    <?php foreach ($projects as $project):?>
+    <?php $show = $project["display"] ? "":"(ukryty)"; ?>
         <tr>
-            <td><img src="{%url%}web/images/projects/<?= $proj["photo"] ?>" height="50"></td>
-            <td><a href = "{%url%}projects/show/<?= $proj["url"] ?>"><?= $proj["name"] ?></a> <?= $show ?></td>
-            <td><a href = "{%url%}projects/edit/<?= $proj["id"] ?>">Edytuj dane</a> </td>
-            <td><a href = "{%url%}projects/delete/<?= $proj["id"] ?>">Usuń (wyłączone)</a></td>
+            <td><img src="{%url%}web/images/projects/<?= $project["photo"] ?>" height="50"></td>
+            <td><a href = "{%url%}projects/show/<?= $project["url"] ?>"><?= $project["name"] ?></a> <?= $show ?></td>
+            <td><a href = "{%url%}projects/edit/<?= $project["id"] ?>">Edytuj dane</a> </td>
+            <td><a href = "{%url%}projects/delete/<?= $project["id"] ?>">Usuń (wyłączone)</a></td>
         </tr>            
     <?php endforeach;?>
     </table>

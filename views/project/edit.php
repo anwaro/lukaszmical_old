@@ -5,7 +5,7 @@ $this->title = "Edytuj informacje o projekcie";
     <form action="{%url%}projects/edit/<?= $info["id"];?>" method="POST">
         Url: <input type="text" name="url" value="<?= $info["url"]; ?>"><br>
         Nazwa: <input type="text" name="name" value="<?= $info["name"]; ?>"><br>
-        Opis: <input type="text" name="descr" value="<?= $info["descr"]; ?>"><br>
+        Opis: <input type="text" name="descr" value="<?= $info["description"]; ?>"><br>
         Zdjęcie: <input type="text" name="photo" value="<?= $info["photo"]; ?>"><br>
         Css: <input type="text" name="css" value="<?= $info["css"]; ?>"><br>
         Js: <input type="text" name="js" value="<?= $info["js"]; ?>"><br>
