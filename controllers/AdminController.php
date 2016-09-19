@@ -18,13 +18,13 @@ class AdminController extends Controller {
     function actionLogin(){   
         $info = '';
         if(Lii::$app->request->post()){
-            $model = (new Admin())->find('name', '=', 'admin');
+            $model = (new Admin())->findOne('name', '=', 'admin');
             
             $pass = Lii::$app->request->post("password");
             $hash = $model->password;
             
             if(Lii::$app->user->validPass($pass, $hash)){
-                Lii::$app->user->login($model->getRow());
+                Lii::$app->user->login($model->getAttributes());
                 return $this->actionIndex();
             }
             else {

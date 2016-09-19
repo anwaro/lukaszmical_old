@@ -3,6 +3,7 @@
 namespace db;
 
 
+
 /**
  * Class ActiveRecord
  * @package db
@@ -13,7 +14,7 @@ class ActiveRecord extends ActiveRecordAbstract
     /**
      * @var array
      */
-    private $_columns = [];
+    private $_attributes = [];
 
     /**
      * @var string
@@ -41,7 +42,12 @@ class ActiveRecord extends ActiveRecordAbstract
     public function __get($name)
     {
         if (in_array($name, $this->getTableColumns())) {
-            return $this->_columns[$name];
+            if(isset($this->_attributes[$name])){
+                return $this->_attributes[$name];
+            }
+            else{
+                return NULL;
+            }
         } else {
             throw new \Exception("Undefined index: " . $name . " ");
         }
@@ -55,11 +61,17 @@ class ActiveRecord extends ActiveRecordAbstract
     public function __set($name, $value)
     {
         if (in_array($name, $this->getTableColumns())) {
-            $this->_columns[$name] = $value;
+            $this->_attributes[$name] = $value;
         } else {
             throw new \Exception("Undefined index: " . $name . " ");
         }
     }
+
+    public function __isset($name)
+    {
+        return isset($this->_attributes[$name]);
+    }
+
 
     /**
      * @return $this
@@ -68,9 +80,9 @@ class ActiveRecord extends ActiveRecordAbstract
     {
         $this->_db
             ->to($this->getTableName())
-            ->insert($this->_columns);
+            ->insert($this->_attributes);
         $id = $this->_db->lastId();
-        $this->load($this->one($id));
+        $this->load(["id" => $id]);
         return $this;
     }
 
@@ -81,7 +93,7 @@ class ActiveRecord extends ActiveRecordAbstract
     {
         $this->_db
             ->update($this->getTableName())
-            ->set($this->_columns)
+            ->set($this->_attributes)
             ->exec();
         return $this;
 
@@ -125,7 +137,7 @@ class ActiveRecord extends ActiveRecordAbstract
      * @param string|int $val
      * @return $this
      */
-    public function find($col, $sign = NULL, $val = NULL)
+    public function findOne($col, $sign = NULL, $val = NULL)
     {
         $this->load($this->one($col, $sign, $val));
         $this->_action = 'UPDATE';
@@ -242,14 +254,14 @@ class ActiveRecord extends ActiveRecordAbstract
         $colsName = $this->getTableColumns();
         foreach ($value as $key => $val) {
             if (in_array($key, $colsName)) {
-                $this->_columns[$key] = $val;
+                $this->_attributes[$key] = $val;
             }
         }
         return $this;
     }
 
     /**
-     * @return ActiveRecord
+     * @return $this|ActiveRecord
      */
     public function save()
     {
@@ -259,6 +271,31 @@ class ActiveRecord extends ActiveRecordAbstract
             case 'UPDATE':
                 return $this->_update();
         }
+        return $this;
+    }
+
+    /**
+     * @param mixed $col
+     * @param string $sign
+     * @param mixed $val
+     * @throws \InvalidArgumentException
+     * @return $this
+     */
+    public function delete($col = NULL, $sign = NULL, $val = NULL)
+    {
+        if(!is_null($val)){
+            $this->_db->where($col, $sign, $val);
+        }
+        elseif (!is_null($col)){
+            $this->_db->where('id', '=', $col);
+        }
+        elseif (is_null($col) && isset($this->id)){
+            $this->_db->where('id', '=', $this->id);
+        }
+        else{
+            throw new \InvalidArgumentException('Condition not set');
+        }
+        $this->_db->delete();
         return $this;
     }
 
@@ -273,8 +310,8 @@ class ActiveRecord extends ActiveRecordAbstract
     /**
      * @return array
      */
-    public function getRow()
+    public function getAttributes()
     {
-        return $this->_columns;
+        return $this->_attributes;
     }
 }

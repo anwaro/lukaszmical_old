@@ -31,9 +31,9 @@ class Request {
     
     /**
      * 
-     * @param type $name
-     * @param type $defaultValue
-     * @return type
+     * @param string $name
+     * @param mixed $defaultValue
+     * @return mixed
      */
     public function post($name = null, $defaultValue = NULL)
     {
@@ -43,7 +43,12 @@ class Request {
             return $this->getBodyParam($name, $defaultValue);
         }
     }
-    
+
+    /**
+     * @param null $name
+     * @param null $defaultValue
+     * @return null
+     */
     public function get($name = null, $defaultValue = null){
         if ($name === null) {
             return $this->getQueryParams();
@@ -52,17 +57,24 @@ class Request {
         }
     }
 
+    /**
+     * @param $name
+     * @param null $defaultValue
+     * @return null
+     */
     public function getQueryParam($name, $defaultValue = null){
         $params = $this->getQueryParams();
 
         return isset($params[$name]) ? $params[$name] : $defaultValue;
     }
-    
+
+    /**
+     * @return mixed
+     */
     public function getQueryParams(){
         if ($this->_queryParams === null) {
             return $_GET;
         }
-
         return $this->_queryParams;
     }
     
@@ -85,9 +97,9 @@ class Request {
     
     /**
      * 
-     * @param type $name
-     * @param type $defaultValue
-     * @return type 
+     * @param string|null $name
+     * @param mixed $defaultValue
+     * @return mixed
      */
     public function getBodyParam($name=NULL, $defaultValue = NULL){
         $params= filter_input_array(INPUT_POST);
@@ -98,7 +110,9 @@ class Request {
         }
     }
 
-
+    /**
+     * @return string
+     */
     public function getUrl()
     {
         if ($this->_url === null) {
@@ -107,7 +121,11 @@ class Request {
 
         return $this->_url;
     }
-    
+
+    /**
+     * @return mixed|string
+     * @throws \Error
+     */
     protected function resolveRequestUri()
     {
         if (isset($_SERVER['HTTP_X_REWRITE_URL'])) { // IIS
@@ -123,7 +141,7 @@ class Request {
                 $requestUri .= '?' . $_SERVER['QUERY_STRING'];
             }
         } else {
-            throw new InvalidConfigException('Unable to determine the request URI.');
+            throw new \Error('Unable to determine the request URI.');
         }
 
         return $requestUri;

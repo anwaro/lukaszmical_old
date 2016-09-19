@@ -48,7 +48,7 @@ class SongController extends Controller {
                     $song =  $model->one($max);
                 }
                 else{
-                    $song = $model->prev($id)->getRow();
+                    $song = $model->prev($id)->getAttributes();
                 }
                 break;
             case "NEXT":
@@ -56,7 +56,7 @@ class SongController extends Controller {
                     $song =  $model->one($min);
                 }
                 else{
-                    $song = (new Song())->next($id)->getRow();
+                    $song = (new Song())->next($id)->getAttributes();
                 }
                 break;
             default:

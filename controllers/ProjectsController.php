@@ -28,31 +28,40 @@ class ProjectsController extends Controller {
             "projects" => $model->getAll(),
         ]);        
     }
-    
-    
-    function actionShow($name) { 
-        $model = new Projects();
-        $info = $model->getInfo($name);
+
+    /**
+     * @param string $url
+     * @return string
+     */
+    function actionShow($url) {
+        $model = (new Projects())->findOne('url', '=', $url);
         
-        $this->setTitle("Projects | ".$info["name"]);        
-        $this->setOgTags($info);        
-        $this->addJs(explode(";", $info["js"]));
-        $this->addCss(explode(";", $info["css"]));
-        $this->setTemplate($info["template"]);   
+        $this->setTitle("Projects | ".$model->name);
+        $this->setOgTags($model->getAttributes());
+        $this->addJs(explode(";", $model->js));
+        $this->addCss(explode(";", $model->css));
+        $this->setTemplate($model->template);
         
-        return $this->render("projects/" . $info["url"]);
+        return $this->render("projects/" . $model->url);
     }
-    
-     public function actionAll() {
+
+    /**
+     * @return mixed
+     */
+    public function actionAll() {
         $model = new Projects();        
         
         return $this->render('project/all',[
-            "list" => $model->all()
+            "projects" => $model->all()
         ]);
     }
-    
+
+    /**
+     * @param $id
+     * @return string
+     */
     public function actionEdit($id) {
-        $model = (new Projects())->find($id);    
+        $model = (new Projects())->findOne($id);
         
         if(Lii::$app->request->post()){
             $model->load(Lii::$app->request->post());
@@ -60,30 +69,36 @@ class ProjectsController extends Controller {
         }
         
         return $this->render('project/edit', [
-            "info" => $model->getRow(),
+            "info" => $model->getAttributes(),
         ]);
     }
-    
+
+    /**
+     * @param $name
+     * @return mixed
+     */
     public function actionDelete($name) {
-        $this->model->deleteProject($name);
-        return $this->actionAll();
+
     }
-    
+
+    /**
+     * @return string
+     */
     public function actionAdd() {
-        $projUrl = Lii::$app->request->post('url', '');
-        $model = new Projects();  
+        $projectUrl = Lii::$app->request->post('url', '');
         
         if(Lii::$app->request->post('add')){
+            $model = new Projects();
             $model->load(Lii::$app->request->post());
             $model->date = date("Y-m-d");
             $model->save();            
             return $this->render('project/edit', [
-                "info" => $model->getRow(),
+                "info" => $model->getAttributes(),
             ]);
         }
         else{
             return $this->render('project/add', [
-                "projUrl" => $projUrl
+                "projectUrl" => $projectUrl
             ]);
         }        
     }    

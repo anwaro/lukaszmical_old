@@ -8,6 +8,10 @@ use db\Db;
 /**
  * Description of webstuff_model
  *
+ * @property integer $is
+ * @property string $text
+ * @property string $links
+ * @property string $date
  * @author lukasz
  */
 class Curiosities extends ActiveRecord {
@@ -31,9 +35,5 @@ class Curiosities extends ActiveRecord {
             'links',
             'date',
         ];
-    }
-
-    public function remove($id) {
-        return $this->db()->delete("webstuff", "id=". intval($id));
     }
 }

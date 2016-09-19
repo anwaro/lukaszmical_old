@@ -3,6 +3,20 @@ namespace base;
 
 use Lii;
 
+
+/**
+ * Class View
+ * @package base
+ * @property string $title
+ * @property string $js
+ * @property string $title
+ * @property string $meta
+ * @property string $content
+ * @property string $css
+ * @property string $url
+ * @property string $image
+ * @property string $descr
+ */
 class View{
     
     protected $_template = '';
@@ -14,14 +28,13 @@ class View{
         "content" => "",
         "css" => "",       
         "url" => "",
-        "fullurl"=> "",
         "image" => "web/images/stat/logo256.jpg",
         "descr" => "Małe projekty wykonane w js, html5, css"
     );
     /**
      * 
-     * @param type $name
-     * @param type $value
+     * @param string $name
+     * @param string $value
      */  
     public function __set($name, $value) {
         $this->components[$name] = $value;
@@ -29,8 +42,8 @@ class View{
     
     /**
      * 
-     * @param type $name
-     * @return type
+     * @param string $name
+     * @return string
      */
     public function __get($name) {
         return $this->components[$name];        
@@ -38,7 +51,7 @@ class View{
     
     /**
      * 
-     * @param type $name
+     * @param string $name
      */
     public function setTemplate($name){
         $this->_template = $name;
@@ -46,26 +59,28 @@ class View{
     
     /**
      * 
-     * @return type
+     * @return string
      */
     public function getTemplate(){
         $temp = strlen($this->_template) ? $this->_template . "." : "";
         return "views/template." . $temp . "php";
     }
         
-    public function renderContent($content, $varible = []) {
-        $this->_renderedContent = $this->render($content, $varible, FALSE);
+    public function renderContent($content, $variables = []) {
+        return $this->render($content, $variables, FALSE);
     }
-    
+
     /**
-     * 
-     * @param type $content
+     * @param $content
+     * @param array $variables
+     * @param bool $renderWithTemplate
+     * @return string
      */
-    public function render($content, $varible = [], $renderWithTemplate = TRUE) {
+    public function render($content, $variables = [], $renderWithTemplate = TRUE) {
         $this->beforeRender();
         $viewName = 'views/' . $content . '.php'; 
         
-        $renderContent = $this->_render($viewName, $varible);        
+        $renderContent = $this->_render($viewName, $variables);
         
         $finalRender = $renderContent;
         if($renderWithTemplate){
@@ -76,13 +91,22 @@ class View{
         }
         return $finalRender;
     }
+
+    /**
+     *
+     */
     public function beforeRender() {
         $this->components["url"] = Lii::params('url');
     }
- 
-    protected function _render($viewName, $varible) {
+
+    /**
+     * @param $viewName
+     * @param $variables
+     * @return string
+     */
+    protected function _render($viewName, $variables) {
         ob_start();
-        foreach ($varible as $varName => $var) {
+        foreach ($variables as $varName => $var) {
             $$varName = $var;
         }
         require $viewName;          
@@ -106,7 +130,7 @@ class View{
     }
     /**
      * 
-     * @param type $name
+     * @param string $name
      */
     private function _addJs($name) {
         $this->components["js"] .= sprintf(
@@ -140,8 +164,8 @@ class View{
 
     /**
      * 
-     * @param type $key
-     * @param type $value
+     * @param string $key
+     * @param string $value
      */
     public function addMataData($key, $value){
         $this->components["metadata"].= '<meta name="'.$key.'" content="'.$value.'" />'."\n\t\t";
@@ -149,7 +173,7 @@ class View{
 
     /**
      * 
-     * @param type $title
+     * @param string $title
      */
     public function setTitle($title) {
         $this->components["title"]=$title;
@@ -157,17 +181,17 @@ class View{
     
     /**
      * 
-     * @param type $info
+     * @param string $info
      */
     public function setOgTags($info) {
         $this->components["image"] = Lii::params("path/proj_image") . "/" . $info["photo"];
-        $this->components["descr"] = $info["descr"];        
+        $this->components["description"] = $info["description"];
     }
 
     /**
      * 
-     * @param type $name
-     * @return type
+     * @param string $name
+     * @return string
      */
     private function getComponents($name) {
         return $this->components[$name[1]];        

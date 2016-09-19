@@ -5,6 +5,7 @@ namespace app\controllers;
 use base\Controller;
 use models\Curiosities;
 use Lii;
+use models\Projects;
 
 class CuriositiesController extends Controller {
         
@@ -49,8 +50,8 @@ class CuriositiesController extends Controller {
     }
     
     function actionEdit($type, $id){   
-        $model = (new Curiosities($type))->find($id);
-        $webstuffOld = $model->getRow();      
+        $model = (new Curiosities($type))->findOne($id);
+        $webstuffOld = $model->getAttributes();
         
         if(Lii::$app->request->isPost()){
             $model->load(Lii::$app->request->post());
@@ -59,21 +60,22 @@ class CuriositiesController extends Controller {
         
         return $this->render('curiosities/edit', [
             '_web' => $webstuffOld,
-            'web' => $model->getRow(),
+            'web' => $model->getAttributes(),
             'type' => $type,
         ]);
     }
     
     
-    function actionRemove($id){
+    function actionDelete($type, $id){
+        $model = new Curiosities($type);
         $removed = False;
-        $webstuff = $this->one($id);
-        if($this->model->is_post("remove_webstuff")){
-            $this->model->remove($id);
+        $model->findOne($id);
+        if(Lii::$app->request->isPost()){
+            $model->delete();
             $removed = True;
         }
-        return $this->render('curiosities/remove', [
-            'web' => $webstuff,
+        return $this->render('curiosities/delete', [
+            'web' => $model->getAttributes(),
             'removed' => $removed,
             'type' => $type,
         ]);

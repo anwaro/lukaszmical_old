@@ -5,6 +5,23 @@ namespace models;
 use db\ActiveRecord;
 use Lii;
 
+/**
+ * Class Projects
+ * @package models
+ * @property int $id
+ * @property string $url
+ * @property string  $name
+ * @property string  $description
+ * @property string  $photo
+ * @property string  $css
+ * @property string  $js
+ * @property int  $mark
+ * @property int  $mark_count
+ * @property string  $date
+ * @property string  $last_update
+ * @property int  $display
+ * @property string  $template
+ */
 class Projects extends ActiveRecord {
 
     public function getTableName() {
@@ -16,12 +33,12 @@ class Projects extends ActiveRecord {
             "id",
             "url",
             "name",
-            "descr",
+            "description",
             "photo",
             "css",
             "js",
             "mark",
-            "numer_mark",
+            "mark_count",
             "date",
             "last_update",
             "display",
@@ -31,26 +48,15 @@ class Projects extends ActiveRecord {
 
     public function getAll() {        
         return $this->db()
-                ->select('*')
                 ->from($this->getTableName())
                 ->where('display', '=', 1)
                 ->orderBy('mark', 'DESC')
                 ->all();        
     }
-    
-    public function getInfo($url) {
-        $result = $this->db()
-            ->select('*')
-            ->from($this->getTableName())
-            ->where('url', '=', $url)
-            ->one();
-        
-        return $result;
-    }
+
 
     public function getBestProjects() {
         $result = $this->db()
-            ->select('*')
             ->from($this->getTableName())
             ->where('display', '=', 1)
             ->orderBy('mark', 'DESC')
