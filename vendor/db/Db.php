@@ -11,21 +11,20 @@ namespace db;
 class Db
 {
     private $_table;
-    private $_columns = [];
+    private $_columns = ['*'];
     private $_conditions = [];
-    private $_limit = [];
+    private $_limit = [NULL, NULL];
     private $_orderBy = [];
-    private $_offSet;
 
     private $_conditionVal = [];
     private $_updateData = [];
     private $_insertData = [];
 
 
-    private $_action = '';
+    private $_action = 'SELECT';
     private $_db;
-    private $_sql = '';
-    private $_lastSql = '';
+    private $_sql;
+    private $_lastSql;
     private $_lastId;
 
 
@@ -64,10 +63,15 @@ class Db
         $sql .= ' SET ' . $this->_prepareFieldDetails();
         $sql .= $this->_prepareConditions('conditions_');
         $this->_sql = $sql;
+    }
 
-        foreach ($this->_conditions as $condition) {
-            $this->_conditionVal[$condition[0]] = $condition[2];
-        }
+    private function _prepareDelete()
+    {
+        $sql = 'DELETE FROM ';
+        $sql .= $this->_table;
+        $sql .= $this->_prepareConditions();
+        $sql .= $this->_prepareLimit();
+        $this->_sql = $sql;
     }
 
     private function _prepareFieldDetails()
@@ -88,9 +92,15 @@ class Db
     private function _prepareLimit()
     {
         $limit = '';
-        if (count($this->_limit)) {
+        if(!is_null($this->_limit[0])&& !is_null($this->_limit[1])){
+            $limit .= ' LIMIT ' . $this->_limit[1];
+            $limit .= ', ' . $this->_limit[0];
+        }
+        elseif (!is_null($this->_limit[0])){
             $limit .= ' LIMIT ' . $this->_limit[0];
-            $limit .= ', ' . $this->_limit[1];
+        }
+        elseif (!is_null($this->_limit[1])){
+            $limit .= ' OFFSET ' . $this->_limit[1];
         }
         return $limit;
     }
@@ -105,7 +115,6 @@ class Db
         $this->_conditions = [];
         $this->_limit = [];
         $this->_orderBy = [];
-        $this->_offSet = '';
         $this->_action = '';
     }
 
@@ -197,7 +206,7 @@ class Db
                 $this->_lastId = $this->db()->lastId();
                 break;
             case 'DELETE':
-                $result = $this->db()->select($this->_sql);
+                $result = $this->db()->deleteNew($this->_sql, $this->_conditionVal);
                 $this->_lastId = $this->db()->lastId();
                 break;
             default:
@@ -223,6 +232,17 @@ class Db
         return $this;
     }
 
+    public function addSelect($col)
+    {
+        $this->_action = 'SELECT';
+        if (is_array($col)) {
+            $this->_columns = array_merge($this->_columns, $col);
+        } else {
+            array_push($this->_columns, $col);
+        }
+        return $this;
+    }
+
     /**
      *
      * @param string $name
@@ -236,16 +256,28 @@ class Db
     }
 
     /**
-     *
-     * @param array $params
+     * @param $params
+     * @return $this
      */
     public function insert($params)
     {
         $this->_action = 'INSERT';
         $this->_insertData = $params;
         $this->exec();
-
+        return $this;
     }
+
+    /**
+     * @return $this
+     */
+    public function delete()
+    {
+        $this->_action = 'DELETE';
+        $this->_prepareDelete();
+        $this->exec();
+        return $this;
+    }
+
 
     /**
      *
@@ -308,17 +340,27 @@ class Db
 
     /**
      *
-     * @param int $limit1
-     * @param int $limit2
+     * @param int $limit LIMIT
+     * @param int $offset OFFSET
      * @return \db\Db
      */
-    public function limit($limit1, $limit2 = NULL)
+    public function limit($limit, $offset = NULL)
     {
-        if ($limit2 == NULL) {
-            $this->_limit = [0, $limit1];
+        if (is_null($offset)) {
+            $this->_limit[0] = $limit;
         } else {
-            $this->_limit = [$limit1, $limit2];
+            $this->_limit = [$limit, $offset];
         }
+        return $this;
+    }
+
+    /**
+     * @param int $offset
+     * @return $this
+     */
+    public function offset($offset)
+    {
+        $this->_limit[1] = $offset;
         return $this;
     }
 
@@ -330,16 +372,6 @@ class Db
     public function orderBy($col, $sort = 'ASC')
     {
         $this->_orderBy = [$col, $sort];
-        return $this;
-    }
-
-    /**
-     * @param $val
-     * @return $this
-     */
-    public function offSet($val)
-    {
-        $this->_offSet = $val;
         return $this;
     }
 
@@ -358,7 +390,7 @@ class Db
      */
     public function one()
     {
-        $this->_limit = [0, 1];
+        $this->limit(1);
         $this->_prepareSelect();
         $result = $this->exec();
         return $result[0];

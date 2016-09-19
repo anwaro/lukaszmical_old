@@ -29,27 +29,57 @@ class Database extends \PDO
     public function getSql() {
         return $this->_lastSql;
     }
-    
-    private function _bind($sth, $data, $prfix=''){        
+
+    /**
+     * @param \PDOStatement $sth
+     * @param array $data
+     * @param string $prefix
+     * @return \PDOStatement
+     */
+    private function _bind($sth, $data, $prefix=''){
         foreach ($data as $key => $value) {
-            $sth->bindValue(":$prfix"."$key", "$value");
+            $sth->bindValue(":$prefix"."$key", "$value");
         }
         return $sth;
     }
-    
-    private function _bindSql($sql, $data, $prfix=''){        
+
+    /**
+     * @param string $sql
+     * @param array $data
+     * @param string $prefix
+     * @return string
+     */
+    private function _bindSql($sql, $data, $prefix=''){
         foreach ($data as $key => $value) {
-            $sql = str_replace(":$prfix"."$key", $value, $sql);
+            if(is_string($value)) $value = "'$value'";
+            $sql = str_replace(":$prefix"."$key", $value, $sql);
         }
         return $sql;
     }
 
     /**
-     * select
-     * @param string $sql An SQL string
-     * @param array $array Paramters to bind
-     * @param constant $fetchMode A \PDO Fetch mode
-     * @return mixed
+     * @param array $data
+     * @return string
+     */
+    private function _fieldName($data)
+    {
+        $fieldNames = implode('`, `', array_keys($data));
+        return "`$fieldNames`";
+    }
+
+    /**
+     * @param array $data
+     * @return string
+     */
+    private function _fieldVal($data)
+    {
+        return ':' . implode(', :', array_keys($data));
+    }
+    /**
+     * @param $sql
+     * @param array $array
+     * @param int $fetchMode
+     * @return array
      */
     public function select($sql, $array = [], $fetchMode = \PDO::FETCH_ASSOC)
     {
@@ -75,46 +105,43 @@ class Database extends \PDO
     {              
         $sth = $this->prepare($sql);
         
-        $sthData = $this->_bind($sth, $data);
-        $sqlData = $this->_bindSql($sql, $data);
+        $sthDataValid = $this->_bind($sth, $data);
+        $sqlDataValid = $this->_bindSql($sql, $data);
         
-        $sthDataWhere = $this->_bind($sthData, $where, 'conditions_');
-        $sqlDataWhere = $this->_bindSql($sqlData, $where, 'conditions_');  
+        $sthDataWhereValid = $this->_bind($sthDataValid, $where, 'conditions_');
+        $sqlDataWhereValid = $this->_bindSql($sqlDataValid, $where, 'conditions_');
         
-        $this->_lastSql = $sqlDataWhere;         
-        $sthDataWhere->execute();        
+        $this->_lastSql = $sqlDataWhereValid;
+        $sthDataWhereValid->execute();
     }  
     
     
     /**
      * insert
      * @param string $table A name of table to insert into
-     * @param string $data An associative array
+     * @param array $data An associative array
      */
     public function insert($table, $data)
     {
         ksort($data);
-        
-        $fieldNames = implode('`, `', array_keys($data));
-        $fieldValues = ':' . implode(', :', array_keys($data));
-        
-        $sth = $this->prepare("INSERT INTO $table (`$fieldNames`) VALUES ($fieldValues)");
-        $sql = "INSERT INTO $table (`$fieldNames`) VALUES ($fieldValues)";
-        
-        foreach ($data as $key => $value) {
-            $sth->bindValue(":$key", $value);
-            $sql = str_replace(":$key", $value, $sql);
-        }
-        
-        $this->_lastSql = $sql; 
-        
-        $sth->execute();
+
+        $fieldNames = $this->_fieldName($data);
+        $fieldValues = $this->_fieldVal($data);
+
+        $sql = "INSERT INTO $table ($fieldNames) VALUES ($fieldValues)";
+        $sth = $this->prepare($sql);
+
+        $sthValid = $this->_bind($sth, $data);
+        $sqlValid = $this->_bindSql($sql, $data);
+
+        $this->_lastSql = $sqlValid;
+        $sthValid->execute();
     }
     
     /**
      * update
      * @param string $table A name of table to insert into
-     * @param string $data An associative array
+     * @param array $data An associative array
      * @param string $where the WHERE query part
      */
     public function update($table, $data, $where)
@@ -125,10 +152,10 @@ class Database extends \PDO
         foreach($data as $key=> $value) {
             $fieldDetails .= "`$key`=:$key,";
         }
-        $fieldDetails = rtrim($fieldDetails, ',');        
-        
-        $sth = $this->prepare("UPDATE $table SET $fieldDetails WHERE $where");
-        $sql = "UPDATE $table SET $fieldDetails WHERE $condition";
+        $fieldDetails = rtrim($fieldDetails, ',');
+
+        $sql = "UPDATE $table SET $fieldDetails WHERE $where";
+        $sth = $this->prepare($sql);
         
         foreach ($data as $key => $value) {
             $sth->bindValue(":$key", "$value");
@@ -136,6 +163,17 @@ class Database extends \PDO
         }
         $this->_lastSql = $sql;         
         $sth->execute();        
+    }
+
+    public function deleteNew($sql, $where)
+    {
+        $sth = $this->prepare($sql);
+
+        $sthValid = $this->_bind($sth, $where);
+        $sqlValid = $this->_bindSql($sql, $where);
+
+        $this->_lastSql = $sqlValid;
+        $sthValid->execute();
     }
     
     /**
@@ -148,14 +186,12 @@ class Database extends \PDO
      */
     public function delete($table, $where, $limit = 1)
     {
-        
         $this->_lastSql = "DELETE FROM $table WHERE $where LIMIT $limit"; 
         return $this->exec("DELETE FROM $table WHERE $where LIMIT $limit");
     }
-    
+
     /**
-     * 
-     * @return type
+     * @return string
      */
     public function lastId() {
         return $this->lastInsertId();
