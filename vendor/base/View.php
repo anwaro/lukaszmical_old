@@ -7,7 +7,6 @@ use Lii;
 /**
  * Class View
  * @package base
- * @property string $title
  * @property string $js
  * @property string $title
  * @property string $meta
@@ -133,11 +132,14 @@ class View{
      * @param string $name
      */
     private function _addJs($name) {
-        $this->components["js"] .= sprintf(
-                "<script src='%sweb/js/%s.js'></script> \n\t\t", 
+        $name = str_replace(' ', '', $name);
+        if($name!=='') {
+            $this->components["js"] .= sprintf(
+                "<script src='%sweb/js/%s.js'></script> \n\t\t",
                 Lii::params("url"),
-                str_replace(" ", "",$name)
-                );
+                str_replace(" ", "", $name)
+            );
+        }
     }
 
     /**
@@ -155,11 +157,15 @@ class View{
     }
     
     private function _addCss($name){
-        $this->components["css"].= sprintf(
-                "<link rel='stylesheet' href='%sweb/css/%s.css' >\n\t\t", 
+        $name = str_replace(' ', '', $name);
+        if($name!==''){
+            $this->components["css"].= sprintf(
+                "<link rel='stylesheet' href='%sweb/css/%s.css' >\n\t\t",
                 Lii::params("url"),
                 str_replace(" ", "",$name)
-                );
+            );
+
+        }
     }
 
     /**
