@@ -176,7 +176,19 @@ colorpicker = function(elementId, callback){
         ctxColor.fillStyle = currentColor;
         ctxColor.fillRect( 0, 0, 40, 40);
     }
-    
+
+    function bodyClick(event){
+        var el = event.target;
+
+        if(el.isSameNode(element)
+            || el.isSameNode(colorPicker)
+            || el.parentNode.isSameNode(colorPicker))
+        {
+            return true;
+        }else{
+            colorPicker.style.display = "none";
+        }
+    }
     
     element.addEventListener("click", showColorPicker);
     canvasArea.addEventListener("click", areaClick);
@@ -193,7 +205,9 @@ colorpicker = function(elementId, callback){
     canvasBar.addEventListener("mousemove", function(event){barMouseDown&&barClick(event);});
     
     canvasArea.addEventListener("mouseleave", function(){areaMouseDown=false;});
-    canvasBar.addEventListener("mouseleave", function(){barMouseDown=false;});   
+    canvasBar.addEventListener("mouseleave", function(){barMouseDown=false;});
+
+    document.addEventListener('click', bodyClick);
     
     render();
 };

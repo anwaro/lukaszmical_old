@@ -177,15 +177,18 @@
         $("#content-block").delay(200).animate({opacity:1});
         
         $( "a" ).click(function( event ) {
+
             if(event.currentTarget.target !== "_blank"
-                && !/#/.test(event.currentTarget.href)){
-            event.preventDefault();
-            $("#content-block").animate(
+                && !/#/.test(event.currentTarget.href)
+                && event.button !== 1){
+
+                event.preventDefault();
+                $("#content-block").animate(
                     {opacity:0}, 
                     400,
                     function(){
                         window.location.assign(event.currentTarget.href);
-                        $("#content-block").delay(300).animate({opacity:1});
+                        // $("#content-block").delay(1000).animate({opacity:1});
                     });
             
             }

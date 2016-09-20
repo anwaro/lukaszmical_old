@@ -8,7 +8,7 @@ mp3player = new function(){
             displayRatio,
             topColor = "#32312F",
             defaultColor = "#191919",
-            play = true,
+            play = false,
             bufferEmpty = true,
             time,
             url="http://lukaszmical.pl/song/get/",
@@ -61,15 +61,13 @@ mp3player = new function(){
         prev = document.getElementById("prev");
         playStop = document.getElementById("play");
         volUp = document.getElementById("volUp");
-        volDown = document.getElementById("volDown");    
-        
+        volDown = document.getElementById("volDown");
         
         next.onmousedown = function(){onmouseDown(1);};
         next.onmouseup = function(){onmouseUp(1);};
         prev.onmousedown = function(){onmouseDown(-1);};
         prev.onmouseup = function(){onmouseUp(-1);};
         playStop.onclick = playStopSong;
-        
         
         volUp.onclick = function(){changeVolume(0.1);};
         volDown.onclick = function(){changeVolume(-0.1);};
@@ -127,7 +125,7 @@ mp3player = new function(){
     function bufferStartSong(){
         bufferEmpty = false;
         play = true;
-        currentSong.elem.play();  
+        currentSong.elem.play();
         
     }
     
@@ -164,27 +162,29 @@ mp3player = new function(){
         
         var currentTime = currentSong.elem.currentTime;
         var len = currentSong.elem.duration;
-        var bufor =0;
+        var buffer =0;
         
         if(Math.abs(len-currentTime)<0.1){
             playNextSong(1);
         }
         
-        
+
         try{
-            bufor= currentSong.elem.buffered.end(0);
+            buffer= currentSong.elem.buffered.end(0);
         }
         catch(IndexSizeError){}
-        
-        if(play && bufor-currentTime<2 &&len - currentTime >3){
+
+        bufferEmpty =len > 0 && currentSong.elem.paused && play;
+        /*
+        if(play && buffer-currentTime<2 &&len - currentTime >3 && currentTime>5){
             bufferStopSong();
         }
-        
-        
-        if(bufferEmpty && bufor-currentTime>8){
+
+
+        if(bufferEmpty && buffer-currentTime>5){
             bufferStartSong();
         }
-        
+        */
     }
     
     function displayPhoto(){
@@ -251,9 +251,9 @@ mp3player = new function(){
         
         
         
-        var bufor =0;
+        var buffer =0;
         try{
-            bufor= currentSong.elem.buffered.end(0)/len*(width-60);
+            buffer= currentSong.elem.buffered.end(0)/len*(width-60);
         }
         catch(IndexSizeError){
             
@@ -262,7 +262,7 @@ mp3player = new function(){
         ctx.beginPath();
         ctx.strokeStyle = '#C3C3C3';
         ctx.moveTo(30,height-16);
-        ctx.lineTo(30+bufor ,height-16);
+        ctx.lineTo(30+buffer ,height-16);
         ctx.stroke();
         
         
@@ -475,8 +475,8 @@ mp3player = new function(){
     
     function setData(el, info){
         el.id = parseInt(info['id']);
-        el.elem.src = songUrl+info["src"] + type;
-        el.src = songUrl+info["src"] + type;
+        el.elem.src = songUrl+info["src"] + type + "?v=" + Math.random();
+        el.src = songUrl+info["src"] + type + "?v=" + Math.random();
         el.photo= songUrl+info["cover"];
         el.artist =info["artist"];
         el.title = info["title"];
