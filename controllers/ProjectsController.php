@@ -73,12 +73,20 @@ class ProjectsController extends Controller {
         ]);
     }
 
-    /**
-     * @param $name
-     * @return mixed
-     */
-    public function actionDelete($name) {
 
+
+    function actionDelete($id){
+        $model = new Projects();
+        $removed = False;
+        $model->findOne($id);
+        if(Lii::$app->request->isPost()){
+            $model->delete();
+            $removed = True;
+        }
+        return $this->render('project/delete', [
+            'project' => $model->getAttributes(),
+            'removed' => $removed,
+        ]);
     }
 
     /**

@@ -1,5 +1,5 @@
 <?php
-    /* @var $this View */
+    /* @var $this base\View */
     /* @var $projects array */
 
     $this->title = 'Home';
@@ -44,10 +44,10 @@
                     <div class='4u'>
                        <article itemscope itemtype="http://schema.org/SoftwareApplication" class="box style2">
                             <a itemprop="url" href='{%url%}projects/show/<?= $project["url"];?>' class='image featured'>
-                                <img itemprop='image' src='{%url%}web/images/projects/<?= $project["photo"];?>' alt='<?= $project["descr"];?>' />
+                                <img itemprop='image' src='{%url%}web/images/projects/<?= $project["photo"];?>' alt='<?= $project["description"];?>' />
                             </a>
                             <h3><a itemprop='url' href='{%url%}projects/show/<?= $project["url"];?>'><?= $project["name"];?></a></h3>
-                            <p><?= $project["descr"];?> </p>
+                            <p><?= $project["description"];?> </p>
                        </article>
                     </div>   
                 <?php $row++;?>

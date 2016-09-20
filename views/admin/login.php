@@ -1,4 +1,6 @@
 <?php
+/* @var base\View $this */
+/* @var string $info */
 
 $this->title = "Logowanie do panelu";
 
@@ -8,7 +10,7 @@ $this->title = "Logowanie do panelu";
 </div>
 <div class="row-box">
     <form method="POST">
-        <input name="password" type="password">
+        <input name="password" type="password" title="Password" autofocus>
         <input name="login" type="submit">
     </form>    
 </div>
