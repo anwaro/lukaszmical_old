@@ -68,22 +68,27 @@ function Point(x, y, z){
  * @constructor
  */
 function Vector(x, y, z) {
-    Point.call(this, x, y, x);
-    this.prevPossition = new Point(x, y, z);
+    Point.call(this, x, y, z);
+    this.current = new Point(x, y, z);
 
     this.angle2D = function () {
         var a = Math.atan2(this.y, this.x);
         return a>0?a:2*PI+a;
     };
     this.rotate = function (rotateCubeMatrix) {
-        this.set(rotateCubeMatrix.dotProduct(this));
+        this.current.set(rotateCubeMatrix.dotProduct(this));
         return this;
     };
     this.len = function () {
         return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2) + Math.pow(this.z, 2));
     };
+
     this.norm = function () {
-        this.multiply(1/this.len());
+        return this.multiply(1/this.len());
+    };
+
+    this.normThis = function () {
+        this.multiplyThis(1/this.len());
         return this;
     };
     this.dotProduct = function (vector) {
@@ -97,27 +102,35 @@ function Vector(x, y, z) {
             this.x * vector.y - vector.x * this.y);
     };
     this.update = function(){
-        this.prevPossition.set(this);
+        this.set(this.current);
         return this;
     };
     this.toVector = function (vector) {
-        return new Vector(vector.x - this.x,
-            vector.y - this.y,
-            vector.z - this.z);
+        return new Vector(vector.x - this.x, vector.y - this.y, vector.z - this.z);
     };
+
     this.add = function(vector){
-        return new Vector(vector.x + this.x,
-            vector.y + this.y,
-            vector.z + this.z);
+        return new Vector(vector.x + this.x, vector.y + this.y, vector.z + this.z);
+    };
+    this.addThis = function(vector){
+        this.x += vector.x; this.y += vector.y; this.z += vector.z;
+        return this;
     };
     this.subtract = function(vector){
-        return new Vector(this.x -vector.x,
-            this.y- vector.y,
-            this.z -vector.z);
+        return new Vector(this.x -vector.x, this.y- vector.y, this.z -vector.z);
+    };
+    this.subtractThis = function(vector){
+        this.x -= vector.x; this.y -= vector.y; this.z -= vector.z;
+        return this;
     };
     this.multiply = function(scalar){
         return new Vector(scalar * this.x, scalar * this.y, scalar * this.z);
     };
+    this.multiplyThis = function(scalar){
+        this.x *= scalar; this.y *= scalar; this.z *= scalar;
+        return this;
+    };
+
     this.str = function(){
         return "Vector{x: " + this.x + ", y: " + this.y + ", z: " + this.z + " }";
     };
