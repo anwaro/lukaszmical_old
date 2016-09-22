@@ -69,7 +69,7 @@ class Error {
         Lii::$app->response->notFound();
         $fileExt = $this->_fileExt();
         if(array_key_exists($fileExt, $this->mime)){
-            Lii::$app->response->contentType($this->mime[$fileExt] . ";charset=UTF-8");
+            Lii::$app->response->contentType($this->mime[$fileExt]);
             exit();            
         }
     }

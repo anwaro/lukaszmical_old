@@ -1080,9 +1080,9 @@ function Matrix(v1, v2, v3) {
 
 /**
  * 
- * @param {type} v1
- * @param {type} v2
- * @param {type} v3
+ * @param {Vector} v1
+ * @param {Vector} v2
+ * @param {Vector} v3
  * @returns {RotateMatrix}
  */
 function RotateMatrix(v1, v2, v3) {

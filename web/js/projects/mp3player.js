@@ -384,7 +384,6 @@ mp3player = new function(){
             }
             else{
                 stopPlay();
-                currentSong.id;
                 nextSong.copy(currentSong);
                 currentSong.copy(prevSong);
                 prevSong.clear();
@@ -490,7 +489,7 @@ mp3player = new function(){
         this.photo="";
         this.title="";
         this.artist="";
-        this.elem="";
+        this.elem=null;
         this.image = new Image();
         this.copy = function(el){
             this.id = el.id;
