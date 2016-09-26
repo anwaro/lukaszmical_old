@@ -142,7 +142,7 @@ class Db
         foreach ($this->_conditions as $condition) {
             $this->_conditionVal[$condition[0]] = $condition[2];
             $formatCon .=
-                ' ' . $condition[0]
+                ' `' . $condition[0] . '` '
                 . ' ' . $condition[1]
                 . ' ' . ":$prefix{$condition[0]}";
             $formatCon .= ' AND';
