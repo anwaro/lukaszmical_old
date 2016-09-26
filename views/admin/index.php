@@ -2,24 +2,6 @@
 
 $this->title = "Panel administaracyjny";
 ?>
-<style>
-    .progress{
-        display: block;
-        width: 100%;
-        border: 1px solid #282828;
-        border-radius: 10px;
-        height: 20px;
-        margin: 10px auto auto;
-        background: #b3b3b3;
-    }
-    .progress-inside{
-        display: block;
-        float: left;
-        border-radius: 10px;
-        height: 18px;
-        background: #f36868;
-    }
-</style>
 
 <div class="row-box">
     <div class="progress">

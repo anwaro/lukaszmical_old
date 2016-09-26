@@ -21,9 +21,9 @@ $this->title = "Dodaj nowy";
         <b>Zdjęcie</b> <small>(sama nazwa chyba, że jest w folderze)</small>: 
             <input type="text" title="cover" name="photo" value="default.jpg"><br>
         <b>Css</b> <small>(plik css bez rozszerzenia np. projects/name. Kolejne pliki rozdzielamy ";")</small>: 
-        <input type="text" name="css" title="Css file" value="projects/<?= $projectUrl; ?>"><br>
+        <input type="text" name="css" title="Css file" value="projects/<?= $projectUrl; ?>.css"><br>
         <b>Js</b> <small>(plik css bez rozszerzenia np. projects/name. Kolejne pliki rozdzielamy ";")</small>: 
-            <input type="text" name="js" title="Js file" value="projects/<?= $projectUrl; ?>"><br>
+            <textarea type="text" name="js" title="Js file">projects/<?= $projectUrl; ?>.js</textarea><br>
         <b>Template</b> <small>(Szablon domyślnie '', 'game')</small>: 
             <input type="text" title="Template name" name="template"><br>
         <b>Data</b>: <input type="date" title="date" name="date"><br>

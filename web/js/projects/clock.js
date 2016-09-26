@@ -9,11 +9,6 @@
             kors.click();
             setInterval(function(){kors.click();}, 1000);
         }
-        else if(type==="kors"){
-            var kors = new Kors(el);  
-            kors.click();
-            setInterval(function(){kors.click();}, 1000);
-        }    
         
        
 }
@@ -24,8 +19,8 @@ function Apple(el){
     this.canvas = el;
     this.canvas.height = this.height;
     this.canvas.width = this.width;
-    this.ctx=this.canvas.getContext("2d");;
-    this.time;
+    this.ctx=this.canvas.getContext("2d");
+    this.time = null;
     this.rface = 90;
 
     this.click=function(){
@@ -159,8 +154,8 @@ function Kors(el){
     this.canvas = el;
     this.canvas.height = this.height;
     this.canvas.width = this.width;
-    this.ctx=this.canvas.getContext("2d");;
-    this.time;
+    this.ctx=this.canvas.getContext("2d");
+    this.time = null;
     this.rface = 90;
 
     this.click=function(){
@@ -205,7 +200,7 @@ function Kors(el){
         this.ctx.fill();
     };
 
-    this.line=function(y1, y2, w, a, t){
+    this.line=function(y1, y2, w, a){
         this.ctx.save();
         this.ctx.beginPath();
         this.ctx.strokeStyle =  "#D6BD81";
