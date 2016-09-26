@@ -5,7 +5,7 @@
 
 /**
  * @class
- * @param {number|Point|Vector} [x=0]
+ * @param {number|Point|Vertex} [x=0]
  * @param {number} [y=0]
  * @param {number} [z=0]
  * @return {Point}
@@ -61,13 +61,13 @@ function Point(x, y, z){
 
 /**
  * @class
- * @param {number|Point|Vector} [x=0]
+ * @param {number|Point|Vertex} [x=0]
  * @param {number} [y=0]
  * @param {number} [z=0]
- * @return {Vector}
+ * @return {Vertex}
  * @constructor
  */
-function Vector(x, y, z) {
+function Vertex(x, y, z) {
     Point.call(this, x, y, z);
     this.current = new Point(x, y, z);
 
@@ -76,7 +76,7 @@ function Vector(x, y, z) {
         return a>0?a:2*PI+a;
     };
     this.rotate = function (rotateCubeMatrix) {
-        this.current.set(rotateCubeMatrix.dotProduct(this));
+        this.set(rotateCubeMatrix.dotProduct(this.current));
         return this;
     };
     this.len = function () {
@@ -91,40 +91,40 @@ function Vector(x, y, z) {
         this.multiplyThis(1/this.len());
         return this;
     };
-    this.dotProduct = function (vector) {
-        return this.x * vector.x
-            + this.y * vector.y
-            + this.z * vector.z;
+    this.dotProduct = function (vertex) {
+        return this.x * vertex.x
+            + this.y * vertex.y
+            + this.z * vertex.z;
     };
-    this.crossProduct = function (vector) {
-        return new Vector(this.y * vector.z - vector.y * this.z,
-            this.z * vector.x - vector.z * this.x,
-            this.x * vector.y - vector.x * this.y);
+    this.crossProduct = function (vertex) {
+        return new Vertex(this.y * vertex.z - vertex.y * this.z,
+            this.z * vertex.x - vertex.z * this.x,
+            this.x * vertex.y - vertex.x * this.y);
     };
     this.update = function(){
         this.set(this.current);
         return this;
     };
-    this.toVector = function (vector) {
-        return new Vector(vector.x - this.x, vector.y - this.y, vector.z - this.z);
+    this.toVertex = function (vertex) {
+        return new Vertex(vertex.x - this.x, vertex.y - this.y, vertex.z - this.z);
     };
 
-    this.add = function(vector){
-        return new Vector(vector.x + this.x, vector.y + this.y, vector.z + this.z);
+    this.add = function(vertex){
+        return new Vertex(vertex.x + this.x, vertex.y + this.y, vertex.z + this.z);
     };
-    this.addThis = function(vector){
-        this.x += vector.x; this.y += vector.y; this.z += vector.z;
+    this.addThis = function(vertex){
+        this.x += vertex.x; this.y += vertex.y; this.z += vertex.z;
         return this;
     };
-    this.subtract = function(vector){
-        return new Vector(this.x -vector.x, this.y- vector.y, this.z -vector.z);
+    this.subtract = function(vertex){
+        return new Vertex(this.x -vertex.x, this.y- vertex.y, this.z -vertex.z);
     };
-    this.subtractThis = function(vector){
-        this.x -= vector.x; this.y -= vector.y; this.z -= vector.z;
+    this.subtractThis = function(vertex){
+        this.x -= vertex.x; this.y -= vertex.y; this.z -= vertex.z;
         return this;
     };
     this.multiply = function(scalar){
-        return new Vector(scalar * this.x, scalar * this.y, scalar * this.z);
+        return new Vertex(scalar * this.x, scalar * this.y, scalar * this.z);
     };
     this.multiplyThis = function(scalar){
         this.x *= scalar; this.y *= scalar; this.z *= scalar;
@@ -132,19 +132,19 @@ function Vector(x, y, z) {
     };
 
     this.str = function(){
-        return "Vector{x: " + this.x + ", y: " + this.y + ", z: " + this.z + " }";
+        return "Vertex{x: " + this.x + ", y: " + this.y + ", z: " + this.z + " }";
     };
 }
 
-Vector.prototype = Object.create(Point.prototype);
-Vector.prototype.constructor = Vector;
+Vertex.prototype = Object.create(Point.prototype);
+Vertex.prototype.constructor = Vertex;
 
 /**
  * @class
  * @constructor
- * @param {Vector} v1 Vector first row of matrix
- * @param {Vector} v2 Vector second row of matrix
- * @param {Vector} v3 Vector third row of matrix
+ * @param {Vertex} v1 Vertex first row of matrix
+ * @param {Vertex} v2 Vertex second row of matrix
+ * @param {Vertex} v3 Vertex third row of matrix
  * @returns {Matrix}
  *
  */
@@ -154,10 +154,10 @@ function Matrix(v1, v2, v3) {
     this.v3 = v3;
 
     this.result = new Point();
-    this.dotProduct = function (vector) {
-        this.result.x = this.v1.x * vector.x + this.v1.y * vector.y + this.v1.z * vector.z;
-        this.result.y = this.v2.x * vector.x + this.v2.y * vector.y + this.v2.z * vector.z;
-        this.result.z = this.v3.x * vector.x + this.v3.y * vector.y + this.v3.z * vector.z;
+    this.dotProduct = function (vertex) {
+        this.result.x = this.v1.x * vertex.x + this.v1.y * vertex.y + this.v1.z * vertex.z;
+        this.result.y = this.v2.x * vertex.x + this.v2.y * vertex.y + this.v2.z * vertex.z;
+        this.result.z = this.v3.x * vertex.x + this.v3.y * vertex.y + this.v3.z * vertex.z;
         return this.result;
     };
 
@@ -178,40 +178,40 @@ function Matrix(v1, v2, v3) {
 /**
  *
  * @class
- * @param {Vector[]} vectors
+ * @param {Vertex[]} vertexs
  * @returns {Polygon}
  * @constructor
  */
-function Polygon(vectors) {
-    this.vectors = vectors;
-    this.len = vectors.length;
+function Polygon(vertexs) {
+    this.vertexs = vertexs;
+    this.len = vertexs.length;
     this.angle = 0;
     this.show = true;
-    this.normal = new Vector();
+    this.normal = new Vertex();
 
     this.calcNormal = function () {
         this.normal.set(
-            this.get(2).toVector(this.get(1))
-                .crossProduct(this.get(2).toVector(this.get(3)))
+            this.get(2).toVertex(this.get(1))
+                .crossProduct(this.get(2).toVertex(this.get(3)))
         );
         return this;
     };
     this.average = function () {
-        return this.vectors.reduce(function(p,c){return p.add(c)}).multiply(1/this.len);
+        return this.vertexs.reduce(function(p,c){return p.add(c)}).multiply(1/this.len);
     };
 
     this.rotate = function (rotateCubeMatrix) {
-        this.vectors.forEach(function(v){v.rotate(rotateCubeMatrix)});
+        this.vertexs.forEach(function(v){v.rotate(rotateCubeMatrix)});
         this.calcNormal();
         return this;
     };
     this.update = function () {
-        this.vectors.forEach(function(v){v.update()});
+        this.vertexs.forEach(function(v){v.update()});
         return this;
     };
 
     this.get = function(index){
-        return this.vectors[index];
+        return this.vertexs[index];
     };
 
     this.isShow = function(){

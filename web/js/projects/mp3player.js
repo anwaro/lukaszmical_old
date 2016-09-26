@@ -12,7 +12,8 @@ mp3player = new function(){
             bufferEmpty = true,
             time,
             url="http://lukaszmical.pl/song/get/",
-            songUrl = "http://lukaszmical.pl/web/sounds/mp3player/",
+            songUrl = "http://lukaszmical.pl/web/sounds/mp3/",
+            coverUrl = "http://lukaszmical.pl/web/images/projects/mp3player/covers/",
             type = ".mp3",
             prevSong = new Song(),
             currentSong = new Song(),
@@ -62,15 +63,19 @@ mp3player = new function(){
         playStop = document.getElementById("play");
         volUp = document.getElementById("volUp");
         volDown = document.getElementById("volDown");
-        
-        next.onmousedown = function(){onmouseDown(1);};
-        next.onmouseup = function(){onmouseUp(1);};
-        prev.onmousedown = function(){onmouseDown(-1);};
-        prev.onmouseup = function(){onmouseUp(-1);};
-        playStop.onclick = playStopSong;
-        
-        volUp.onclick = function(){changeVolume(0.1);};
-        volDown.onclick = function(){changeVolume(-0.1);};
+
+        next.addEventListener('mousedown', function(){onmouseDown(1)});
+        next.addEventListener('mouseup', onmouseUp);
+        next.addEventListener('touchend', onmouseUp);
+
+        prev.addEventListener('mousedown', function(){onmouseDown(-1)});
+        prev.addEventListener('mouseup', onmouseUp);
+        prev.addEventListener('touchend', onmouseUp);
+
+        playStop.addEventListener('click', playStopSong);
+
+        volUp.addEventListener('click', function(){changeVolume(0.1)});
+        volDown.addEventListener('click', function(){changeVolume(-0.1)});
     }
     
     function initSong(initId){
@@ -476,10 +481,10 @@ mp3player = new function(){
         el.id = parseInt(info['id']);
         el.elem.src = songUrl+info["src"] + type + "?v=" + Math.random();
         el.src = songUrl+info["src"] + type + "?v=" + Math.random();
-        el.photo= songUrl+info["cover"];
+        el.photo= coverUrl+info["cover"];
         el.artist =info["artist"];
         el.title = info["title"];
-        el.image.src = songUrl+info["cover"];
+        el.image.src = coverUrl+info["cover"];
         
     }
     

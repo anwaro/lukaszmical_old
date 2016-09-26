@@ -39,7 +39,7 @@ CanvasRenderingContext2D.prototype.loadConfig = function(config){
 
 /**
  *
- * @param {Point|Vector|Object} point
+ * @param {Point|Vertex|Object} point
  * @param {Number} point.x
  * @param {Number} point.y
  */
@@ -50,7 +50,7 @@ CanvasRenderingContext2D.prototype.moveToPoint = function(point){
 
 /**
  *
- * @param {Point|Vector|Object} point
+ * @param {Point|Vertex|Object} point
  * @param {Number} point.x
  * @param {Number} point.y
  */
@@ -97,7 +97,7 @@ function Canvas3d(ctx, scene) {
     this.strokePolygon = function(polygon, config){
         this.ctx.beginPath();
         this.ctx.loadConfig(config||{});
-        var points = polygon.vectors;
+        var points = polygon.vertexs;
 
         this.ctx.moveToPoint(this.project(points[0]));
         for(var i =1; i<points.length;i++){
@@ -109,7 +109,7 @@ function Canvas3d(ctx, scene) {
 
     /**
      *
-     * @param {Vector[]|Point[]} array
+     * @param {Vertex[]|Point[]} array
      * @param {Object} config
      */
     this.strokeLine = function(array, config){
@@ -123,11 +123,11 @@ function Canvas3d(ctx, scene) {
     };
 
 
-    this.project = function(vector){
+    this.project = function(vertex){
         if(this.scene.config.render == RENDER.PERSPECTIVE){
-            return this.scene.transform(this.scene.project(vector));
+            return this.scene.transform(this.scene.project(vertex));
         }else{
-            return this.scene.transform(vector);
+            return this.scene.transform(vertex);
         }
     };
 
@@ -139,22 +139,22 @@ function Canvas3d(ctx, scene) {
 function Scene(config){
     this.viewer = config.viewer;
     this.config = config;
-    this.project = function(vector){
+    this.project = function(vertex){
         return {
-            x : vector.x/(1+vector.z* this.config.scale/this.viewer.z),
-            y : vector.y/(1+vector.z* this.config.scale/this.viewer.z),
+            x : vertex.x/(1+vertex.z* this.config.scale/this.viewer.z),
+            y : vertex.y/(1+vertex.z* this.config.scale/this.viewer.z),
             z : 0
         };
     };
-    this.transform = function(vector){
+    this.transform = function(vertex){
         return {
-            x : vector.x * this.config.scale + 0.5 * this.config.canvas.width,
-            y : -vector.y * this.config.scale  + 0.5 * this.config.canvas.height,
-            z : vector.z * this.config.scale
+            x : vertex.x * this.config.scale + 0.5 * this.config.canvas.width,
+            y : -vertex.y * this.config.scale  + 0.5 * this.config.canvas.height,
+            z : vertex.z * this.config.scale
         };
     };
 
-    this.scale = function (vector) {
-        return vector.multiply(this.config.scale);
+    this.scale = function (vertex) {
+        return vertex.multiply(this.config.scale);
     }
 }
