@@ -37,29 +37,29 @@ axisSetting = {
 
 
 
-var angle = 0.04;
-var rotateAxis = new Vector(3, 1, 4);
+var angle = 5;
+var rotateAxis = new Vertex(3, 1, 4);
 rotateAxis.normThis();
-var rotateMatrix = new Matrix(new Vector(), new Vector(), new Vector());
+var rotateMatrix = new Matrix(new Vertex(), new Vertex(), new Vertex());
 var pol1 = new Polygon([
-    new Vector(-1, 1, 1),
-    new Vector(-1, -1, 1),
-    new Vector(-1, -1, -1),
-    new Vector(-1, 1, -1),
-    new Vector(-1, 1, 1),
-    new Vector(1, 1, 1),
-    new Vector(1, 1, -1),
-    new Vector(-1, 1, -1)
+    new Vertex(-1, 1, 1),
+    new Vertex(-1, -1, 1),
+    new Vertex(-1, -1, -1),
+    new Vertex(-1, 1, -1),
+    new Vertex(-1, 1, 1),
+    new Vertex(1, 1, 1),
+    new Vertex(1, 1, -1),
+    new Vertex(-1, 1, -1)
 ]);
 var pol2 = new Polygon([
-    new Vector(1, -1, -1),
-    new Vector(1, 1, -1),
-    new Vector(1, 1, 1),
-    new Vector(1, -1, 1),
-    new Vector(1, -1, -1),
-    new Vector(-1, -1, -1),
-    new Vector(-1, -1, 1),
-    new Vector(1, -1, 1)
+    new Vertex(1, -1, -1),
+    new Vertex(1, 1, -1),
+    new Vertex(1, 1, 1),
+    new Vertex(1, -1, 1),
+    new Vertex(1, -1, -1),
+    new Vertex(-1, -1, -1),
+    new Vertex(-1, -1, 1),
+    new Vertex(1, -1, 1)
 ]);
 
 var mouse = new Point(0,0,0);
@@ -89,13 +89,14 @@ function rotate() {
     mouseLazy.x += (mouse.x - mouseLazy.x)*0.3;
     mouseLazy.y += (mouse.y - mouseLazy.y)*0.3;
     rotateAxis.set(mouseLazy.x - canvasSetting.width/2, canvasSetting.height/2 - mouseLazy.y);
-
     canvas3d.strokeLine([rotateAxis.multiply(0), rotateAxis.multiply(1/sceneConfig.scale)], axisSetting);
+
     rotateAxis.normThis();
+
     rotateMatrix.updateMatrix(rotateAxis, angle);
-    pol1.rotate(rotateMatrix).update();
+    pol1.rotate(rotateMatrix);
     canvas3d.strokePolygon(pol1, pol1Congig);
-    pol2.rotate(rotateMatrix).update();
+    pol2.rotate(rotateMatrix);
     canvas3d.strokePolygon(pol2, pol2Congig);
 
 }
