@@ -5,6 +5,7 @@ namespace app\controllers;
 
 use base\Controller;
 use models\Song;
+use Lii;
 
 /**
  * Class SongController
@@ -23,46 +24,48 @@ class SongController extends Controller {
         ];
     }
 
-    /**
-     * @return mixed
-     */
-    public function actionRand()
+
+    public function actionGet(){
+        $model = new Song();
+        return json_encode($model->db()->from($model->getTableName())->where('show', '=', 1)->all());
+    }
+    public function actionAll()
     {
-        return (new Song())->randId();
+        $model = new Song();
+        return $this->render('song/all', [
+            'songs' => $model->all()
+        ]);
     }
 
-    /**
-     * @param $id
-     * @param $which
-     * @return string
-     */
-    public function actionGet($id, $which){
-        $model = new Song();
-        $id = intval($id);
-        $min = intval($model->min());
-        $max = intval($model->max());
+//    public function actionDelete($id){
+//
+//        $model = new Song();
+//        $model->findOne($id);
+//        if(Lii::$app->request->post()){
+//            $model->delete();
+//        }
+//        return $this->render('song/remove', [
+//            'song' => $model->getAttributes()
+//        ]);
+//    }
 
-        switch ($which){
-            case "PREVIOUS":
-                if($id == $min){
-                    $song =  $model->one($max);
-                }
-                else{
-                    $song = $model->prev($id)->getAttributes();
-                }
-                break;
-            case "NEXT":
-                if($id == $max){
-                    $song =  $model->one($min);
-                }
-                else{
-                    $song = (new Song())->next($id)->getAttributes();
-                }
-                break;
-            default:
-                $song =  (new Song())->one($id);
-        }
-        $song['which'] = $which;
-        return json_encode($song);
+    public function actionCopy($id)
+    {
+//        $model = new Song();
+//        $model->findOne($id);
+//        $error = $model->copySong();
+//        $model->new = 1;
+//        $model->save();
+//        return json_encode($error);
+    }
+
+    public function actionDelete($id)
+    {
+//        $model = new Song();
+//        $model->findOne($id);
+//        $error = $model->deleteSong();
+//        $model->remove = 1;
+//        $model->save();
+//        return json_encode($error);
     }
 }

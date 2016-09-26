@@ -3,8 +3,8 @@
         <div id="display">
             <canvas id="mp3screen"></canvas>
             <div id="mp3screenbefore">                
-                <div id="volUp"></div>
-                <div id="volDown"></div>
+                <div id="vol-up"></div>
+                <div id="vol-down"></div>
             </div>
         </div>
         <div id="control">
@@ -13,9 +13,9 @@
             <div id="next"></div>
             <div id="play"></div>  
         </div>
-        <audio id="prevSong"></audio>
-        <audio id="currentSong"></audio>
-        <audio id="nextSong" ></audio>
+        <audio id="prev-song"></audio>
+        <audio id="current-song"></audio>
+        <audio id="next-song" ></audio>
     </div>
 
 </div>

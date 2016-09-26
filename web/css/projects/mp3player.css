@@ -97,7 +97,7 @@
     cursor: pointer;
 }
 
-#volUp{
+#vol-up{
     background-image: linear-gradient(to right, transparent 0, transparent 10px, #000000 10px,  rgba(2,2,2,0.9) 12px, transparent 12px);
 
     position: absolute;
@@ -109,7 +109,7 @@
     
 }
 
-#volDown{
+#vol-down{
     background-image: linear-gradient(to right, transparent 0, transparent 10px, #000000 10px,  rgba(2,2,2,0.9) 12px, transparent 12px);
     position: absolute;
     width: 20px;
