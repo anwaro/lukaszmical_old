@@ -1,139 +1,121 @@
-/* global $$ */
-
-
-var canvasWidth=700,
-    canvasHeight=500;
-
-var canvasP,
-        ctxP,
-        mouseX =canvasWidth/2,
-        mouseY=canvasHeight/2,
-        num = 20,
-        r = 5,
-        f=0.8,
-        planets = [];
-
-function planet(){
-	canvasP = $$("#planet");
-	canvasP.height = canvasHeight;
-	canvasP.width = canvasWidth;
-        canvasP.addEvent("mousemove", mousePoss);
-	prepareP();
-	if(canvasP && canvasP.getContext){
-		ctxP = canvasP.getContext("2d");
-		ctxP.fillStyle = "rgb(0, 0, 0)";
-		ctxP.fillRect(0,0,canvasWidth,canvasHeight);
-		
-                setInterval(drawP, 1000/60);
-		
-	}
+_record = function(canv, sett){
     
-}
-
-function mousePoss(evt){
-    var rect = canvasP.getBoundingClientRect();
-    mouseX = evt.clientX - rect.left;
-    mouseY = evt.clientY - rect.top;
-}
-
-function drawP(){
-    ctxP.fillStyle = "rgba(0, 0, 0, 0.05)";
-    ctxP.fillRect(0,0,canvasWidth,canvasHeight);
+    var buffor = [];
     
-    ctxP.beginPath();
-    ctxP.fillStyle = "#17B70E";
-    ctxP.arc(mouseX, mouseY,1, 0, 2*Math.PI);
-    ctxP.fill();
-    for(var i =0; i<num; i++){
-        ctxP.beginPath();
-        ctxP.fillStyle = planets[i].color;
-        ctxP.arc(planets[i].poss.x, planets[i].poss.y, planets[i].r, 0, 2*Math.PI);
-        ctxP.fill();
+    var send = [];
+    
+    var nrSend = 0;
+    
+    var name = makeId();
+    
+    var canvas;
+    
+    var pause = true;
+    
+    var recording = false;
+    
+    var maxBufforSize = 5;
+    
+    var timeStart;
+    
+    var timeRecording=0;
+    
+    var timeLastFrame;
+    
+    var time;
+    
+    var fps = 10;
+    
+    var settings;
+    
+    var loop;
+    
+    var url = "http://lukaszmical.pl/projects/ajax";
+    
+    this.start = function(){
+        if(!recording){
+            pause = false;
+            recording = true;
+            timeStart = (new Date()).getTime();
+            loop = setInterval(saveFrame, 1000/fps);
+        }
+    };
+    
+    this.stop = function(){
+        recording = false;
+        pause = true;
+        clearInterval(loop);
+    };
+    
+    this.pause = function(){
+        pause = true;
+        clearInterval(loop);
+    };
+    
+    this.getVideo = function(){
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                console.log(xhttp.responseText);
+            }
+        };
+        xhttp.open("POST", url+"Video", true);
+        xhttp.setRequestHeader("Content-Type",
+            "application/x-www-form-urlencoded");
+        xhttp.send( "name="+name);
         
-        /*
-         *  Gravitation
-         */
-        planets[i].v.y+= 9.81*0.01;
-        
-        /*
-         *  Mouse force
-         */
-        var force = getForce(planets[i]);
-        
-        planets[i].v.x+=force.x;
-        planets[i].v.y+=force.y;
-        
-        /*
-         * Collision with border
-         */
-        
-        if(planets[i].poss.x - planets[i].r + planets[i].v.x <= 0 || planets[i].poss.x + planets[i].r + planets[i].v.x >= canvasWidth)
-            planets[i].v.x *= -f;
-        if(planets[i].poss.y - planets[i].r + planets[i].v.y <= 0 || planets[i].poss.y + planets[i].r + planets[i].v.y >= canvasHeight)
-            planets[i].v.y *= -f;
-        
-        /*
-         *  Change possition
-         */
-        planets[i].poss.x += planets[i].v.x;
-        planets[i].poss.y += planets[i].v.y;
-        
+    };
+    
+    function init(canv, sett){
+        canvas = canv;
+        settings=sett;        
+        return this;
     }
-}
-
-function getForce(p){
-    var r  = distance(p.poss, {x:mouseX, y:mouseY});
-    var force = -0.15/r*r;
-    return {x: force * (p.poss.x-mouseX)/r, y: force * (p.poss.y-mouseY)/r};   
-}
-
-function distance(a, b){
-    if(typeof a === "object" && typeof b === "object"){
-        return Math.sqrt(Math.pow(a.x-b.x, 2) + Math.pow(a.y-b.y, 2));
+    
+    function saveFrame(){
+        if(recording && !pause){
+            buffor.push(canvas.toDataURL());
+            if(buffor.length >= maxBufforSize){
+                send.push(buffor);
+                buffor = [];
+                sendData();
+            }
+        }
     }
-    else{
-        return Math.abs(a-b);
+    
+    function sendData(){
+        var toSend = send.shift();
+        var data = {name : name, photo : toSend};
+        console.log("Poszła paczka nr "+nrSend);
+        ajax(data);
+        
+        nrSend++;
     }
-}
-
-
-
-function prepareP(){
-    for(var i =0; i<num; i++){
-        planets.push(new Planet(
-                rand(2*r, canvasWidth)+r,
-                rand(2*r,canvasHeight)+r,
-                "rgb(" + int(rand(255))
-                        +", "+int(rand(255))
-                        +", "+int(rand(255))+")",
-                r
-                ));
+    
+    function ajax(data) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                console.log("Zapisano paczke "+xhttp.responseText);
+            }
+        };
+        xhttp.open("POST", url, true);
+        xhttp.setRequestHeader("Content-Type",
+            "application/x-www-form-urlencoded");
+        xhttp.send( "data="+
+                encodeURIComponent(JSON.stringify(data))+"&number="+nrSend);
     }
-}
+    
+    function makeId(){
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-function int(val){
-    return parseInt(val);
-}
+        for( var i=0; i < 25; i++ )
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
 
-function rand(start, stop){
-    if(typeof stop === "undefined"){
-        stop = start;
-        start = 0;
+        return text;
     }
-    return Math.random() * (stop - start) + start;
-}
+    init(canv, sett);
+};
 
-function Planet(x, y, color, r){
-    this.poss = new Point(x, y);
-    this.v = new Point(rand(1,3), rand(1,3));
-    this.r = r;
-    this.color = color;
-}
-
-function Point(x, y){
-    this.x = x;
-    this.y = y;
-}
-
-
-$$.load(planet);
+function Record(c, s){return new _record(c,s);}

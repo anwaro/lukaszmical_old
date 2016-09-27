@@ -133,9 +133,6 @@ function Canvas3d(ctx, scene) {
 
 }
 
-
-
-
 function Scene(config){
     this.viewer = config.viewer;
     this.config = config;

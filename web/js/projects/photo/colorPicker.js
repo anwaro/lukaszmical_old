@@ -72,8 +72,4 @@ var colorPicker=
 			colorPicker.element.style.backgroundColor = colorPicker.colorRgba;
 		}
 	}
-
-
-
-
 }
