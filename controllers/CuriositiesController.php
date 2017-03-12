@@ -5,7 +5,6 @@ namespace app\controllers;
 use base\Controller;
 use models\Curiosities;
 use Lii;
-use models\Projects;
 
 class CuriositiesController extends Controller {
         
@@ -20,7 +19,7 @@ class CuriositiesController extends Controller {
         $model = new Curiosities($type);
         
         return $this->render('curiosities/index', [
-            'curiosities' => $model->all(),
+            'curiosities' => $model->allByDate(),
             'type' => $type,
         ]);      
     }   

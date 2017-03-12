@@ -1,9 +1,8 @@
-			
 <div id="puzzles">
     <span id="reset" class="icon fa-reply" onclick=" reset();"></span>
-    <img id="imageView" height="200"  src >
+    <img id="imageView" height="200" src>
     <article id="select">
-        <div  class="container">
+        <div class="container">
             <div class="row rel">
                 <div class="4u">
                     <section class="box style1">
@@ -29,7 +28,8 @@
                 </div>
 
                 <div class="URL box">
-                    URL obrazka <input type="text" name="photoURL" id="photoURL" value="{%url%}/web/images/projects/puzzle/sample.jpg"> 
+                    URL obrazka <input type="text" name="photoURL" id="photoURL"
+                                       value="{%url%}/web/images/projects/puzzle/sample.jpg">
                     <span id="confirmURL" class="icon fa-arrow-right" onclick="imageExists();"></span>
                 </div>
 
@@ -47,19 +47,24 @@
     <div id="sample" class="container">
         <div class="row">
             <div class="sampleImg">
-                <a  class="image featured" onclick=" $puzzles.newGame('SAM', 1);"><img src="{%url%}/web/images/projects/puzzle/image1.jpg" alt="" /></a>
+                <a class="image featured" onclick=" $puzzles.newGame('SAM', 1);"><img
+                        src="{%url%}/web/images/projects/puzzle/image1.jpg" alt=""/></a>
             </div>
             <div class="sampleImg">
-                <a  class="image featured" onclick="$puzzles.newGame('SAM', 2);"><img src="{%url%}/web/images/projects/puzzle/image2.jpg" alt="" /></a>
+                <a class="image featured" onclick="$puzzles.newGame('SAM', 2);"><img
+                        src="{%url%}/web/images/projects/puzzle/image2.jpg" alt=""/></a>
             </div>
             <div class="sampleImg">
-                <a  class="image featured" onclick="$puzzles.newGame('SAM', 3);"><img src="{%url%}/web/images/projects/puzzle/image3.jpg" alt="" /></a>
+                <a class="image featured" onclick="$puzzles.newGame('SAM', 3);"><img
+                        src="{%url%}/web/images/projects/puzzle/image3.jpg" alt=""/></a>
             </div>
             <div class="sampleImg">
-                <a  class="image featured" onclick="$puzzles.newGame('SAM', 4);"><img src="{%url%}/web/images/projects/puzzle/image4.jpg" alt="" /></a>
+                <a class="image featured" onclick="$puzzles.newGame('SAM', 4);"><img
+                        src="{%url%}/web/images/projects/puzzle/image4.jpg" alt=""/></a>
             </div>
             <div class="sampleImg">
-                <a  class="image featured" onclick="$puzzles.newGame('SAM', 5);"><img src="{%url%}/web/images/projects/puzzle/image5.jpg" alt="" /></a>
+                <a class="image featured" onclick="$puzzles.newGame('SAM', 5);"><img
+                        src="{%url%}/web/images/projects/puzzle/image5.jpg" alt=""/></a>
             </div>
         </div>
     </div>

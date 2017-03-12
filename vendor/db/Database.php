@@ -196,5 +196,10 @@ class Database extends \PDO
     public function lastId() {
         return $this->lastInsertId();
     }
-    
+
+    public function execSql($sql){
+        $sth = $this->prepare($sql);
+        $sth->execute();
+        return $sth->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }

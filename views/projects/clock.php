@@ -1,6 +1,6 @@
 <div class="clock-all">
     <div class="clockDivApple">
-        <canvas id="clock1" class="apple clockCanv"> </canvas>
+        <canvas id="clock1" class="apple clockCanv"></canvas>
         <div class="clockApple"></div>
     </div>
 </div>

@@ -1,4 +1,3 @@
-/* global $$ */
 hangman = new function(){
     var photo, url, wordDiv, alph, word, info, newGame, load, check = 0, fail=0, lock =0,
             alp ="AĄBCĆDEĘFGHIJKLŁMNOÓPRSTUVWYZŹŻ".split("");
@@ -93,6 +92,14 @@ hangman = new function(){
             photo.css("background", "url("+url+"s"+fail+".jpg)");
         }
         else{
+            var block = document.getElementsByClassName("word");
+            for(var i=0; i<word.length;i++) {
+                var bl =$$(block[i]);
+                if (!bl.hasClass('ok')){
+                   $$(block[i]).addClass("fail").setText(word[i]);
+                }
+            }
+
             photo.css("background", "url("+url+"s10.jpg)");
             info.css("background", "url("+url+"over.jpg)")
                     .show();
@@ -122,7 +129,7 @@ hangman = new function(){
             "application/x-www-form-urlencoded");
         xhttp.send();
         
-    };
+    }
     
 };
 

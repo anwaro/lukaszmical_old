@@ -2,6 +2,8 @@
 namespace base;
 
 use Lii;
+use models\Analise;
+
 
 /**
  * Class Controller
@@ -31,6 +33,7 @@ class Controller extends View {
      * @return bool
      */
     public function before($currentAction) {
+        Lii::$app->setAnaliseId((new Analise())->register());
         $rules = $this->rules();
         foreach ($rules as $rule => $actions) {
             if(in_array($currentAction, $actions) ||
@@ -50,5 +53,8 @@ class Controller extends View {
             Lii::$app->user->access();
         }
         return true;
+    }
+
+    public function after($currentAction){
     }
 }

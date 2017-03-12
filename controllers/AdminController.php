@@ -37,11 +37,10 @@ class AdminController extends Controller {
     }
             
     function actionIndex() {  
-        $model = new Admin();    
-        //$this->model->printGlobalArray();
+        $model = new Admin();
         return $this->render('admin/index',[
             "size" => $model->size(),
-            "info" => "",
+            "info" => $model->getGlobalArray(),
         ]);
     }
             

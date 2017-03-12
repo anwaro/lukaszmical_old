@@ -3,10 +3,11 @@ namespace app\controllers;
 
 use base\Controller;
 use models\Projects;
+use models\Rate;
+use models\Analise;
 use Lii;
 
 class ProjectsController extends Controller {
-    
     
     public function rules() {
         return [
@@ -17,6 +18,8 @@ class ProjectsController extends Controller {
                 'actionAjaxSong',
                 'actionAjaxWord',
                 'actionAjaxVideo',
+                'actionVote',
+                'actionUpdateVote',
                 ],
             '@' => ['*'],
         ];
@@ -24,9 +27,29 @@ class ProjectsController extends Controller {
     
     function actionIndex() {        
         $model = new Projects();
+        $this->addJs('projects/rate.js');
         return $this->render('project/index',[
             "projects" => $model->getAll(),
         ]);        
+    }
+
+    public function actionVote()
+    {
+        $model = new Rate();
+        $model->load(Lii::$app->request->post());
+        $model->analise_id = Lii::$app->getAnaliseId();
+        $model->save();
+        return json_encode($model->getAttributes());
+    }
+
+
+    public function actionUpdateVote()
+    {
+        $id = Lii::$app->request->post('id');
+        $model = (new Rate())->findOne($id);
+        $model->load(Lii::$app->request->post());
+        $model->save();
+        return json_encode($model->getAttributes());
     }
 
     /**
@@ -39,6 +62,7 @@ class ProjectsController extends Controller {
         $this->setTitle("Projects | ".$model->name);
         $this->setOgTags($model->getAttributes());
         $this->addJs(explode(";", $model->js));
+        $this->addJs('projects/an.js');
         $this->addCss(explode(";", $model->css));
         $this->setTemplate($model->template);
         

@@ -18,23 +18,19 @@ class Admin extends ActiveRecord {
         ];
     }
     
-    public function printGlobalArray() {
-        echo '$_COOKIE ';
-        var_dump($_COOKIE);
-        echo 'ENV ';
-        var_dump($_ENV);
-        echo '$_FILES ';
-        var_dump($_FILES);
-        echo '$_REQUEST ';
-        var_dump($_REQUEST);
-        echo '$_SERVER ';
-        var_dump($_SERVER);
-        echo '$_SESSION ';
-        var_dump($_SESSION);
+    public function getGlobalArray() {
+        $data = [];
+        $data["Cookie"] = $_COOKIE;
+        $data["Env"] = $_ENV;
+        $data["Files"] = $_FILES;
+        $data["Request"] = $_REQUEST;
+        $data["Server"] = $_SERVER;
+        $data["Session"] = $_SESSION;
+        return $data;
     }
     
     function size(){
-        return  intval((disk_total_space (getcwd())/1024)/1024/1024);
+        return  intval((disk_total_space(getcwd())/1024)/1024/1024);
     }
     
 }

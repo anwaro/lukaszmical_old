@@ -53,11 +53,13 @@ class Bootstrap {
         
         if($this->_controller != NULL){
             $this->_controller->before($this->_actionName());
-            $this->_renderedPage =  $this->_callControllerMethod();            
+            $this->_renderedPage =  $this->_callControllerMethod();
+            $this->_controller->after($this->_actionName());
         }
         else{
             $this->_errorController->before($this->_actionName());
-            $this->_renderedPage =  $this->_callErrorMethod(); 
+            $this->_renderedPage =  $this->_callErrorMethod();
+            $this->_errorController->after($this->_actionName());
         }
     }
 

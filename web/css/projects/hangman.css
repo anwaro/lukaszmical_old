@@ -1,5 +1,7 @@
 .hidden{
-    display: none;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
 }
 
 #photo{
@@ -8,6 +10,11 @@
     display: none;
     margin-top: 20px;
     position: relative;
+    -webkit-transition: all 600ms ease;
+    -moz-transition: all 600ms ease;
+    -ms-transition: all 600ms ease;
+    -o-transition: all 600ms ease;
+    transition: all 600ms ease;
 }
 
 #wordDiv{
@@ -23,6 +30,13 @@
     float: left;
     margin-left: 5px;
     
+}
+
+.word.ok{
+    background: rgba(173, 255, 47, 0.3);
+}
+.word.fail{
+    background: rgba(255,0,0,0.3);
 }
 
 #alphabet{

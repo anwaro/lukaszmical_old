@@ -5,7 +5,7 @@
 
     $this->title = ucfirst($type);
     
-    $infos = [
+    $info = [
         'webstuff' => [
             'user' => '@klocus',
             'userUrl' => 'http://www.wykop.pl/ludzie/klocus/',
@@ -32,7 +32,7 @@
         ],
     ];
     
-    $info = $infos[$type];
+    $info = $info[$type];
 
 ?>
 
@@ -56,13 +56,16 @@
 <?php foreach ($curiosities as $web):?>
     <?php $links = explode(";", $web["links"]);
       $anchor = array_map(
-            function($val) {  return '<a class="link button" target="_blank" href="'.$val .'">LINK</a>'; },
+            function($val) {  return "<a class='link button' target='_blank' href='$val'>LINK</a>"; },
             $links
         );  
     ?>
-    <div class="news">
+    <div class="news" title="<?= $web['date'] ?>">
             <div class="info">
-            <?= $web["text"]?>
+                <?= $web["text"]?>
+                <?php if(strlen($web['entry'])): ?>
+                    <a href="<?= $web['entry'] ?>" target='_blank' title="Wpis"><i class="icon fa-share"></i></a>
+                <?php endif; ?>
             </div>
             <?= implode($anchor) ?>
     </div>
@@ -74,15 +77,6 @@
 </div>
 <br><br>
 
-<style>
-    .switcher{
-        padding: 10px;
-        margin: 2px;
-    }
-    .switcher-active{
-        background-color: #8336ff;
-    }
-</style>
 <script>
     var news = document.getElementsByClassName("news");
     var search = document.getElementById("news-search");

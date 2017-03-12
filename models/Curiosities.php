@@ -36,4 +36,13 @@ class Curiosities extends ActiveRecord {
             'date',
         ];
     }
+
+    public function allByDate()
+    {
+        $result = $this->db()
+            ->from($this->getTableName())
+            ->orderBy('date', 'DESC')
+            ->all();
+        return $result;
+    }
 }

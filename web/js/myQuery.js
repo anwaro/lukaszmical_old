@@ -6,7 +6,7 @@
  * funkcje potrzebne do manipulawania objektami DOM
  * oraz ustawiania plikow cookie, wukonuwania zapytan do serwera
  */
-function _myQuery(selector) {
+function _$$(selector) {
     /*
      * ustalamy element objektu
      * jezeli przekazujemy objekt przypisujemy go bezposrednio
@@ -206,24 +206,22 @@ function _myQuery(selector) {
         return this;
     };
 
-    // zwucenie nowego objektu _myQuery dla rodzica
+    // zwucenie nowego objektu _$$ dla rodzica
     this.el.parent = function () {
-        return new _myQuery(this.parentNode);
+        return new _$$(this.parentNode);
     };
 
     this.el.addEvent = function (event, func) {
-        myQuery.addEvent(this, event, func);
+        $$.addEvent(this, event, func);
         return this;
     };
     return this.el;
 }
 
 
-function myQuery(selector) {
-    return new _myQuery(selector);
+function $$(selector) {
+    return new _$$(selector);
 }
-
-$$ = myQuery;
 
 /*
  * Funkcja ustawiajaca pliki cookie
@@ -234,7 +232,7 @@ $$ = myQuery;
  * wygasniecia; W przypadku podania jednego argumentu 
  * funkcja zwraca wrtosc ciasteczka o kluczu przekazanym w argumencie
  */
-myQuery.cookie = function (key, value, expires) {
+$$.cookie = function (key, value, expires) {
     if (arguments.length > 1) {
         var expiresCookie = '';
         if (expires && typeof expires === "number") {
@@ -256,30 +254,30 @@ myQuery.cookie = function (key, value, expires) {
 };
 
 // usuwa dany plik cookie
-myQuery.deleteCookie = function (key) {
+$$.deleteCookie = function (key) {
     document.cookie = key + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 };
 
 // zwraca kopie dowolnego objektu 
-myQuery.clone = function (object) {
+$$.clone = function (object) {
     return JSON.parse(JSON.stringify(object));
 };
 
 // wywoluje funkcje przekazana jako argument
 // po zaladowaniu strony
-myQuery.load = function (action) {
+$$.load = function (action) {
     document.addEventListener('DOMContentLoaded', action);
 };
 
 // wywoluje dana funkcje po okreslonym czasie
-myQuery.delay = function (callback, time) {
+$$.delay = function (callback, time) {
     if (typeof callback === "function") {
         setTimeout(callback, time || 1000);
     }
 };
 
 //funkcjia dodająca zdarzenie
-myQuery.addEvent = function (element, event, func) {
+$$.addEvent = function (element, event, func) {
     if (element.addEventListener) {
         element.addEventListener(event, func, false);
     }
@@ -290,3 +288,138 @@ myQuery.addEvent = function (element, event, func) {
         element[event] = func;
     }
 };
+
+var $ajax = {};
+
+
+
+function Ajax(){
+    this.defaultSettings = {
+        async : true,
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+        data: {},
+        method: 'GET'
+
+    };
+
+    this.settings = {};
+
+    this.attr = function(url, settings){
+        settings = settings || {};
+        if(typeof url == 'string'){
+            settings.url = url;
+            this.settings = settings;
+        }
+        else{
+            if(typeof settings.method != 'undefined'){
+                url.method = settings.method;
+            }
+            this.settings = url;
+        }
+        this.complete();
+    };
+
+    this.get = function (key) {
+        return this.settings[key];
+    };
+
+    this.set = function (key, val) {
+        this.settings[key] = val;
+    };
+
+    this.complete = function () {
+        for (var prop in this.defaultSettings) {
+            if (!this.settings.hasOwnProperty(prop)) {
+                this.settings[prop] = this.defaultSettings[prop];
+            }
+        }
+
+    };
+
+    this.data = function (data, type) {
+        type = type || "GET";
+        var query = [];
+        for (var key in data) {
+            query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+        }
+        if (type.toUpperCase() == "GET") {
+            return this.get('url') + (query.length ? '?' + query.join('&') : '');
+        }
+        else {
+            return query.join('&');
+        }
+    };
+
+    this.xhr = function () {
+        if (typeof XMLHttpRequest !== 'undefined') {
+            return new XMLHttpRequest();
+        }
+        var versions = [
+            "MSXML2.XmlHttp.6.0",
+            "MSXML2.XmlHttp.5.0",
+            "MSXML2.XmlHttp.4.0",
+            "MSXML2.XmlHttp.3.0",
+            "MSXML2.XmlHttp.2.0",
+            "Microsoft.XmlHttp"
+        ];
+
+        var xhr;
+        for (var i = 0; i < versions.length; i++) {
+            try {
+                xhr = new ActiveXObject(versions[i]);
+                break;
+            } catch (e) {
+            }
+        }
+        return xhr;
+    };
+
+    this.callback = function(name) {
+        if (typeof this.get(name) == 'function') {
+            return this.get(name);
+        } else {
+            return function () {}
+        }
+    };
+
+    this.send = function(){
+        var xhr = this.xhr();
+        var self = this;
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4){
+                if(xhr.status === 200){
+                    self.callback('success')(xhr.responseText);
+                }else{
+                    self.callback('error')(xhr.responseText, xhr.status);
+                }
+                self.callback('complete')(xhr.responseText, xhr.status);
+            }
+        };
+        this.callback('beforeSend')(xhr.responseText, xhr.status);
+        xhr.open(this.get('method'), this.get('url'), this.get('async'));
+        xhr.setRequestHeader("Content-Type", this.get('contentType'));
+        xhr.send(this.get('data'));
+    };
+}
+
+
+$$.ajax = function(url, settings){
+    var ajax = new Ajax();
+    ajax.attr(url, settings);
+    var data = ajax.data(ajax.get('data'), ajax.get('method'));
+    ajax.set('data', data);
+    ajax.send();
+};
+
+$$.get = function (url, setting) {
+    setting = setting || {};
+    setting.method = "GET";
+    $$.ajax(url, setting);
+};
+
+$$.post = function (url, setting) {
+    setting = setting || {};
+    setting.method = "POST";
+    $$.ajax(url, setting);
+};
+

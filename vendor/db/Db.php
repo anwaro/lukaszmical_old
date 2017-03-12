@@ -418,4 +418,8 @@ class Db
     {
 
     }
+
+    public function execSql($sql){
+        return $this->db()->execSql($sql);
+    }
 }

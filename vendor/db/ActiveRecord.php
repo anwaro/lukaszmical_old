@@ -100,15 +100,26 @@ class ActiveRecord extends ActiveRecordAbstract
     }
 
     /**
+     * @param null $col
+     * @param null $sign
+     * @param null $val
      * @return array
      */
-    public function all()
+    public function all($col=NULL, $sign = NULL, $val = NULL)
     {
-        return $this->_db
+        $query = $this->_db
             ->select('*')
-            ->orderBy('id', 'DESC')
-            ->from($this->getTableName())
-            ->all();
+            ->from($this->getTableName());
+        if($sign != NULL){
+            if ($sign == NULL) {
+                $val = $col;
+                $sign = "=";
+                $col = 'id';
+            }
+            $query->where($col, $sign, $val);
+        }
+
+        return $query->all();
     }
 
     /**

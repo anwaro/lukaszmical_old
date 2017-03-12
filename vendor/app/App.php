@@ -12,6 +12,11 @@ class App {
      * @var Config $_config
      */
     private $_config;
+
+    /**
+     * @var int $_analiseId
+     */
+    private $_analiseId;
     
     /**
      * @var User $user  
@@ -54,9 +59,9 @@ class App {
      */
     public function __construct($config) {
         $this->setVar();
-        
         $this->session->init();        
         $this->_config->loadConfig($config);
+        $this->setTimeZone();
     }
 
     /**
@@ -80,5 +85,17 @@ class App {
      */
     public function params($path){
         return $this->_config->getParams($path);
+    }
+
+    public function setTimeZone(){
+        date_default_timezone_set ("Europe/Warsaw");
+    }
+
+    public function setAnaliseId($id){
+        $this->_analiseId = $id;
+    }
+
+    public function getAnaliseId(){
+        return $this->_analiseId;
     }
 }

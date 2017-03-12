@@ -1,11 +1,14 @@
 <style>
-    #gen{margin:100px;}
-
-    table{
-        width: 900px;
-        margin:auto;
+    #gen {
+        margin: 100px;
     }
-    tbody>tr:nth-child(even){
+
+    table {
+        width: 900px;
+        margin: auto;
+    }
+
+    tbody > tr:nth-child(even) {
         border-bottom: 1px solid black;
         margin-bottom: 10px;
     }
@@ -17,12 +20,12 @@
     <tr>
         <td>Punkt startu</td>
         <td>Współrzędna x</td>
-        <td>Współrzędna y </td>
+        <td>Współrzędna y</td>
     </tr>
     <tr>
         <td>Start (X, Y)</td>
-        <td><input id ="startX" value="350"></td>
-        <td><input id ="startY" value="500"></td>
+        <td><input id="startX" value="350"></td>
+        <td><input id="startY" value="500"></td>
     </tr>
     <tr>
         <td></td>
@@ -32,8 +35,8 @@
 
     <tr>
         <td>Start (L, A)</td>
-        <td><input id ="startL" value="100"></td>
-        <td><input id ="startA" value="1.5707963267948966"></td>
+        <td><input id="startL" value="100"></td>
+        <td><input id="startA" value="1.5707963267948966"></td>
     </tr>
     <tr>
         <td>Współczynniki</td>
@@ -43,8 +46,8 @@
 
     <tr>
         <td>Ratio (1, 2)</td>
-        <td><input id ="l1" value="0.8"></td>
-        <td><input id ="l2" value="0.7"></td>
+        <td><input id="l1" value="0.8"></td>
+        <td><input id="l2" value="0.7"></td>
     </tr>
     <tr>
         <td>Kąt odchylenia</td>
@@ -54,11 +57,10 @@
 
     <tr>
         <td>Alfa (1, 2)</td>
-        <td><input id ="a1" value="0.4"></td>
-        <td><input id ="a2" value="0.6"></td>
+        <td><input id="a1" value="0.4"></td>
+        <td><input id="a2" value="0.6"></td>
     </tr>
 </table>
-
 
 
 <button id="newDraw">Rysuj</button>

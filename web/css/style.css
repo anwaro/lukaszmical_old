@@ -147,23 +147,26 @@ form
 {
 }
 
-form label
+label
 {
     color: #3e3e3e;
     font-weight: 700;
     display: block;
     margin: 0 0 0.5em 0;
 }
-form input[type=date]{                            
+input[type=date]{
     max-width: 300px;
     margin: auto;
 }
-form input[type=date],
-form input[type=text],
-form input[type=email],
-form input[type=password],
-form select,
-form textarea
+
+
+
+input[type=date],
+input[type=text],
+input[type=email],
+input[type=password],
+select,
+textarea
 {
     -webkit-appearance: none;
     display: block;
@@ -182,19 +185,19 @@ form textarea
     transition: background .2s ease-in-out, box-shadow .2s ease-in-out;
 }
 
-form input[type=text]:focus,
-form input[type=email]:focus,
-form input[type=password]:focus,
-form select:focus,
-form textarea:focus
+input[type=text]:focus,
+input[type=email]:focus,
+input[type=password]:focus,
+select:focus,
+textarea:focus
 {
     background: #fafafa;
     box-shadow: inset 0 2px 5px 0 rgba(0,0,0,0.05), 0 1px 0 0 rgba(255,255,255,0.025), inset 0 0 2px 1px #43bff0;
 }
 
-form textarea
+textarea
 {
-    height: 15em;
+    height: 9em;
 }
 
 form .formerize-placeholder
@@ -553,7 +556,7 @@ ol.default li
 .box
 {
     background: #fff;
-    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.15), 0 2px 3px 0 rgba(0,0,0,0.1);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.15), 0 2px 3px 0 rgba(0,0,0,0.1);
     text-align: center;
 }
 .box > p{
@@ -948,4 +951,64 @@ ol.default li
 #copyright a:hover
 {
     color: #777;
+}
+
+
+.switcher{
+    padding: 10px;
+    margin: 2px;
+}
+.switcher-active{
+    background-color: #8336ff;
+}
+.switcher-active:hover{
+    background-color: #924eff;
+}
+
+
+.rating {
+    unicode-bidi: bidi-override;
+    direction: rtl;
+    text-align: center;
+}
+.rating > span {
+    display: inline-block;
+    position: relative;
+    width: 30px;
+    font-size: 25px;
+    cursor: pointer;
+}
+.rating > span.rate,
+.rating > span.rate ~ span,
+.rating > span:hover,
+.rating > span:hover ~ span {
+    color: transparent;
+}
+
+.rating > span.rate:before,
+.rating > span.rate ~ span:before,
+.rating > span:hover:before,
+.rating > span:hover ~ span:before {
+    content: "\2605";
+    position: absolute;
+    left: 1px;
+    color: gold;
+}
+
+.avg-rate-box{
+    position: absolute;
+    top: -15px;
+    left: -26px;
+}
+.avg-star{
+    color: gold;
+    font-size: 65px;
+}
+.avg-rate{
+    position: absolute;
+    top: 3px;
+    left: 18px;
+    color: #545454;
+    font-weight: bold;
+
 }

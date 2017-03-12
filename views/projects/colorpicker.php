@@ -2,7 +2,8 @@
     <br>
     <input id="rgb" type="text" title="color">
     <br>
-    <div id="picker" style="margin:10px auto;height: 150px; width: 150px; border: 4px dashed; position: relative;"></div>
+    <div id="picker"
+         style="margin:10px auto;height: 150px; width: 150px; border: 4px dashed; position: relative;"></div>
 
 </div>
 
@@ -12,5 +13,5 @@
         el.style.background = color;
         output.value = color;
     });
-    
+
 </script>

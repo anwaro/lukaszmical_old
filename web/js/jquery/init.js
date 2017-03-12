@@ -13,13 +13,25 @@
         breakpoints: {
 //            'global': {range: '*', href: url + '/web/css/style.css'},
             'desktop': {range: '737-', href: url + '/web/css/style-desktop.css', containers: 1200, grid: {gutters: 25}},
-            '1000px': {range: '737-1200', href: url + '/web/css/style-1000px.css', containers: 960, grid: {gutters: 25}, viewport: {width: 1080}},
-            'mobile': {range: '-736', href: url + '/web/css/style-mobile.css', containers: '100%!', grid: {collapse: true, gutters: 15}, viewport: {scalable: false}}
+            '1000px': {
+                range: '737-1200',
+                href: url + '/web/css/style-1000px.css',
+                containers: 960,
+                grid: {gutters: 25},
+                viewport: {width: 1080}
+            },
+            'mobile': {
+                range: '-736',
+                href: url + '/web/css/style-mobile.css',
+                containers: '100%!',
+                grid: {collapse: true, gutters: 15},
+                viewport: {scalable: false}
+            }
         }
     });
     $(function () {
         var $window = $(window),
-                $body = $('body');
+            $body = $('body');
 
         // Disable animations/transitions until the page has loaded.
         $body.addClass('is-loading');
@@ -158,39 +170,30 @@
 
         // Scrolly.
         $window.load(function () {
-
             var x = parseInt($('.wrapper').first().css('padding-top')) - 15;
             $('#nav a, .scrolly').scrolly(1000, x);
 
         });
 
-        /*var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Phone/i.test(navigator.userAgent);
-         
-         if(isMobile &&$( window ).width( )<700){
-         $('#nav').hide();
-         $('#navMobile').show().css("left",(($( window ).width()-$('#navMobile').width())/2 )+ "px").click(function(e){
-         e.stopPropagation();
-         $("#navMobile ul").toggle()
-         });
-         $( document ).click(function(){if($('#navMobile ul').css('display') != 'none') $('#navMobile ul').fadeOut();})
-         }*/
-        $("#content-block").delay(200).animate({opacity:1});
-        
-        $( "a" ).click(function( event ) {
+        $("#content-block").delay(200).animate({opacity: 1});
 
-            if(event.currentTarget.target !== "_blank"
+        $("a").click(function (event) {
+
+            if (event.currentTarget.target !== "_blank"
                 && !/#/.test(event.currentTarget.href)
-                && event.button !== 1){
+                && event.button !== 1
+                && !/javascript/.test(event.currentTarget.href)
+            ) {
 
                 event.preventDefault();
                 $("#content-block").animate(
-                    {opacity:0}, 
+                    {opacity: 0},
                     400,
-                    function(){
+                    function () {
                         window.location.assign(event.currentTarget.href);
-                        // $("#content-block").delay(1000).animate({opacity:1});
+                        $("#content-block").delay(5000).animate({opacity: 1});
                     });
-            
+
             }
         });
     });

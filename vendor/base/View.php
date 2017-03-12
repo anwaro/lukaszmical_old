@@ -105,9 +105,7 @@ class View{
      */
     protected function _render($viewName, $variables) {
         ob_start();
-        foreach ($variables as $varName => $var) {
-            $$varName = $var;
-        }
+        extract($variables);
         require $viewName;          
         $buffer = ob_get_contents();        
         ob_end_clean();

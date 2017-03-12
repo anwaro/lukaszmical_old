@@ -46,23 +46,26 @@ class Projects extends ActiveRecord {
         ];
     }
 
-    public function getAll() {        
-        return $this->db()
-                ->from($this->getTableName())
-                ->where('display', '=', 1)
-                ->orderBy('mark', 'DESC')
-                ->all();        
+    public function getAll() {
+        return $this->db()->execSql(
+            "SELECT `projects`.*, AVG(`rate`.`rate`) as rate 
+              FROM `projects` LEFT JOIN `rate` ON `projects`.`id` = `rate`.`project_id` 
+              WHERE `projects`.`display` = 1 
+              GROUP BY `projects`.`id`  
+              ORDER BY `projects`.`mark` DESC"
+        );
     }
 
 
     public function getBestProjects() {
-        $result = $this->db()
-            ->from($this->getTableName())
-            ->where('display', '=', 1)
-            ->orderBy('mark', 'DESC')
-            ->limit(6)            
-            ->all();
-        return $result;
+        return $this->db()->execSql(
+            "SELECT `projects`.*, AVG(`rate`.`rate`) as rate 
+              FROM `projects` LEFT JOIN `rate` ON `projects`.`id` = `rate`.`project_id` 
+              WHERE `projects`.`display` = 1 
+              GROUP BY `projects`.`id`  
+              ORDER BY `projects`.`mark` DESC
+              LIMIT 6"
+        );
     }
     
     public function savePhoto() {
@@ -133,8 +136,9 @@ class Projects extends ActiveRecord {
     }
     
     public function getWord() {
-        $list = "alfabet|komputer|zeszyt|pies|kot|haczyk|słownik|długopis|książka";
-        $list .= "heheszki|telefon|piłka|protfel|moneta|soczek|dłośnik|lampka";
+        $list = "alfabet|komputer|zeszyt|pies|kot|haczyk|słownik|długopis|książka|";
+        $list .= "heheszki|telefon|piłka|protfel|moneta|soczek|głośnik|lampka|mefedron|";
+        $list .= "mefedron|mefedron|mefedron|mefedron|mefedron|mefedron|mefedron|mefedron";
         $array = explode( "|",$list);
         shuffle($array);
         return strtoupper ($array[0]);

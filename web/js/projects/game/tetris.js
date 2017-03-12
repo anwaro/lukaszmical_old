@@ -1,3 +1,4 @@
+var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 var numX = 10;
 var numY = 16;
@@ -7,17 +8,19 @@ var boardX = numX*LenCub;
 var boardY = numY*LenCub;
 var boardXwithMenu = boardX+100;
 
-var BoardColor = "#678893"
+var BoardColor = "#678893";
 var stX = 4;
 var stY = 0;
 var OneInLoop = 0;
 var canvas;
 var ctx;
 var gameLoop;
+var downPress = false;
+var leftPress = false;
+var rightPress = false;
 
-
-var NumerCube = Math.floor(Math.random()*10000)%7;
-var NumerNextCube = Math.floor(Math.random()*10000)%7;       
+var NumberCube = Math.floor(Math.random()*10000)%7;
+var NumberNextCube = Math.floor(Math.random()*10000)%7;       
 var NumTransform = 1;
 
 var titleFontSize = "bold 24px Georgia";
@@ -25,7 +28,10 @@ var MenuFontSize = "bold 14px Georgia";
 
 var Score = 0;
 var Level = 1;
-var Speed = 50;
+var initSpeed = 10;
+var Speed = 10;
+var fps = 60;
+var move = 0;
 
 var ColorCube ={
 	cub0 : "#33CC33",cube0: "#259525",//gren
@@ -34,20 +40,61 @@ var ColorCube ={
 	cub3 : "#FF6666",cube3: "#CC5252",//red
 	cub4 : "#5C5CD6",cube4: "#5353C1",//
 	cub5 : "#E6E600",cube5: "#B8B800",//yellow
-	cub6 : "#FF8533",cube6: "#D1793E",//
+	cub6 : "#FF8533",cube6: "#D1793E" //
 };
 /**********************MAIN FUNCTION************************/
 
-function drawTetrisCanvas() {
+function startTetris() {
 	ResetGame();
-	canvas = document.getElementById("GameTetris");
-	canvas.height=boardY;
-	canvas.width = boardXwithMenu;
-	if (canvas.getContext) {
-		ctx = canvas.getContext("2d");
-		gameLoop = setInterval(DrawAll, 20);
-		window.addEventListener('keydown', whatKey, true);
-	}
+
+    gameLoop = setInterval(DrawAll, fps);
+}
+
+function END(right) {
+    move=0;
+    right&&(rightPress = false);
+    !right&&(leftPress = false);
+}
+
+function LR(right) {
+    rightPress = right;
+    leftPress = !right;
+    move = 0;
+    MoveCubeLR(right);
+}
+
+function initCanvas(){
+    canvas = document.getElementById("tetris");
+    canvas.height=boardY;
+    canvas.width = boardXwithMenu;
+    if (canvas.getContext) {
+        ctx = canvas.getContext("2d");
+        DrawAll();
+        DrawMenu();
+    }
+	window.addEventListener('keydown', keyPress, true);
+	window.addEventListener('keyup', keyUp, true);
+
+	$$(".rotate").addEvent('click', TransformCube);
+
+	var right =  $$(".move-right");
+    isMobile && right.addEvent('touchstart', function(){LR(true)});
+    !isMobile &&right.addEvent('mousedown', function(){LR(true)});
+	right.addEvent('mouseup', function(){END(true)});
+	right.addEvent('touchend', function(){END(true)});
+
+	var left =  $$(".move-left");
+    isMobile && left.addEvent('touchstart', function(){LR(false)});
+    !isMobile &&left.addEvent('mousedown', function(){LR(false)});
+	left.addEvent('mouseup', function(){END(false)});
+	left.addEvent('touchend', function(){END(false)});
+
+	var down =  $$(".move-down");
+    isMobile && down.addEvent('touchstart', function(){downPress = true; MoveCube()});
+    !isMobile && down.addEvent('mousedown', function(){downPress = true; MoveCube()});
+	down.addEvent('mouseup', function(){downPress = false});
+	down.addEvent('touchend', function(){downPress = false});
+
 }
 
 function Block(poss,type,color,colorN){
@@ -57,11 +104,11 @@ function Block(poss,type,color,colorN){
 	this.colorN = colorN;
 }
 
-var AllBlock =new Array(
+var AllBlock =[
 /*  _
    |_|
    |_|_
-   |_|_|        possition
+   |_|_|
 */	new Block([[stX,stY],[stX,stY+1],[stX,stY+2],[stX+1,stY+2]],1,ColorCube.cub0, ColorCube.cube0),
 /*    _
      |_|
@@ -87,7 +134,7 @@ var AllBlock =new Array(
    |_|_|
    |_|_|
 */	new Block([[stX,stY],[stX+1,stY],[stX,stY+1],[stX+1,stY+1]],7,ColorCube.cub6, ColorCube.cube6)
-);
+];
 
 function OneCube(X,Y,value,color){
 	this.X = X;
@@ -96,73 +143,52 @@ function OneCube(X,Y,value,color){
 	this.color = color;
 }
 
-var Board = new Array();
+var Board = [];
+var CubeArea = [];
+var NewArea = [];
 for(var i =0;i<numY;i++){
-	Board[i] =new Array();
+	Board[i] =[];
+    CubeArea[i] =[];
+    NewArea[i] =[];
 	for(var j=0;j<numX;j++){
 		Board[i][j]= new OneCube(LenCub*j,LenCub*i,1,BoardColor);
-	}
-}
-
-var NewArea = new Array();
-for(var i =0;i<numY;i++){
-	NewArea[i] =new Array();
-	for(var j=0;j<numX;j++){
 		NewArea[i][j]= new OneCube(LenCub*j,LenCub*i,false,BoardColor);
-	}
-}
-
-var CubeArea = new Array();
-for(var i =0;i<numY;i++){
-	CubeArea[i] =new Array();
-	for(var j=0;j<numX;j++){
 		CubeArea[i][j]= new OneCube(LenCub*j,LenCub*i,false,BoardColor);
 	}
 }
 
 function ResetGame(){
-	$("#PlayGame").css("display","none");
+	$$(".play").hide();
 	Score = 0;
+    move = 0;
 	Level = 1;
-	Speed = 50;
-	NumerCube = Math.floor(Math.random()*10000)%7;
-	NumerNextCube = Math.floor(Math.random()*10000)%7;       
+	Speed = initSpeed;
+	NumberCube = Math.floor(Math.random()*10000)%7;
+	NumberNextCube = Math.floor(Math.random()*10000)%7;       
 	NumTransform = 1;
 	ResetPosition();
 	for(var i =0;i<numY;i++){
 		for(var j=0;j<numX;j++){
 			Board[i][j].color= BoardColor;
+            CubeArea[i][j].color= BoardColor;
+            CubeArea[i][j].value= false;
+            NewArea[i][j].color= BoardColor;
 		}
 	}
-	for(var i =0;i<numY;i++){
-		for(var j=0;j<numX;j++){
-			CubeArea[i][j].color= BoardColor;
-			CubeArea[i][j].value= false;
-		}
-	}
-	for(var i =0;i<numY;i++){
-		for(var j=0;j<numX;j++){
-			NewArea[i][j].color= BoardColor;
-		}
-	}
-	
 }
 
 function DrawAll() {
 	/**********DRAW BACKGROUND***************/
-	ctx.clearRect(0, 0, boardXwithMenu, boardY);
-	ctx.fillStyle = BoardColor;
 	ctx.beginPath();
-	ctx.rect(0, 0, boardXwithMenu, boardY);
-	ctx.closePath();
-	ctx.fill();
+    ctx.fillStyle = BoardColor;
+	ctx.fillRect(0, 0, boardX, boardY);
+
 	/*********DRAW FRAME*********************/
 	ctx.beginPath();
 	ctx.moveTo(boardX,0);
 	ctx.lineTo(boardX,boardY);
 	ctx.stroke();
-	/*********DRAW MENU**********************/
-	DrawMenu();
+
 	/*********CLEAR********/
 	for(var i =0;i<numY;i++){
 		for(var j=0;j<numX;j++){
@@ -183,21 +209,28 @@ function DrawAll() {
 	}
 	/**********DRAW CURRENT BLOCK***********/	
 	for(var i=0;i<4;i++){
-		var posX = AllBlock[NumerCube].poss[i][0];
-		var posY = AllBlock[NumerCube].poss[i][1];
+		var posX = AllBlock[NumberCube].poss[i][0];
+		var posY = AllBlock[NumberCube].poss[i][1];
 		
-		ctx.fillStyle = AllBlock[NumerCube].color;
+		ctx.fillStyle = AllBlock[NumberCube].color;
 		ctx.beginPath();
 		ctx.rect(Board[posY][posX].X+1, Board[posY][posX].Y+1,LenCub-2,LenCub-2);
 		ctx.closePath();
 		ctx.fill();			
 	}
 	
-	if(OneInLoop==0) MoveCube();
+	(OneInLoop==0 || downPress) && MoveCube();
+    move && leftPress && MoveCubeLR(false);
+    move && rightPress && MoveCubeLR(true);
+    move++;
 	OneInLoop=(++OneInLoop)%Speed;
 }
 
 function DrawMenu(){
+    ctx.beginPath();
+    ctx.fillStyle = BoardColor;
+    ctx.fillRect(boardX, 0, boardXwithMenu, boardY);
+    ctx.beginPath();
 	ctx.font = MenuFontSize;
 	ctx.fillStyle = "white";
 	ctx.fillText("Next block ", boardX+8, 20);
@@ -207,7 +240,7 @@ function DrawMenu(){
 }
 
 function DrawNextBlock(){
-	switch(NumerNextCube){
+	switch(NumberNextCube){
 		case 0:
 			DrawOneCube(boardX+15,30);
 			DrawOneCube(boardX+15,50);
@@ -254,7 +287,7 @@ function DrawNextBlock(){
 }
 
 function DrawOneCube(x,y){
-	ctx.fillStyle = AllBlock[NumerNextCube].color;
+	ctx.fillStyle = AllBlock[NumberNextCube].color;
 	ctx.beginPath();
 	ctx.rect(x+1,y+1,LenCub-2,LenCub-2);
 	ctx.closePath();
@@ -263,41 +296,30 @@ function DrawOneCube(x,y){
 
 function ChoseNextCube(){
 	for(var i=0;i<4;i++){
-		CubeArea[AllBlock[NumerCube].poss[i][1]][AllBlock[NumerCube].poss[i][0]].value = true;
-		CubeArea[AllBlock[NumerCube].poss[i][1]][AllBlock[NumerCube].poss[i][0]].color = AllBlock[NumerCube].colorN;
+		CubeArea[AllBlock[NumberCube].poss[i][1]][AllBlock[NumberCube].poss[i][0]].value = true;
+		CubeArea[AllBlock[NumberCube].poss[i][1]][AllBlock[NumberCube].poss[i][0]].color = AllBlock[NumberCube].colorN;
 	}
 	ResetPosition();
 	DeleteFullLayer();
-	NumerCube = NumerNextCube;
-	NumerNextCube =Math.floor(Math.random()*10000)%7;
+	NumberCube = NumberNextCube;
+	NumberNextCube =Math.floor(Math.random()*10000)%7;
 	NumTransform=1;
 	CheckStatusGame();
-	
+    DrawMenu();
 }
 
 function GameEnd(){
 	clearInterval(gameLoop);
-	ctx.clearRect(0, 0, boardX, boardY);
-	ctx.fillStyle = BoardColor;
-	ctx.beginPath();
-	ctx.rect(0, 0, boardX, boardY);
-	ctx.closePath();
-	ctx.fill();
-
 	ctx.font = titleFontSize;
 	ctx.fillStyle = "white";
 	ctx.fillText("GAME OVER", 15, 130);
-	$("#PlayGame").css("display","block");
+	$$(".play").show();
 
 }
 
 function CheckStatusGame(){
-	var Fail = 0;
 	for(var j=0;j<numX;j++){
-		if(CubeArea[0][j].value==true)Fail++;
-	}
-	if(Fail>0){
-		GameEnd();
+		if(CubeArea[0][j].value==true)return GameEnd();
 	}
 }
 
@@ -314,7 +336,7 @@ function DeleteFullLayer(){
 		if(NumFull==numX){
 			Score++;
 			Level= Math.ceil(Score/40);
-			Speed = 50-Level;
+			Speed = initSpeed-Level;
 			for(var k=0;k<=i;k++){
 				for(var l=0;l<numX;l++){
 					if(k==0){
@@ -341,36 +363,36 @@ function DeleteFullLayer(){
 function MoveCube(){
 	var k =0;
 	for(var i=0;i<4;i++){
-		if(AllBlock[NumerCube].poss[i][1]+1==numY||CubeArea[AllBlock[NumerCube].poss[i][1]+1][AllBlock[NumerCube].poss[i][0]].value==true)k++;
+		if(AllBlock[NumberCube].poss[i][1]+1==numY||CubeArea[AllBlock[NumberCube].poss[i][1]+1][AllBlock[NumberCube].poss[i][0]].value==true)k++;
 	}
-	if(k==0) for(var i=0;i<4;i++)AllBlock[NumerCube].poss[i][1]++;
+	if(k==0) for(var i=0;i<4;i++)AllBlock[NumberCube].poss[i][1]++;
 	else{
 		ChoseNextCube();
 	}
 }
 
 function ResetPosition(){
-	switch(NumerCube){
+	switch(NumberCube){
 	case 0:
-		AllBlock[NumerCube].poss = [[stX,stY],[stX,stY+1],[stX,stY+2],[stX+1,stY+2]];
+		AllBlock[NumberCube].poss = [[stX,stY],[stX,stY+1],[stX,stY+2],[stX+1,stY+2]];
 		break;
 	case 1:
-		AllBlock[NumerCube].poss = [[stX,stY],[stX,stY+1],[stX,stY+2],[stX-1,stY+2]];
+		AllBlock[NumberCube].poss = [[stX,stY],[stX,stY+1],[stX,stY+2],[stX-1,stY+2]];
 		break;
 	case 2:
-		AllBlock[NumerCube].poss = [[stX,stY],[stX+1,stY],[stX+1,stY+1],[stX+2,stY+1]];
+		AllBlock[NumberCube].poss = [[stX,stY],[stX+1,stY],[stX+1,stY+1],[stX+2,stY+1]];
 		break;
 	case 3:
-		AllBlock[NumerCube].poss = [[stX,stY],[stX+1,stY],[stX,stY+1],[stX-1,stY+1]];
+		AllBlock[NumberCube].poss = [[stX,stY],[stX+1,stY],[stX,stY+1],[stX-1,stY+1]];
 		break;
 	case 4:
-		AllBlock[NumerCube].poss = [[stX,stY],[stX+1,stY],[stX+2,stY],[stX+3,stY]];
+		AllBlock[NumberCube].poss = [[stX,stY],[stX+1,stY],[stX+2,stY],[stX+3,stY]];
 		break;
 	case 5:
-		AllBlock[NumerCube].poss = [[stX,stY],[stX,stY+1],[stX-1,stY+1],[stX+1,stY+1]];
+		AllBlock[NumberCube].poss = [[stX,stY],[stX,stY+1],[stX-1,stY+1],[stX+1,stY+1]];
 		break;
 	case 6:
-		AllBlock[NumerCube].poss = [[stX,stY],[stX+1,stY],[stX,stY+1],[stX+1,stY+1]];
+		AllBlock[NumberCube].poss = [[stX,stY],[stX+1,stY],[stX,stY+1],[stX+1,stY+1]];
 		break;
 	}
 }
@@ -381,15 +403,13 @@ function MoveCubeLR(where){
 	var right = 0;
 	
 	for(var i=0;i<4;i++){
-		if(AllBlock[NumerCube].poss[i][0]+1==numX)right++;
-		else if(CubeArea[AllBlock[NumerCube].poss[i][1]][AllBlock[NumerCube].poss[i][0]+1].value==true)right++;
+		if(AllBlock[NumberCube].poss[i][0]+1==numX)right++;
+		else if(CubeArea[AllBlock[NumberCube].poss[i][1]][AllBlock[NumberCube].poss[i][0]+1].value==true)right++;
+		if(AllBlock[NumberCube].poss[i][0]==0)left++;
+		else if(CubeArea[AllBlock[NumberCube].poss[i][1]][AllBlock[NumberCube].poss[i][0]-1].value==true)left++;
 	}
-	for(var i=0;i<4;i++){
-		if(AllBlock[NumerCube].poss[i][0]==0)left++;
-		else if(CubeArea[AllBlock[NumerCube].poss[i][1]][AllBlock[NumerCube].poss[i][0]-1].value==true)left++;
-	}
-	if(where==1&&right==0)for(var i=0;i<4;i++)AllBlock[NumerCube].poss[i][0]++;
-	if(where==-1&&left==0)for(var i=0;i<4;i++)AllBlock[NumerCube].poss[i][0]--;
+	if(where&&right==0)for(var i=0;i<4;i++)AllBlock[NumberCube].poss[i][0]++;
+	if(!where&&left==0)for(var i=0;i<4;i++)AllBlock[NumberCube].poss[i][0]--;
 
 }
 
@@ -397,13 +417,13 @@ function TransformCube(){
 
 	var NewPoss = [[],[],[],[]];
 	for(var i =0;i<4;i++){
-		NewPoss[i][0] =AllBlock[NumerCube].poss[i][0];
-		NewPoss[i][1] =AllBlock[NumerCube].poss[i][1];
+		NewPoss[i][0] =AllBlock[NumberCube].poss[i][0];
+		NewPoss[i][1] =AllBlock[NumberCube].poss[i][1];
 	}
 	
 	var NewTran = NumTransform;
 	var Check   = 0;
-		switch (NumerCube) {//[[stX,stY],[stX,stY+1],[stX,stY+2],[stX+1,stY+2]]
+		switch (NumberCube) {//[[stX,stY],[stX,stY+1],[stX,stY+2],[stX+1,stY+2]]
 		case 0:		
 			if(NewTran==1){
 				if(NewPoss[0][0]==0)break;
@@ -433,12 +453,12 @@ function TransformCube(){
 				if(CubeArea[NewPoss[i][1]][NewPoss[i][0]].value==true)Check++;
 			}			
 			if(Check==0){
-				AllBlock[NumerCube].poss = NewPoss;
+				AllBlock[NumberCube].poss = NewPoss;
 				NumTransform =NewTran;
 			}
 			break;			
 			
-			case 1:
+        case 1:
 			if(NewTran==1){//[[stX,stY],[stX,stY+1],[stX,stY+2],[stX-1,stY+2]]
 				if(NewPoss[0][0]==numX-1)break;
 				NewPoss[0][0]--;NewPoss[0][1]++;
@@ -467,7 +487,7 @@ function TransformCube(){
 				if(CubeArea[NewPoss[i][1]][NewPoss[i][0]].value==true)Check++;
 			}			
 			if(Check==0){
-				AllBlock[NumerCube].poss = NewPoss;
+				AllBlock[NumberCube].poss = NewPoss;
 				NumTransform =NewTran;
 			}
 			break;
@@ -489,7 +509,7 @@ function TransformCube(){
 				if(CubeArea[NewPoss[i][1]][NewPoss[i][0]].value==true)Check++;
 			}			
 			if(Check==0){
-				AllBlock[NumerCube].poss = NewPoss;
+				AllBlock[NumberCube].poss = NewPoss;
 				NumTransform =NewTran;
 			}
 			break;
@@ -510,7 +530,7 @@ function TransformCube(){
 				if(CubeArea[NewPoss[i][1]][NewPoss[i][0]].value==true)Check++;
 			}			
 			if(Check==0){
-				AllBlock[NumerCube].poss = NewPoss;
+				AllBlock[NumberCube].poss = NewPoss;
 				NumTransform =NewTran;
 			}
 			break;
@@ -531,7 +551,7 @@ function TransformCube(){
 				if(CubeArea[NewPoss[i][1]][NewPoss[i][0]].value==true)Check++;
 			}			
 			if(Check==0){
-				AllBlock[NumerCube].poss = NewPoss;
+				AllBlock[NumberCube].poss = NewPoss;
 				NumTransform =NewTran;
 			}
 			break;
@@ -564,7 +584,7 @@ function TransformCube(){
 				if(CubeArea[NewPoss[i][1]][NewPoss[i][0]].value==true)Check++;
 			}			
 			if(Check==0){
-				AllBlock[NumerCube].poss = NewPoss;
+				AllBlock[NumberCube].poss = NewPoss;
 				NumTransform =NewTran;
 			}
 			break;
@@ -572,28 +592,49 @@ function TransformCube(){
 			break;
 	}
 }
-
-function whatKey(evt) {
+function keyUp(evt) {
+    switch (evt.keyCode) {
+    case 65:// a
+    case 37:// ←
+        leftPress = false;
+        evt.stopPropagation();
+        break;
+    case 68:// d
+    case 39:// →
+        rightPress = false;
+        evt.stopPropagation();
+        break;
+    case 83: // s
+    case 40: // ↓
+        downPress = false;
+        evt.stopPropagation();
+        break;
+    }
+}
+function keyPress(evt) {
+    move = 0;
 	switch (evt.keyCode) {
-		case 65:// a
-		case 37:// ←
-			MoveCubeLR(-1);
-                        evt.stopPropagation();
-			break;
-		case 68:// d
-		case 39:// →
-			MoveCubeLR(1);
-                        evt.stopPropagation();
-			break;
-		case 87:// w
-		case 38:// ↑
-			TransformCube();
-                        evt.stopPropagation();
-			break;
-		case 83: // s
-		case 40: // ↓
-			MoveCube();
-                        evt.stopPropagation();
-			break;
+    case 65:// a
+    case 37:// ←
+        rightPress = false; leftPress = true;
+        evt.stopPropagation();
+        break;
+    case 68:// d
+    case 39:// →
+        leftPress = false; rightPress = true;
+        evt.stopPropagation();
+        break;
+    case 87:// w
+    case 38:// ↑
+        TransformCube();
+        evt.stopPropagation();
+        break;
+    case 83: // s
+    case 40: // ↓
+        downPress = true;
+        evt.stopPropagation();
+        break;
 	}
 }
+
+$$.load(initCanvas);

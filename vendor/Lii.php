@@ -14,7 +14,7 @@ class Lii {
      */
     public static $app;
     
-    public static function loadConfig($config) {
+    public static function loadConfig($config){
         self::$app = new App($config);
 
     }
@@ -22,5 +22,5 @@ class Lii {
     public static function params($path){
         return self::$app->params($path);
     }
-    
+
 }

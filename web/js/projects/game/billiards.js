@@ -21,7 +21,6 @@ billiards = new function () {
         stick = {
             img: new Image(),
             src: "http://lukaszmical.pl/web/images/projects/billiards/stick.png",
-            //src: "images/projects/billiards/stick.png",
             load: function () {
                 this.img.src = this.src;
             }
@@ -29,7 +28,6 @@ billiards = new function () {
         table = {
             img: new Image(),
             src: "http://lukaszmical.pl/web/images/projects/billiards/table-tmp.png",
-            //src: "images/projects/billiards/stick.png",
             load: function () {
                 this.img.src = this.src;
             }
@@ -100,7 +98,7 @@ billiards = new function () {
             }
             if (bills[i].vx || bills[i].vy) isMove = true;
 
-            if (BillInHole(bills[i], i)) {
+            if (bilIsInHolle(bills[i], i)) {
 
                 if (bills[i].x + bills[i].vx + bills[i].r > width + marginX || bills[i].x + bills[i].vx - bills[i].r < marginX) bills[i].vx *= -0.9;
                 if (bills[i].y + bills[i].vy + bills[i].r > height + marginY || bills[i].y + bills[i].vy - bills[i].r < marginY) bills[i].vy *= -0.9;
@@ -155,7 +153,7 @@ billiards = new function () {
         if (v2)bill2.y -= bill2.vy * diss2 / v2;
     }
 
-    function BillInHole(bill, i) {
+    function bilIsInHolle(bill, i) {
         var h = 19;
         var x = bill.x + bill.vx - marginX,
             y = bill.y + bill.vy - marginY;
@@ -197,7 +195,7 @@ billiards = new function () {
     }
 
     function hitBill() {
-        if (force > 2) {
+        if (force > 5) {
             force -= hitSpeed;
             setTimeout(hitBill, 1000 / 60);
         }
@@ -221,7 +219,7 @@ billiards = new function () {
         if (!isMove && mouseDown) {
             mouseDown = false;
             hitForce = force / 5;
-            hitSpeed = 0.0696 * hitForce + 1.65;
+            hitSpeed = 0.0696 * hitForce + 3;
             dF = Math.abs(dF);
             hitBill();
         } else {
