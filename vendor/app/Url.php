@@ -33,7 +33,7 @@ class Url {
      * --> example.com?path=admin/login
      * 
      * 
-     * @param strinf $url Url to decode
+     * @param string $url Url to decode
      * @return string decoded url
      */
     public function decode($url=NULL) {
@@ -52,7 +52,7 @@ class Url {
      * --> example.com%3Fpath%3Dadmin%2Flogin
      * 
      * 
-     * @param strinf $url Url to encode
+     * @param string $url Url to encode
      * @return string encoded url
      */
     public function encode($url = NULL){
@@ -103,10 +103,10 @@ class Url {
      *  |
      *  '--> http://example.com/admin/login?id=1&path=admin%2login#top
      * 
-     * @param type $base
-     * @param type $path
-     * @param type $query
-     * @param type $frag
+     * @param string $base
+     * @param string $path
+     * @param array $query
+     * @param string $frag
      * @return string
      */
     public function create($base, $path=NULL, $query=[], $frag = NULL) {

@@ -235,7 +235,7 @@ mp3player = new function(){
         color.vis.grad.addColorStop(1,  color.vis.c4);
         player.vis.support = true;
         try{
-            var audioContext = new webkitAudioContext() || new AudioContext();
+            var audioContext = new AudioContext() || new webkitAudioContext();
             player.vis.source = audioContext.createMediaElementSource(player.audio.current.elem);
             player.vis.analyser = audioContext.createAnalyser();
             player.vis.source.connect(player.vis.analyser);

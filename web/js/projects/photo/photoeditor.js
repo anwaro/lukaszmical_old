@@ -14,6 +14,7 @@ $photo = new function () {
         method = {},
         functionName = "negatyw",
         funParm = null,
+        render = true,
         combo = false;
     /**
      * Funkcja inicjujaca
@@ -91,12 +92,7 @@ $photo = new function () {
     }
     
     function changeCombo(event){
-        if(event.target.value === 'true'){
-            combo = true;
-        }
-        else{
-            combo = false;            
-        }
+        combo = event.target.value === 'true';
     }
     
     function rangeChange(event){
@@ -105,7 +101,7 @@ $photo = new function () {
     }
     
     function getElementColor() {
-        rgb = _$("akcent").dataset.color;
+        var rgb = _$("akcent").dataset.color;
         rgb = rgb.substring(4, rgb.length-1)
          .replace(/ /g, '')
          .split(',');
@@ -114,9 +110,6 @@ $photo = new function () {
     
     function transform(event) {
         preapareData();
-        
-        
-        
         if(event){
             var element = event.target;
             while(true){
@@ -134,12 +127,14 @@ $photo = new function () {
             functionName = data[0];
             funParm = data.length>1 ? data[1] : null;
         }
-        
+
+        render = true;
+
         if (method.hasOwnProperty(functionName)){
             method[functionName](funParm);
         }
         
-        renderCanvas();
+        render && renderCanvas();
 
     }
     
@@ -262,6 +257,7 @@ $photo = new function () {
     method["randMask"] = function(){
         mask(randomMask());
     };
+
     
     method["ownMask"] = function(size){
         size = Math.pow(parseInt(size), 2);
@@ -309,11 +305,37 @@ $photo = new function () {
 
          for (var i = 0; i < photoData.height; i++) {
              for (var j = 0; j < photoData.width; j++) {
-                 outputPhotoData[i][j].g = (outputPhotoData[i][j].g+r )%255;
+                 outputPhotoData[i][j].g = (outputPhotoData[i][j].g+r)%255;
                  outputPhotoData[i][j].r = (outputPhotoData[i][j].r+g)%255;
                  outputPhotoData[i][j].b = (outputPhotoData[i][j].b+b)%255;
              }
          }
+    };
+
+
+    method["pixel"] = function(){
+
+        for (var i = 0; i < photoData.width; i += rangeValue) {
+            for (var j = 0; j < photoData.height; j += rangeValue) {
+                setAverage(i, j);
+            }
+        }
+    };
+
+    method["circle"] = function(){
+        render = false;
+        var step = Math.max(rangeValue, 5);
+        ctxOutput.clearRect(0, 0, photoData.width, photoData.height);
+        for (var i = 0; i < photoData.width; i += step) {
+            for (var j = 0; j < photoData.height; j += step) {
+                ctxOutput.fillStyle = setAverage(i, j);
+                ctxOutput.beginPath();
+                ctxOutput.arc(i + 0.5 * step, j + 0.5 * step, 0.5 * step, 0, Math.PI * 2, true);
+                ctxOutput.closePath();
+                ctxOutput.fill();
+            }
+        }
+        ctxInput.putImageData(ctxOutput.getImageData(0, 0, canvasInput.width, canvasInput.height), 0, 0);
     };
     
     
@@ -329,20 +351,30 @@ $photo = new function () {
         }
     };
 
-    
-     method["pixel"] = function(){
-         
-        for (var i = 0; i < photoData.width; i += rangeValue) {
-            for (var j = 0; j < photoData.height; j += rangeValue) {
-                setAverage(i, j);                    
+    method["randpix"] = function(){
+        var copy = JSON.parse(JSON.stringify(outputPhotoData));
+        for (var i = 0; i < photoData.height; i ++) {
+            for (var j = 0; j < photoData.width; j ++) {
+                var y = i + Math.floor((2 * rangeValue) * Math.random()) - rangeValue;
+                var x = j + Math.floor((2 * rangeValue) * Math.random()) - rangeValue;
+                if(y < 0) y += photoData.height;
+                if(x < 0) x += photoData.width;
+                if(y >= photoData.height) y -= photoData.height;
+                if(x >= photoData.width) x -= photoData.width;
+
+                // console.log(i, j);
+
+                var color = copy[y][x];
+                outputPhotoData[i][j].r = color.r;
+                outputPhotoData[i][j].g = color.g;
+                outputPhotoData[i][j].b = color.b;
             }
         }
     };
 
-
     
-    function setAverage(x, y, avg) {
-        avg = avg || 0;
+    function setAverage(x, y, grey) {
+        grey = grey || false;
         var r = 0, g = 0, b = 0,
                 maxX = Math.min(x + rangeValue, photoData.width),
                 maxY = Math.min(y + rangeValue, photoData.height),
@@ -356,15 +388,23 @@ $photo = new function () {
                 s++;
             }
         }
-        for (var i = y; i < maxY; i++) {
-            for (var j = x; j < maxX; j++) {
-                outputPhotoData[i][j].r = r/s;
-                outputPhotoData[i][j].g = g/s;
-                outputPhotoData[i][j].b = b/s;
+        r = parseInt(r/s);
+        g = parseInt(g/s);
+        b = parseInt(b/s);
+        for (i = y; i < maxY; i++) {
+            for (j = x; j < maxX; j++) {
+                outputPhotoData[i][j].r = r;
+                outputPhotoData[i][j].g = g;
+                outputPhotoData[i][j].b = b;
             }
         }
-        var k = parseInt((r + g + b) / 3);
-        return avg ? k : "rgb( " + parseInt(r) + ", " + parseInt(g) + ", " + parseInt(b) + ")";
+        if(grey){
+            var k = parseInt((r + g + b) / 3);
+            r = k;
+            g = k;
+            b = k;
+        }
+        return "rgb( " + r + ", " + g + ", " + b + ")";
     }
 
     /**
@@ -372,7 +412,7 @@ $photo = new function () {
      * 
      * DO: transformuje zdjecie wedlug danej maski przekazanej jako parametr
      * 
-     * @param {array} mask 
+     * @param {Array} mask
      * @returns jezeli maska nie jest to kwadratowa macierz o niepazystych ilosci elementow zwraca FALSE
      */
     function mask(mask) {

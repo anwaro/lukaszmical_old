@@ -11,7 +11,7 @@ class  ErrorController extends Controller {
         
         (new Error())->index();
         
-        $this->addJs("404");
+        $this->addJs("404.js");
         return $this->render('error/index');
         
     }

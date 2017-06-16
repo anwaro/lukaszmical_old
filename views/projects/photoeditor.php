@@ -45,9 +45,10 @@
         <div class="photoedit pixel">
             PIXEL
             <div class="photomenu">
-                <div data-edit="circle" class="photooption circle">KÓŁKA</div>
-                <div data-edit="pixel" class="edit photooption pixel">PIXEL</div>
-                <div data-edit="dots" class="photooption dots">KROPKI</div>
+                <div data-edit="circle"  class="edit photooption circle">KÓŁKA</div>
+                <div data-edit="pixel"   class="edit photooption pixel">PIXEL</div>
+                <div data-edit="dots"    class="edit photooption dots">KROPKI</div>
+                <div data-edit="randpix" class="edit photooption randpix">RANDPIX</div>
             </div>
         </div>
         <div class="photoedit m3x3">

@@ -157,13 +157,16 @@ class View{
     private function _addCss($name){
         $name = str_replace(' ', '', $name);
         if($name!==''){
-            $this->components["css"].= sprintf(
-                "<link rel='stylesheet' href='%sweb/css/%s' >\n\t\t",
-                Lii::params("url"),
-                str_replace(" ", "",$name)
-            );
-
+            $this->components["css"].= $this->link($name);
         }
+    }
+
+    private function link($name)
+    {
+        if(!preg_match('/^http/', $name)){
+            $name = sprintf("%sweb/css/%s", Lii::params("url"), str_replace(" ", "",$name));
+        }
+        return "<link rel='stylesheet' href='$name' >\n\t\t";
     }
 
     /**
