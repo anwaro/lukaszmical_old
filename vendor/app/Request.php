@@ -17,7 +17,9 @@ class Request {
     
     private $_url;
     private $_queryParams;
-
+    private $_baseUrl;
+    private $_hostInfo;
+    private $_hostName;
 
 
 
@@ -116,7 +118,7 @@ class Request {
     public function getUrl()
     {
         if ($this->_url === null) {
-            $this->_url = $this->resolveRequestUri();
+            $this->_url = $this->getBaseUrl() . $this->resolveRequestUri();
         }
 
         return $this->_url;
@@ -145,5 +147,77 @@ class Request {
         }
 
         return $requestUri;
+    }
+
+    public function getBaseUrl()
+    {
+        if(is_null($this->_baseUrl)){
+            $this->_baseUrl = $this->getHostInfo();
+        }
+        return $this->_baseUrl;
+    }
+
+
+    public function getHostInfo()
+    {
+        if ($this->_hostInfo === null) {
+            $secure = $this->getIsSecureConnection();
+            $http = $secure ? 'https' : 'http';
+            if (isset($_SERVER['HTTP_HOST'])) {
+                $this->_hostInfo = $http . '://' . $_SERVER['HTTP_HOST'];
+            } elseif (isset($_SERVER['SERVER_NAME'])) {
+                $this->_hostInfo = $http . '://' . $_SERVER['SERVER_NAME'];
+                $port = $secure ? $this->getSecurePort() : $this->getPort();
+                if (($port !== 80 && !$secure) || ($port !== 443 && $secure)) {
+                    $this->_hostInfo .= ':' . $port;
+                }
+            }
+        }
+        return $this->_hostInfo;
+    }
+
+
+    /**
+     * Return if the request is sent via secure channel (https).
+     * @return bool if the request is sent via secure channel (https)
+     */
+    public function getIsSecureConnection()
+    {
+        return isset($_SERVER['HTTPS']) && (strcasecmp($_SERVER['HTTPS'], 'on') === 0 || $_SERVER['HTTPS'] == 1)
+        || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strcasecmp($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') === 0;
+    }
+
+
+    private $_securePort;
+    /**
+     * Returns the port to use for secure requests.
+     * Defaults to 443, or the port specified by the server if the current
+     * request is secure.
+     * @return int port number for secure requests.
+     * @see setSecurePort()
+     */
+    public function getSecurePort()
+    {
+        if ($this->_securePort === null) {
+            $this->_securePort = $this->getIsSecureConnection() && isset($_SERVER['SERVER_PORT']) ? (int) $_SERVER['SERVER_PORT'] : 443;
+        }
+        return $this->_securePort;
+    }
+
+
+    private $_port;
+    /**
+     * Returns the port to use for insecure requests.
+     * Defaults to 80, or the port specified by the server if the current
+     * request is insecure.
+     * @return int port number for insecure requests.
+     * @see setPort()
+     */
+    public function getPort()
+    {
+        if ($this->_port === null) {
+            $this->_port = !$this->getIsSecureConnection() && isset($_SERVER['SERVER_PORT']) ? (int) $_SERVER['SERVER_PORT'] : 80;
+        }
+        return $this->_port;
     }
 }

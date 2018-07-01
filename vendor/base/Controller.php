@@ -34,6 +34,7 @@ class Controller extends View {
      */
     public function before($currentAction) {
         Lii::$app->setAnaliseId((new Analise())->register());
+        $this->fullurl = Lii::$app->request->getUrl();
         $rules = $this->rules();
         foreach ($rules as $rule => $actions) {
             if(in_array($currentAction, $actions) ||

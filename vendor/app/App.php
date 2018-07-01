@@ -59,7 +59,8 @@ class App {
      */
     public function __construct($config) {
         $this->setVar();
-        $this->session->init();        
+        $this->session->init();
+        $config['url'] = $this->url->getBaseUrl();
         $this->_config->loadConfig($config);
         $this->setTimeZone();
     }

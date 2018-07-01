@@ -81,17 +81,17 @@ class Analise extends ActiveRecord
 
     public function getRefer()
     {
-        return $_SERVER['HTTP_REFERER'];
+        return $this->_server('HTTP_REFERER');
     }
 
     public function getUrl()
     {
-        return $_SERVER['REQUEST_URI'];
+        return $this->_server('REQUEST_URI');
     }
 
     public function getVia()
     {
-        return $_SERVER['HTTP_VIA'];
+        return $this->_server('HTTP_VIA');
     }
 
     public function getSystem()
@@ -106,12 +106,12 @@ class Analise extends ActiveRecord
 
     public function getIp()
     {
-        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-            $ip = $_SERVER['HTTP_CLIENT_IP'];
-        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        if (!empty($this->_server('HTTP_CLIENT_IP'))) {
+            $ip = $this->_server('HTTP_CLIENT_IP');
+        } elseif (!empty($this->_server('HTTP_X_FORWARDED_FOR'))) {
+            $ip = $this->_server('HTTP_X_FORWARDED_FOR');
         } else {
-            $ip = $_SERVER['REMOTE_ADDR'];
+            $ip = $this->_server('REMOTE_ADDR');
         }
         return $ip;
     }
@@ -126,6 +126,12 @@ class Analise extends ActiveRecord
         else{
             return "DESKTOP";
         }
+
+    }
+
+    private function _server($name)
+    {
+        return isset($_SERVER[$name]) ? $_SERVER[$name] : '';
 
     }
 

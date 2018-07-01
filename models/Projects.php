@@ -124,7 +124,7 @@ class Projects extends ActiveRecord {
             }
         }*/
         
-        var_dump($photos);
+//        var_dump($photos);
         //exec("ffmpeg -r 10 -b 1800 -i photo%05d.jpg test1800.mp4");
     }
     

@@ -10,7 +10,7 @@ use app\App;
  */
 class Lii {
     /**
-     * @var app\App
+     * @var App
      */
     public static $app;
     

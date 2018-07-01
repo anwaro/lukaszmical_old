@@ -61,6 +61,11 @@ class Url {
         }
         return urlencode($url);
     }
+
+    public function getBaseUrl()
+    {
+        return $this->getScheme() . "://" . $this->getHost() . "/";
+    }
     
     public function getScheme() {
         return $this->_url["scheme"];

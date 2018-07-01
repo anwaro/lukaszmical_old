@@ -19,10 +19,12 @@
     -->
     <head>
         <title>{%title%}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <meta name="description" content="" />
         <meta name="keywords" content="" />
-        <link href="{%url%}/favicon.ico" rel="shortcut icon" type="image/x-icon">
+        <link href="{%url%}favicon.ico" rel="shortcut icon" type="image/x-icon">
         <!-- Dodatkowe tagi -->
 
         <meta property="og:title" content="{%title%}" />

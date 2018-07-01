@@ -188,7 +188,7 @@ class View{
     
     /**
      * 
-     * @param string $info
+     * @param array $info
      */
     public function setOgTags($info) {
         $this->components["image"] = Lii::params("path/proj_image") . "/" . $info["photo"];
