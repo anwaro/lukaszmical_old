@@ -275,7 +275,7 @@ function formatVal(type, val) {
     }
     if(type === 'pace'){
         var _pace = parsePace(val);
-        return twoChar(_pace.min) + "\":" + twoChar(_pace.sec) + "'"
+        return twoChar(_pace.min) + "':" + twoChar(_pace.sec) + '"'
     }
 }
 /**
@@ -451,8 +451,8 @@ function inputEvent() {
             inputs[i].addEventListener('keydown', validNumber);
             inputs[i].addEventListener('focus', active);
         }
-        else if(inputs[i].type === 'radio') {
-            inputs[i].addEventListener('change', selectDistance);
+        else if(inputs[i].type === 'button') {
+            inputs[i].addEventListener('click', selectDistance);
         }
     }
 }
@@ -472,10 +472,31 @@ function isEqual(array, index, val){
  *
  */
 function selectDistance() {
-    distance.km.value = this.dataset.km;
-    distance.m.value = this.dataset.m;
-    active(distance.km);
-    valid(distance.km, 0);
+    var type = this.dataset.type;
+    var el;
+    if(type === "distance"){
+        distance.km.value = this.dataset.km;
+        distance.m.value = this.dataset.m;
+        el = distance.km;
+    }
+    else if(type === "pace"){
+        pace.min.value = this.dataset.min;
+        pace.sec.value = this.dataset.sec;
+        el = pace.min;
+    }
+    else if(type === "period"){
+        period.h.value = this.dataset.h;
+        period.min.value = this.dataset.min;
+        period.sec.value = this.dataset.sec;
+        el = period.h;
+    }
+    else if(type === "speed"){
+        speed.km_h.value = this.dataset.km_h;
+        speed.m_s.value = this.dataset.m_s;
+        el = speed.km_h;
+    }
+    active(el);
+    valid(el, 0);
 }
 
 /**
@@ -571,7 +592,16 @@ function valid(el, add){
  * @returns {Number}
  */
 function float(num) {
-    return parseFloat(+num);
+    return fixNan(parseFloat(+num));
+}
+
+/**
+ *
+ * @param {Number|NaN} val
+ * @return {Number}
+ */
+function fixNan(val) {
+    return isNaN(val) ? 0 : val;
 }
 
 /**
@@ -592,7 +622,7 @@ function speedFormat(num) {
  * @returns {Integer}
  */
 function int(num) {
-    return parseInt(+num);
+    return fixNan(parseInt(+num));
 }
 
 /**

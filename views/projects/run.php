@@ -13,6 +13,11 @@
                     <div class="input-box">
                         <input id="run-period-s" type="text" title="Seconds" data-max="59" maxlength="2" value="0"> s
                     </div>
+                    <div class="radio-box">
+                        <input type="button" class="input-example" value="0:45:00" data-type="period" data-h="0" data-min="45" data-sec="0" title="0:45:00">
+                        <input type="button" class="input-example" value="1:00:00" data-type="period" data-h="1" data-min="0" data-sec="0" title="1:00:00">
+                        <input type="button" class="input-example" value="1:30:00" data-type="period" data-h="1" data-min="30" data-sec="0" title="1:30:00">
+                    </div>
                 </div>
             </div>
             <div class="col-sm-6 col-lg-3 col">
@@ -25,21 +30,11 @@
                         <input id="run-distance-m" class="w3" type="text" title="Meters" maxlength="3" data-max="999" value="0"> m
                     </div>
                     <div class="radio-box">
-                        <label class="input-box"  title="1 km">
-                            <input type="radio" class="run-radio" name="distance" title="1 km" data-km="1" data-m="0"> 1km
-                        </label>
-                        <label class="input-box" title="5 km" >
-                            <input type="radio" class="run-radio" name="distance" title="5 km" data-km="5" data-m="0"> 5km
-                        </label>
-                        <label class="input-box" title="10 km" >
-                            <input type="radio" class="run-radio" name="distance" title="10 km" data-km="10" data-m="0"> 10km
-                        </label>
-                        <label class="input-box" title="Half Marathon 21km 97m">
-                            <input type="radio" class="run-radio" name="distance" title="Half Marathon 21km 97m" data-km="21" data-m="97"> h-mar
-                        </label>
-                        <label class="input-box" title="Marathon 42km  195m">
-                            <input type="radio" class="run-radio" name="distance" title="Marathon 42km 195m" data-km="42" data-m="195"> mar
-                        </label>
+                        <input type="button" class="input-example" value="1 km" data-type="distance" data-km="1" data-m="0" title="1 km">
+                        <input type="button" class="input-example" value="5 km" data-type="distance" data-km="5" data-m="0" title="5 km">
+                        <input type="button" class="input-example" value="10 km" data-type="distance" data-km="10" data-m="0" title="10 km">
+                        <input type="button" class="input-example" value="h-mar" data-type="distance" data-km="21" data-m="97" title="Half Marathon 21km 97m">
+                        <input type="button" class="input-example" value="mar"  data-type="distance" data-km="42" data-m="195" title="Marathon 42km 195m">
                     </div>
                 </div>
             </div>
@@ -52,6 +47,13 @@
                     <div class="input-box">
                         <input id="run-pace-s" data-type="s_km" type="text" title="Seconds" maxlength="2" data-max="59" value="0"> s
                     </div>
+                    <div class="radio-box">
+                        <input type="button" class="input-example" value="4'00''" data-type="pace" data-min="4" data-sec="0" title="4'00''">
+                        <input type="button" class="input-example" value="4'15''" data-type="pace" data-min="4" data-sec="15" title="4'15''">
+                        <input type="button" class="input-example" value="4'30''" data-type="pace" data-min="4" data-sec="30" title="4'30''">
+                        <input type="button" class="input-example" value="4'45''" data-type="pace" data-min="4" data-sec="45" title="4'45''">
+                        <input type="button" class="input-example" value="5'00''" data-type="pace" data-min="5" data-sec="0" title="5'00''">
+                    </div>
                 </div>
             </div>
             <div class="col-sm-6 col-lg-3 col">
@@ -63,9 +65,17 @@
                     <div class="input-box">
                         <input id="run-speed-m-s"  data-type="m_s" type="text" class="w3" title="Speed m/s" maxlength="4" data-max="30" value="0"> m/s
                     </div>
+                    <div class="radio-box">
+                        <input type="button" class="input-example" value="12km/h" data-type="speed" data-km_h="12" data-m_s="3.3" title="12km/h">
+                        <input type="button" class="input-example" value="13km/h" data-type="speed" data-km_h="13" data-m_s="3.6" title="13km/h">
+                        <input type="button" class="input-example" value="14km/h" data-type="speed" data-km_h="14" data-m_s="3.9" title="14km/h">
+                        <input type="button" class="input-example" value="15km/h" data-type="speed" data-km_h="15" data-m_s="4.2" title="15km/h">
+                    </div>
                 </div>
             </div>
         </div>
+
+
 
         <div class="row run-box">
             <div class="col-md-12 col">
