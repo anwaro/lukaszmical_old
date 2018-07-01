@@ -20,6 +20,7 @@ class ProjectsController extends Controller {
                 'actionAjaxVideo',
                 'actionVote',
                 'actionUpdateVote',
+                'actionPreview',
                 ],
             '@' => ['*'],
         ];
@@ -134,7 +135,15 @@ class ProjectsController extends Controller {
             ]);
         }        
     }    
-    
+
+    function actionPreview($name)
+    {
+        $remoteUrl = "http://lukaszmical.pl/";
+        $content = file_get_contents("{$remoteUrl}projects/show/$name");
+        $url = Lii::$app->url->getBaseUrl();
+        return str_replace($remoteUrl, $url, $content);
+    }
+
     function actionAjax(){
         $model = new Projects();
         $model->savePhoto();
