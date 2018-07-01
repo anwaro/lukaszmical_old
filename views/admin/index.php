@@ -3,7 +3,9 @@
 /**@var $size int */
 /**@var $info array */
 
-
+if(!$browser = get_browser($_SERVER['HTTP_USER_AGENT'], true)){
+    $browser = [];
+}
 
 $this->title = "Panel administaracyjny";
 ?>
@@ -48,10 +50,10 @@ $this->title = "Panel administaracyjny";
     <div id="Browser" data-box="Browser-box">Browser</div>
     <div id="Browser-box">
         <table width="100%">
-            <?php foreach (get_browser($_SERVER['HTTP_USER_AGENT'], true) as $key => $value): ?>
+            <?php foreach ($browser as $key => $value): ?>
                 <tr>
                     <td><?= $key ?></td>
-                    <td><?= $value ?></td>
+                    <td><?= is_array($value) ? print_r($value, true) : $value ?></td>
                 </tr>
             <?php endforeach;?>
         </table>
@@ -67,7 +69,7 @@ $this->title = "Panel administaracyjny";
             <?php foreach ($data as $key => $value): ?>
                 <tr>
                     <td><?= $key ?></td>
-                    <td><?= $value ?></td>
+                    <td><pre style="text-align: left"><?= is_array($value) ? print_r($value, true) : $value  ?></pre></td>
                 </tr>
             <?php endforeach;?>
             </table>
