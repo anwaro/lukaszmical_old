@@ -1,3 +1,7 @@
+<?php
+/** @var string $content */
+
+?>
 <!DOCTYPE HTML>
 <html>
     <!--
@@ -22,7 +26,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <meta name="description" content="" />
+        <meta name="description" content="{%description%}" />
         <meta name="keywords" content="" />
         <link href="{%url%}favicon.ico" rel="shortcut icon" type="image/x-icon">
         <!-- Dodatkowe tagi -->
@@ -30,7 +34,7 @@
         <meta property="og:title" content="{%title%}" />
         <meta property="og:image" content="{%url%}/{%image%}" />
         <meta property="og:url" content="{%fullurl%}" />
-        <meta property="og:description" content="{%descr%}" />
+        <meta property="og:description" content="{%description%}" />
         <meta property="og:type" content="article" />	
 
         <script>

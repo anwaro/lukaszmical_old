@@ -28,7 +28,7 @@ class View{
         "css" => "",       
         "url" => "",
         "image" => "web/images/stat/logo256.jpg",
-        "descr" => "Małe projekty wykonane w js, html5, css"
+        "description" => "Małe projekty wykonane w js, html5, css"
     );
     /**
      * 

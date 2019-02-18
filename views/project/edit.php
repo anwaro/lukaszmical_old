@@ -15,7 +15,7 @@ $this->title = "Edytuj informacje o projekcie";
             <div class="4u">
                 <article class="box style2">
                     <a href="{%url%}projects/show/<?= $info["url"] ?>" class='image featured'>
-                        <img src='{%url%}web/images/projects/<?= $info["photo"];?>' alt='<?= $info["descr"];?>' />
+                        <img src='{%url%}web/images/projects/<?= $info["photo"];?>' alt='<?= $info["description"];?>' />
                     </a>
                     <h3><a href='{%url%}projects/show/<?= $info["url"] ?>'><?= $info["name"];?></a></h3>
                     <p><?= $info["description"];?> </p>
