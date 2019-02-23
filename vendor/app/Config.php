@@ -1,6 +1,6 @@
 <?php
 
-namespace app;
+namespace vendor\app;
 
 /**
  * Class Config

@@ -1,7 +1,7 @@
 <?php
-namespace app\controllers;
+namespace controllers;
 
-use base\Controller;
+use vendor\base\Controller;
 use models\Projects;
 
 

@@ -25,10 +25,10 @@ $this->title = "Wszystkie projekty";
     <?php foreach ($projects as $project):?>
     <?php $show = $project["display"] ? "":"(ukryty)"; ?>
         <tr>
-            <td><img src="{%url%}web/images/projects/<?= $project["photo"] ?>" height="50"></td>
-            <td><a href = "{%url%}projects/show/<?= $project["url"] ?>"><?= $project["name"] ?></a> <?= $show ?></td>
-            <td><a href = "{%url%}projects/edit/<?= $project["id"] ?>">Edytuj dane</a> </td>
-            <td><a href = "{%url%}projects/delete/<?= $project["id"] ?>">Usuń (wyłączone)</a></td>
+            <td><img src="/images/projects/<?= $project["photo"] ?>" height="50"></td>
+            <td><a href = "/projects/show/<?= $project["url"] ?>"><?= $project["name"] ?></a> <?= $show ?></td>
+            <td><a href = "/projects/edit/<?= $project["id"] ?>">Edytuj dane</a> </td>
+            <td><a href = "/projects/delete/<?= $project["id"] ?>">Usuń (wyłączone)</a></td>
         </tr>            
     <?php endforeach;?>
     </table>

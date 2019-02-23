@@ -102,6 +102,6 @@
         </div>
     </div>
 </div>
-<script src="http://lukaszmical.pl/js/lib.js"></script>
-<script src="http://lukaszmical.pl/js/math.new.js"></script>
+<script src="/js/lib.js"></script>
+<script src="/js/math.new.js"></script>
 

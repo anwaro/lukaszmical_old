@@ -22,15 +22,15 @@ SET={boltz : 5.67e-8,
 
 
 SET.nam =[
-	"http://lukaszmical.pl/web/images/projects/temp/crops.png",	// 0
-	"http://lukaszmical.pl/web/images/projects/temp/desert.png",	// 1
-	"http://lukaszmical.pl/web/images/projects/temp/forest.png",	// 2
-	"http://lukaszmical.pl/web/images/projects/temp/ice.png",		// 3
-	"http://lukaszmical.pl/web/images/projects/temp/meadow.png",	// 4
-	"http://lukaszmical.pl/web/images/projects/temp/snow.png",		// 5
-	"http://lukaszmical.pl/web/images/projects/temp/soil.png",		// 6
-	"http://lukaszmical.pl/web/images/projects/temp/sun.png",		// 7
-	"http://lukaszmical.pl/web/images/projects/temp/water.png"		// 8
+	"/images/projects/temp/crops.png",	// 0
+	"/images/projects/temp/desert.png",	// 1
+	"/images/projects/temp/forest.png",	// 2
+	"/images/projects/temp/ice.png",		// 3
+	"/images/projects/temp/meadow.png",	// 4
+	"/images/projects/temp/snow.png",		// 5
+	"/images/projects/temp/soil.png",		// 6
+	"/images/projects/temp/sun.png",		// 7
+	"/images/projects/temp/water.png"		// 8
 ];
 
 SET.img=[];

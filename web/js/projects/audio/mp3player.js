@@ -73,9 +73,9 @@ mp3player = new function(){
             next: new Song()
         },
         url:{
-            info: "http://lukaszmical.pl/song/get/",
-            audio: "http://lukaszmical.pl/web/sounds/mp3/",
-            cover: "http://lukaszmical.pl/web/images/projects/mp3player/covers/"
+            info: "/song/get/",
+            audio: "/sounds/mp3/",
+            cover: "/images/projects/mp3player/covers/"
         },
         vis:{
             support: false,
@@ -596,5 +596,5 @@ $$.load(function(){
     var test = new Audio();
     test.onerror = function(){mp3player.init('MP3', false)};
     test.onloadeddata = function(){mp3player.init('MP3', true)};
-    test.src = "http://lukaszmical.pl/web/sounds/test/test.mp3";
+    test.src = "/sounds/test/test.mp3";
 });

@@ -1,8 +1,8 @@
 <?php
 
-namespace db;
+namespace vendor\db;
 
-use Lii;
+use vendor\Lii;
 
 class Database extends \PDO
 {

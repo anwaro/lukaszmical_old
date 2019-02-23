@@ -9,7 +9,7 @@
 
 namespace models;
 
-use db\ActiveRecord;
+use vendor\db\ActiveRecord;
 
 /**
  * Class Rate

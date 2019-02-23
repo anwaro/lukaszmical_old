@@ -1,15 +1,15 @@
 <?php
 
 
-namespace app\controllers;
+namespace controllers;
 
-use base\Controller;
+use vendor\base\Controller;
 use models\Song;
-use Lii;
+use vendor\Lii;
 
 /**
  * Class SongController
- * @package app\controllers
+ * @package controllers
  * @author lukasz
  */
 class SongController extends Controller {

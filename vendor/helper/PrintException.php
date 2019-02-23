@@ -6,9 +6,9 @@
  * and open the template in the editor.
  */
 
-namespace helper;
+namespace vendor\helper;
 
-use base\View;
+use vendor\base\View;
 
 /**
  * Description of Exception

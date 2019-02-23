@@ -57,20 +57,18 @@
         <script>
             var url ="{%url%}";
         </script>
-        <!--[if lte IE 8]><script src="{%url%}/web/css/ie/html5shiv.js"></script><![endif]-->
-        <script src="{%url%}web/js/jquery/jquery.min.js"></script>
-        <script src="{%url%}web/js/jquery/jquery.scrolly.min.js"></script>
-        <script src="{%url%}web/js/jquery/skel.min.js"></script>
-        <script src="{%url%}web/js/jquery/init.js"></script>
-        <script src="{%url%}web/js/myQuery.js"></script>
-        {%js%}
-        <link rel="stylesheet" href="{%url%}web/css/style.css" >
+        <!--[if lte IE 8]><script src="/css/ie/html5shiv.js"></script><![endif]-->
+        <script src="/js/jquery/jquery.min.js"></script>
+        <script src="/js/jquery/jquery.scrolly.min.js"></script>
+        <script src="/js/jquery/skel.min.js"></script>
+        <script src="/js/jquery/init.js"></script>
+        <link rel="stylesheet" href="/css/style.css" >
         <noscript>
-        <link rel="stylesheet" href="{%url%}web/css/skel.css" >
-        <link rel="stylesheet" href="{%url%}web/css/style-desktop.css" >
+        <link rel="stylesheet" href="/css/skel.css" >
+        <link rel="stylesheet" href="/css/style-desktop.css" >
         </noscript>
-        <!--[if lte IE 8]><link rel="stylesheet" href="{%url%}/web/css/ie/v8.css" /><![endif]-->
-        <!--[if lte IE 9]><link rel="stylesheet" href="{%url%}/web/css/ie/v9.css" /><![endif]-->
+        <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie/v8.css" /><![endif]-->
+        <!--[if lte IE 9]><link rel="stylesheet" href="/css/ie/v9.css" /><![endif]-->
         {%css%}
     </head>
     <body>
@@ -80,7 +78,7 @@
                 <li><a href="{%url%}projects">Projekty</a></li>
                 <li><a href="{%url%}curiosities">Linki</a></li>
                 <li><a href="{%url%}#contact" class="scrolly">Kontakt</a></li>        
-            <?php if(Lii::$app->user->isLogin()): ?>
+            <?php if(vendor\Lii::$app->user->isLogin()): ?>
                 <li><a href="{%url%}admin">Admin </a></li>
                 <li><a href="{%url%}projects/all">Wszystkie </a></li> 
                 <li><a href="{%url%}admin/logout">Wyloguj </a></li>                
@@ -90,5 +88,7 @@
         <div id="content-block" style="opacity: 0">
             <?= $content; ?>
         </div>
+        <script src="/js/myQuery.js"></script>
+        {%js%}
     </body>
 </html>

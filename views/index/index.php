@@ -9,7 +9,7 @@
     <article class="container" id="top">
         <div class="row">
             <div class="4u">
-                <span class="image fit"><img src="{%url%}web/images/stat/profil.jpg" alt="" /></span>
+                <span class="image fit"><img src="/images/stat/profil.jpg" alt="" /></span>
             </div>
             <div class="8u">
                 <header>

@@ -103,5 +103,9 @@
     </div>
 </div>
 
-<script>M.init();</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        M.init();
+    });
+</script>
 

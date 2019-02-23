@@ -28,7 +28,7 @@
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <meta name="description" content="{%description%}" />
         <meta name="keywords" content="" />
-        <link href="{%url%}favicon.ico" rel="shortcut icon" type="image/x-icon">
+        <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
         <!-- Dodatkowe tagi -->
 
         <meta property="og:title" content="{%title%}" />
@@ -54,19 +54,19 @@
             ga('require', 'displayfeatures');
             ga('send', 'pageview');
         </script>
-        <script src="{%url%}web/js/myQuery.js"></script>
         <style>  
             body{
-                background-image: url('images/bg.png');
+                background-image: url('/images/bg.png');
                 text-align: center;
                 margin:0;
                 overflow:hidden;
             }
         </style>
-        {%js%}
         {%css%}
     </head>
     <body>
         <?= $content; ?>		
     </body>
+    <script src="/js/myQuery.js"></script>
+    {%js%}
 </html>

@@ -30,8 +30,8 @@ function rateStar($id){
     <?php endif;?>
     <div class='<?= $class ?>'>
         <article itemscope itemtype="http://schema.org/SoftwareApplication" class="box style2">
-            <a itemprop="url" href='{%url%}projects/show/<?= $project["url"];?>' class='image featured'>
-                <img itemprop='image' src='{%url%}web/images/projects/<?= $project["photo"] ?>' alt='<?= $project["description"];?>' />
+            <a itemprop="url" href='/projects/show/<?= $project["url"];?>' class='image featured'>
+                <img itemprop='image' src='/images/projects/<?= $project["photo"] ?>' alt='<?= $project["description"];?>' />
 
                 <?php if($project["rate"]): ?>
                     <div class="avg-rate-box">
@@ -43,7 +43,7 @@ function rateStar($id){
             <div id="rate-project-<?= $project["id"] ?>" class="rating">
                 <?= rateStar($project["id"]) ?>
             </div>
-            <h3><a itemprop='url' href='{%url%}projects/show/<?= $project["url"];?>'><?= $project["name"];?></a></h3>
+            <h3><a itemprop='url' href='/projects/show/<?= $project["url"];?>'><?= $project["name"];?></a></h3>
             <p><?= $project["description"];?> </p>
         </article>
     </div>

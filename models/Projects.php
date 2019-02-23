@@ -2,8 +2,8 @@
 
 namespace models;
 
-use db\ActiveRecord;
-use Lii;
+use vendor\db\ActiveRecord;
+use vendor\Lii;
 
 /**
  * Class Projects
@@ -102,7 +102,7 @@ class Projects extends ActiveRecord {
     }
 
     public function _save($name,  $str, $photo){
-        $path = getcwd()."/web/video/photo/".$name;
+        $path = getcwd()."/video/photo/".$name;
         if(!file_exists($path)){
             mkdir($path, 0777, true);
         }
@@ -116,7 +116,7 @@ class Projects extends ActiveRecord {
     
     public function getVideo() {
         $name = Lii::$app->request->post("name");
-        $path = getcwd()."/web/video/photo/".$name;
+        $path = getcwd()."/video/photo/".$name;
         $photos = scandir ($path);
         /*foreach($photos as $key => $photo){
             if(strlen($photo)>4){

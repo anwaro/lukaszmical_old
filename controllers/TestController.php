@@ -6,12 +6,12 @@
  * Time: 19:29
  * Project: lukaszmical.pl
  */
-namespace app\controllers;
-use base\Controller;
+namespace controllers;
+use vendor\base\Controller;
 
 /**
  * Class TestController
- * @package app\controllers
+ * @package controllers
  * @author lukasz
  */
 class TestController extends Controller{

@@ -1,7 +1,7 @@
 <?php
 
-
-use app\App;
+namespace vendor;
+use vendor\app\App;
 
 /**
  * Description of App

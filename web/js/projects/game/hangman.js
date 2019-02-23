@@ -13,7 +13,7 @@ hangman = new function(){
         
         newGame.onclick = reset;
         
-        url =   "http://lukaszmical.pl/web/images/projects/hangman/";
+        url =   "/images/projects/hangman/";
         //load.hide();
         newGame.css("background", "url("+url+"new.jpg)");
         photo.show();
@@ -124,7 +124,7 @@ hangman = new function(){
                 prepareWord();
             }
         };
-        xhttp.open("POST", "http://lukaszmical.pl/projects/ajaxWord/as");
+        xhttp.open("POST", "/projects/ajaxWord/as");
         xhttp.setRequestHeader("Content-Type",
             "application/x-www-form-urlencoded");
         xhttp.send();

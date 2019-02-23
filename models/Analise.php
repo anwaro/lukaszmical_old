@@ -8,8 +8,8 @@
 
 namespace models;
 
-use db\ActiveRecord;
-use helper\Browser;
+use vendor\db\ActiveRecord;
+use vendor\helper\Browser;
 
 
 /**

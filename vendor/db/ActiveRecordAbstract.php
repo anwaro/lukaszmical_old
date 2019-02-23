@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-namespace db;
+namespace vendor\db;
 
 /**
  * Class ActiveRecordAbstract

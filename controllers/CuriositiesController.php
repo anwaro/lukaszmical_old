@@ -1,10 +1,10 @@
 <?php
 
-namespace app\controllers;
+namespace controllers;
 
-use base\Controller;
+use vendor\base\Controller;
 use models\Curiosities;
-use Lii;
+use vendor\Lii;
 
 class CuriositiesController extends Controller {
         

@@ -21,10 +21,10 @@ $this->title = "Usuń wpis";
 
             <div class='4u' style="margin: auto;">
                 <article  class="box style2">
-                    <a  href='{%url%}projects/show/<?= $project["url"];?>' class='image featured'>
-                        <img src='{%url%}web/images/projects/<?= $project["photo"];?>' alt='<?= $project["description"];?>' />
+                    <a  href='/projects/show/<?= $project["url"];?>' class='image featured'>
+                        <img src='//images/projects/<?= $project["photo"];?>' alt='<?= $project["description"];?>' />
                     </a>
-                    <h3><a href='{%url%}projects/show/<?= $project["url"];?>'><?= $project["name"];?></a></h3>
+                    <h3><a href='/projects/show/<?= $project["url"];?>'><?= $project["name"];?></a></h3>
                     <p><?= $project["description"];?> </p>
                 </article>
             </div>

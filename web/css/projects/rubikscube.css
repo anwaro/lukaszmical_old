@@ -6,7 +6,7 @@ body{
     top:0;
     left: 0;
     z-index: 999;
-    background: url("/web/images/projects/rubik.png");
+    background: url("/images/projects/rubik.png");
 }
 
 .hidden {

@@ -3,7 +3,7 @@
 
 namespace models;
 
-use db\ActiveRecord;
+use vendor\db\ActiveRecord;
 
 /**
  * Class Song
@@ -38,10 +38,10 @@ class Song extends ActiveRecord{
 
     public function copySong(){
         $DIR = "/home/u421389560/public_html/";
-        $image_path = $DIR . 'web/sounds/mp3player/';
-        $image_new_path = $DIR . 'web/images/projects/mp3player/covers/';
-        $mp3_path = $DIR . 'web/sounds/mp3player/';
-        $mp3_newPath = $DIR . 'web/sounds/mp3/';
+        $image_path = $DIR . 'sounds/mp3player/';
+        $image_new_path = $DIR . 'images/projects/mp3player/covers/';
+        $mp3_path = $DIR . 'sounds/mp3player/';
+        $mp3_newPath = $DIR . 'sounds/mp3/';
 
         $error = [];
         if(isset($this->id)){
@@ -64,10 +64,10 @@ class Song extends ActiveRecord{
 
     public function deleteSong(){
         $DIR = "/home/u421389560/public_html/";
-        $image_path = $DIR . 'web/sounds/mp3player/';
-        $image_new_path = $DIR . 'web/sounds/mp3removed/';
-        $mp3_path = $DIR . 'web/sounds/mp3player/';
-        $mp3_newPath = $DIR . 'web/sounds/mp3removed/';
+        $image_path = $DIR . 'sounds/mp3player/';
+        $image_new_path = $DIR . 'sounds/mp3removed/';
+        $mp3_path = $DIR . 'sounds/mp3player/';
+        $mp3_newPath = $DIR . 'sounds/mp3removed/';
 
         $error = [];
         if(isset($this->id)){

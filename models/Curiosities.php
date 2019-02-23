@@ -2,8 +2,8 @@
 
 namespace models;
 
-use db\ActiveRecord;
-use db\Db;
+use vendor\db\ActiveRecord;
+use vendor\db\Db;
 
 /**
  * Description of webstuff_model

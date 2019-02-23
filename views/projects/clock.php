@@ -5,8 +5,6 @@
     </div>
 </div>
 <script>
-    var can1 = document.getElementById("clock1");
-    Clock(can1, "apple");
 </script>
 
 
@@ -17,6 +15,8 @@
     </div>
 </div>
 <script>
-    var can2 = document.getElementById("clock2");
-    Clock(can2, "kors");
+    document.addEventListener('DOMContentLoaded', function () {
+        Clock(document.getElementById("clock1"), "apple");
+        Clock(document.getElementById("clock2"), "kors");
+    });
 </script>

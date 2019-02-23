@@ -38,7 +38,7 @@ function newGame(type, nr) {
             $$("#puzzleArea").fadeIn(300);
         });
 
-        src = "http://lukaszmical.pl/web/images/projects/puzzle/img" + (nr || 1) + ".jpg";
+        src = "/images/projects/puzzle/img" + (nr || 1) + ".jpg";
         //src = "img/img"+(nr||1)+".jpg";
         imageInfo();
     }

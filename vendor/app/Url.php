@@ -6,9 +6,9 @@
  * and open the template in the editor.
  */
 
-namespace app;
+namespace vendor\app;
 
-use Lii;
+use vendor\Lii;
 
 /**
  * Description of Url

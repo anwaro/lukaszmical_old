@@ -1,7 +1,7 @@
 <?php
 namespace models;
 
-use Lii;
+use vendor\Lii;
 
 class Error {
     

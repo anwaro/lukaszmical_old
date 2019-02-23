@@ -14,7 +14,7 @@
 
     <div class="song-box">
         <div class="image">
-            <img width="100px" src="{%url%}web/images/projects/mp3player/covers/<?=$song["cover"] ?>">
+            <img width="100px" src="/images/projects/mp3player/covers/<?=$song["cover"] ?>">
         </div>
         <div class="info">
             <div class="row-12">
@@ -25,7 +25,7 @@
             </div>
             <div class="row-12">
                 <div class="play-switch icon fa-play">
-                    <audio preload="metadata" src="{%url%}web/sounds/mp3/<?=$song["src"] ?>.mp3"></audio>
+                    <audio preload="metadata" src="/sounds/mp3/<?=$song["src"] ?>.mp3"></audio>
                 </div>
                 <div class="song-info">
                     <b><?= $song["artist"] ?> </b>- <?= $song["title"] ?><br>

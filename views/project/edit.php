@@ -4,7 +4,7 @@
 $this->title = "Edytuj informacje o projekcie";
 ?>
 <div class="row-box">
-    <form action="{%url%}projects/edit/<?= $info["id"];?>" method="POST">
+    <form action="/projects/edit/<?= $info["id"];?>" method="POST">
         <div class="row">
             <div class="8u">
                 Url: <input title="url" type="text" name="url" value="<?= $info["url"]; ?>">
@@ -14,10 +14,10 @@ $this->title = "Edytuj informacje o projekcie";
             </div>
             <div class="4u">
                 <article class="box style2">
-                    <a href="{%url%}projects/show/<?= $info["url"] ?>" class='image featured'>
-                        <img src='{%url%}web/images/projects/<?= $info["photo"];?>' alt='<?= $info["description"];?>' />
+                    <a href="/projects/show/<?= $info["url"] ?>" class='image featured'>
+                        <img src='/images/projects/<?= $info["photo"];?>' alt='<?= $info["description"];?>' />
                     </a>
-                    <h3><a href='{%url%}projects/show/<?= $info["url"] ?>'><?= $info["name"];?></a></h3>
+                    <h3><a href='/projects/show/<?= $info["url"] ?>'><?= $info["name"];?></a></h3>
                     <p><?= $info["description"];?> </p>
                 </article>
             </div>

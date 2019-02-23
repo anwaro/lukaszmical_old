@@ -1,12 +1,12 @@
 <?php
-namespace app\controllers;
+namespace controllers;
 
-use base\Controller;
+use vendor\base\Controller;
 use models\Ajax;
 
 /**
  * Class AjaxController
- * @package app\controllers
+ * @package controllers
  */
 class AjaxController extends Controller 
 {

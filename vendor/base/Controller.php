@@ -1,7 +1,7 @@
 <?php
-namespace base;
+namespace vendor\base;
 
-use Lii;
+use vendor\Lii;
 use models\Analise;
 
 

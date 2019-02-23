@@ -20,14 +20,14 @@ billiards = new function () {
         x = 500, y = 200,
         stick = {
             img: new Image(),
-            src: "http://lukaszmical.pl/web/images/projects/billiards/stick.png",
+            src: "/images/projects/billiards/stick.png",
             load: function () {
                 this.img.src = this.src;
             }
         },
         table = {
             img: new Image(),
-            src: "http://lukaszmical.pl/web/images/projects/billiards/table-tmp.png",
+            src: "/images/projects/billiards/table-tmp.png",
             load: function () {
                 this.img.src = this.src;
             }

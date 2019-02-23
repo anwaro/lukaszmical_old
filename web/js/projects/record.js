@@ -30,7 +30,7 @@ _record = function(canv, sett){
     
     var loop;
     
-    var url = "http://lukaszmical.pl/projects/ajax";
+    var url = "/projects/ajax";
     
     this.start = function(){
         if(!recording){

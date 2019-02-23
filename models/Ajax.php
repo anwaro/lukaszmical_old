@@ -1,7 +1,7 @@
 <?php
 namespace models;
 
-use db\Db;
+use vendor\db\Db;
 
 /**
  * Class Ajax

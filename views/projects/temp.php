@@ -81,6 +81,10 @@
 
     </div>
     <canvas id="climatModel"></canvas>
-    <div>
+</div>
 
-        <script>CANV.set();</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        CANV.set()
+    });
+</script>

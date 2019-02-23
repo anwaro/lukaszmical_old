@@ -1,147 +1,102 @@
 <?php
 
-namespace base;
+namespace vendor\base;
 
-use Lii;
+use vendor\Lii;
 
-class Bootstrap {
-    /**
-     * @var Controller
-     */
-    private $_controller;
-    /**
-     * @var Controller
-     */
-    private $_errorController;
-
-    /**
-     * @var string
-     */
-    private $_controllerPath = 'controllers/'; // Always include trailing slash
-
-    /**
-     * @var string
-     */
-    private $_renderedPage = '';
-
-    /**
-     * @var string
-     */
-    private $controllerName = 'index';
-
-    /**
-     * @var string
-     */
-    private $actionName = 'index';
-
-    /**
-     * @var array
-     */
-    private $actionParams = [];
-
-
+class Bootstrap
+{
     /**
      * Starts the Bootstrap
      *
      */
     public function init()
-    {        
-        $this->_parseUrl();       
-        
-        $this->_controller = $this->_loadExistingController($this->controllerName);
-        $this->_errorController = $this->_loadExistingController('error');
-        
-        if($this->_controller != NULL){
-            $this->_controller->before($this->_actionName());
-            $this->_renderedPage =  $this->_callControllerMethod();
-            $this->_controller->after($this->_actionName());
-        }
-        else{
-            $this->_errorController->before($this->_actionName());
-            $this->_renderedPage =  $this->_callErrorMethod();
-            $this->_errorController->after($this->_actionName());
-        }
+    {
+        list($controller, $action, $param) = $this->parseUrl();
+
+        $errorControllerName = $this->controllerName('error');
+        $errorActionName = $this->actionName('index');
+
+        $controllerName = $this->controllerName($controller);
+        $actionName = $this->actionName($action);
+
+        $validRoute = $this->checkRoute($controllerName, $actionName);
+
+        /** @var Controller $controllerObject */
+        $controllerObject = $validRoute
+            ? $this->loadController($controllerName)
+            : $this->loadController($errorControllerName);
+        $actionName = $validRoute ? $actionName : $errorActionName;
+
+        $controllerObject->before($actionName);
+        $render = $this->call($controllerObject, $actionName, $param);
+        $controllerObject->after($actionName);
+
+
+        return $render;
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getRenderedPage(){
-        return $this->_renderedPage;
-    }
-
-    /**
-     *
-     */
-    private function _parseUrl(){        
+    private function parseUrl()
+    {
         $path = Lii::$app->url->getPathArray();
-        
-        if(isset($path[0])){
-            $this->controllerName = $path[0];
-        }
-        if(isset($path[1])){
-            $this->actionName = $path[1];
-        }
-        if(count($path) > 2){
-            $this->actionParams = array_slice($path, 2);
-        }       
-        
+
+        return [
+            isset($path[0]) ? $path[0] : 'index',
+            isset($path[1]) ? $path[1] : 'index',
+            count($path) > 2 ? array_slice($path, 2) : []
+        ];
     }
 
+    /**
+     * @param $controllerObject
+     * @param $actionName
+     * @param $param
+     * @return array
+     */
+    private function call($controllerObject, $actionName, $param)
+    {
+        return call_user_func_array([$controllerObject, $actionName], $param);
+    }
 
     /**
      * Load an existing controller if there IS a GET parameter passed
-     *
      * @param $controllerName
-     * @return null|Controller
+     * @return false|Controller
      */
-    private function _loadExistingController($controllerName)
+    private function loadController($controllerName)
     {
-        $file = $this->_controllerFileName($controllerName);
-        if (file_exists($file)) {
-            require $file;
-            $className = $this->_controllerName($controllerName);
-            return new $className;
-        } else {
-            return NULL;
+        if (class_exists($controllerName)) {
+            return new $controllerName;
         }
+
+        return false;
     }
 
     /**
-     *
-     *  http://localhost/controller/method/(param)/(param)/(param)
+     * @param $controllerName
+     * @param $actionName
      * @return bool|mixed
      */
-    private function _callControllerMethod()
+    private function checkRoute($controllerName, $actionName)
     {
-        $action = $this->_actionName();
-        if (!method_exists($this->_controller, $action)) {
-            return $this->_callErrorMethod();
-        }else{
-            return call_user_func_array(
-                    [$this->_controller, $action], 
-                    $this->actionParams
-                    );
-        }
-    }
-    
-    /**
-     * Display an error page if nothing exists
-     * 
-     * @return boolean
-     */
-    private function _callErrorMethod() {        
-        return $this->_errorController->actionIndex();        
+        $controllerModel = $this->loadController($controllerName);
+        return $controllerModel && method_exists($controllerModel, $actionName);
     }
 
     /**
+     * @param $action
      * @return string
      */
-    private function _actionName(){        
-        $part = explode("-", $this->actionName);
-        array_walk($part, function(&$value){
+    private function actionName($action)
+    {
+        $part = explode("-", $action);
+        array_walk($part, function (&$value) {
             $value = ucfirst($value);
         });
+
         return "action" . implode($part);
     }
 
@@ -149,15 +104,8 @@ class Bootstrap {
      * @param string $string
      * @return string
      */
-    private function _controllerName($string){
-        return 'app\controllers\\' . ucfirst($string) . 'Controller';
-    }
-
-    /**
-     * @param string $string
-     * @return string
-     */
-    private function _controllerFileName($string){
-        return $this->_controllerPath . ucfirst($string) . 'Controller.php';
+    private function controllerName($string)
+    {
+        return 'controllers\\' . ucfirst($string) . 'Controller';
     }
 }

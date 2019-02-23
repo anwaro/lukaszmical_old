@@ -1,7 +1,7 @@
 <?php
 namespace models;
 
-use db\ActiveRecord;
+use vendor\db\ActiveRecord;
 
 class Admin extends ActiveRecord {
 

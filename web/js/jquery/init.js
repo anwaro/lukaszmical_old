@@ -11,18 +11,18 @@
     skel.init({
         reset: 'full',
         breakpoints: {
-//            'global': {range: '*', href: url + '/web/css/style.css'},
-            'desktop': {range: '737-', href: url + '/web/css/style-desktop.css', containers: 1200, grid: {gutters: 25}},
+//            'global': {range: '*', href: url + '/css/style.css'},
+            'desktop': {range: '737-', href: url + '/css/style-desktop.css', containers: 1200, grid: {gutters: 25}},
             '1000px': {
                 range: '737-1200',
-                href: url + '/web/css/style-1000px.css',
+                href: url + '/css/style-1000px.css',
                 containers: 960,
                 grid: {gutters: 25},
                 viewport: {width: 1080}
             },
             'mobile': {
                 range: '-736',
-                href: url + '/web/css/style-mobile.css',
+                href: url + '/css/style-mobile.css',
                 containers: '100%!',
                 grid: {collapse: true, gutters: 15},
                 viewport: {scalable: false}

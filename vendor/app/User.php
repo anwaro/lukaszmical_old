@@ -1,8 +1,8 @@
 <?php
 
-namespace app;
+namespace vendor\app;
 
-use Lii;
+use vendor\Lii;
 
 /**
  * Description of User

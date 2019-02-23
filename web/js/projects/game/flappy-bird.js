@@ -2,7 +2,7 @@
 /* global $$ */
 
 var $ = function(k){return document.getElementById(k);};
-var urlPr = "http://lukaszmical.pl/web/images/projects/";
+var urlPr = "/images/projects/";
 var game={
 	user:{
 		best:0,

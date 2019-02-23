@@ -8,9 +8,9 @@ return [
         "back" => true,
     ],
     "path" =>[
-        "image" => "web/images",
-        "proj_image" => "web/images/projects",
-        "file" => "web/files",
+        "image" => "images",
+        "proj_image" => "images/projects",
+        "file" => "files",
         
     ],    
     "db" => $db,
